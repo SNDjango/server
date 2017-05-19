@@ -1,0 +1,22 @@
+language: python
+
+python:
+  - "3.4"
+
+services:
+  - postgresql
+
+env:
+  global:
+    - PYTHONPATH="/home/travis/build/my_github_name/snd"
+    - BUILD_ON_TRAVIS=true
+
+install:
+  - pip install -q -r requirements.txt
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - python manage.py syncdb --noinput
+
+script:
+  - python manage.py test
