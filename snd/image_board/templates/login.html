@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    {% include 'partials/header.html'%}
+    <body id="main">
+        {% include 'partials/navigation.html'%}
+        <div style="width: 50%;margin: 0 auto;">
+            <h1>Login</h1>
+    		<form action="{% url 'login_page' %}" method="post">
+                {% csrf_token %}
+    			<div class="form-group">
+    				<label for="user">User Name</label>
+    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name">
+    			</div>
+    			<div class="form-group">
+    				<label for="pwd">Password</label>
+    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="160">
+    			</div>
+    			<div id="lower-btn">
+    				<button type="submit" class="btn btn-success" value="Submit">Login</button>
+    			</div>
+    		</form>
+		</div>
+    </body>
+</html>

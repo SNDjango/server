@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    {% include 'partials/header.html'%}
+    <body id="main">
+        {% include 'partials/navigation.html' %}
+        <div style="width: 50%;margin: 0 auto;">
+            <h1>Sign Up</h1>
+    		<form action="{% url 'signup' %}" method="post">
+                {% csrf_token %}
+    			<div class="form-group">
+    				<label for="user">Username</label>
+    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name">
+    			</div>
+    			<div class="form-group">
+    				<label for="email">Email Address</label>
+    				<input type="text" class="form-control" name="email" id="email" maxlength="64" placeholder="email">
+    			</div>
+    			<div class="form-group">
+    				<label for="description">Password</label>
+    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="64">
+    			</div>
+    			<div id="lower-btn">
+    				<button type="submit" class="btn btn-primary" value="Submit">Sign Up</button>
+    			</div>
+
+    		</form>
+		</div>
+    </body>
+</html>
