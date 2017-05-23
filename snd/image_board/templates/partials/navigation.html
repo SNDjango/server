@@ -1,3 +1,5 @@
+
+
 <div class="container-fluid">
     <!-- Navigationsleiste oben -->
     <nav class="navbar navbar-toggleable-md navbar-default bg-faded navbar-inverse">
@@ -13,12 +15,14 @@
         </div>
 
         <div class="collapse navbar-collapse" id="newnav">
-            <ul class="nav navbar-nav mr-auto">
-                <li class="nav-item active"><a href="#" class="nav-link">Hot</a></li>
-                <li class="nav-item"><a href="" class="nav-link">New</a></li>
-                <li class="nav-item"><a href="{% url 'profile' %}" class="nav-link">MyProfile</a></li>
-            </ul>
+
             {% if user.is_authenticated %}
+                <ul class="nav navbar-nav mr-auto">
+                    <li class=""><a href="#" class="nav-link">My Favorites</a></li>
+                    <li class = "{% if nbar == 'myposts' %}active{% endif %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
+                    <li {% if request.resolver_match_url_name == "profile" %}class= "active"{% endif %}><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
+                </ul>
+                  <p class="navbar-btn navbar-right"><a href="#" class="btn btn-primary" style="margin-right:10px;">Make Post</a></p>
                 <p class="navbar-btn navbar-right"><a href="{% url 'logout_page' %}" class="btn btn-primary" style="margin-right:10px;">Logout</a></p>
             {% else %}
                 <p class="navbar-btn navbar-right"><a href="{% url 'login_page' %}" class="btn btn-primary" style="margin-right:10px;">Login</a></p>

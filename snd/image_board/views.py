@@ -18,6 +18,16 @@ def profile(request):
     else:
         return render(request, 'profile.html')
 
+def view_my_posts(request):
+     return render(request,'myposts.html')
+
+#favorites to be implemented in the future
+def view_my_favorites(request):
+    return render(request, 'favorites.html')
+
+def create_post(request):
+    return render(request, 'createpost.html')
+
 
 def login_page(request):
     if(request.method == 'POST'):
@@ -41,7 +51,7 @@ def signup(request):
         pwd = request.POST['pwd']
 
         user = User.objects.create_user(name, email, pwd)
-        return redirect('index')
+        return redirect('login_page')
 
     else:
         return render(request, 'signup.html')
