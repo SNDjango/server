@@ -23,13 +23,12 @@ def login_page(request):
     if(request.method == 'POST'):
         name = request.POST['user']
         pwd = request.POST['pwd']
-
         user = authenticate(username=name, password=pwd)
         if user is not None:
             login(request, user)
             return redirect('index')
         else:
-            return render(request, 'error_login.html')
+            return render(request, 'login.html',{'error_message': 'Invalid login'})
 
     else:
         return render(request, 'login.html')
