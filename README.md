@@ -1,2 +1,2 @@
-# testing
-just for testing and learning the workflow
+# Server
+Use SNDjango/Testing for testing. 
