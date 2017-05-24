@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Social Network</title>
+    <!-- CSS -->
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+</head>
+<body>
+<div class="container-fluid">
+    <!-- Navigationsleiste oben -->
+    <nav class="navbar navbar-toggleable-md navbar-default bg-faded navbar-inverse">
+        <input type="checkbox" id="navbar-toggle-cbox">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="{% url 'index' %}">Logo</a>
+            <label for="navbar-toggle-cbox" class="navbar-toggle collapsed" data-toggle="collapse"
+                   data-target="#newnav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </label>
+        </div>
+
+        <div class="collapse navbar-collapse" id="newnav">Gag
+
+            {% if user.is_authenticated %}
+                <ul class="nav navbar-nav mr-auto">
+                    <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
+                    <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
+                    <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
+                </ul>
+                <p class="navbar-btn navbar-right"><a href="{% url 'create_post' %}" class="btn btn-primary" style="margin-right:10px;">Make
+                    Post</a></p>
+                <p class="navbar-btn navbar-right"><a href="{% url 'logout_page' %}" class="btn btn-primary"
+                                                      style="margin-right:10px;">Logout</a></p>
+            {% else %}
+                <p class="navbar-btn navbar-right"><a href="{% url 'login_page' %}" class="btn btn-primary"
+                                                      style="margin-right:10px;">Login</a></p>
+                <p class="navbar-btn navbar-right"><a href="{% url 'signup' %}" class="btn btn-primary"
+                                                      style="margin-right:10px;">Sign Up</a></p>
+            {% endif %}
+        </div>
+    </nav>
+</div>
+
+<div class="container">
+    {% block body %}
+    {% endblock %}
+</div>
+
+</body>
+</html>
