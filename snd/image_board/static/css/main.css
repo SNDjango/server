@@ -25,3 +25,12 @@ button {
 #lower-btn {
 	margin-top:20px;
 }
+
+.cancel-link {
+	margin-top:20px;
+	margin-left:10px;
+}
+
+.popover-content{
+    color: #c81212;
+}

@@ -32,13 +32,16 @@ def create_post(request):
 def login_page(request):
     if(request.method == 'POST'):
         name = request.POST['user']
+        if not User.objects.filter(username=name).exists():
+            return render(request, 'login.html', {'error_user': 'user does not exist'})
         pwd = request.POST['pwd']
         user = authenticate(username=name, password=pwd)
+
         if user is not None:
             login(request, user)
             return redirect('index')
         else:
-            return render(request, 'login.html',{'error_message': 'Invalid login'})
+            return render(request, 'login.html', {'error_pwd': name})
 
     else:
         return render(request, 'login.html')
@@ -51,8 +54,11 @@ def signup(request):
         pwd = request.POST['pwd']
 
         user = User.objects.create_user(name, email, pwd)
-        return redirect('login_page')
-
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            return redirect('signup')
     else:
         return render(request, 'signup.html')
 

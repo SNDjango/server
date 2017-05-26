@@ -2,24 +2,41 @@
 {% block title%}login{% endblock %}
 {% block body %}
    <div style="width: 50%;margin: 0 auto;">
-            <h1>Login</h1>
-        {% if error_message %}
-            <p style="color:red;"><strong>{{ error_message }}! Please try again</strong></p>
-        {% endif %}
+        <h1>Login</h1>
     		<form action="{% url 'login_page' %}" method="post">
                 {% csrf_token %}
     			<div class="form-group">
     				<label for="user">User Name</label>
-    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name">
+                    <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="User does not exist." tabindex="-1">
+    				    <input type="text" class="form-control" name="user" id="user" {% if error_pwd %}value="{{ error_pwd }}"{% endif %} maxlength="30" placeholder="Name">
+                    </a>
     			</div>
     			<div class="form-group">
     				<label for="pwd">Password</label>
-    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="160">
+                    <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Incorrect Password." tabindex="-1">
+    				    <input type="password" class="form-control" name="pwd" id="pwd" maxlength="160">
+                    </a>
     			</div>
     			<div id="lower-btn">
     				<button type="submit" class="btn btn-success" value="Submit">Login</button>
+    				<a href="{% url 'index' %}" class="btn btn-danger cancel-link" value="Cancel">Cancel</a>
     			</div>
     		</form>
 		</div>
+        {% if error_user %}
+            <script>
+                $(document).ready(function () {
+                    $('#PopUserError').popover();
+                    $('#PopUserError').popover('show');
+                  });
+            </script>
+        {% endif %}
+        {% if error_pwd %}
+            <script>
+                $(document).ready(function () {
+                    $('#PopPwdError').popover();
+                    $('#PopPwdError').popover('show');
+                  });
+            </script>
+        {% endif %}
 {% endblock %}
-
