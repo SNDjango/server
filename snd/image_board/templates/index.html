@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
-{% block title%}home{% endblock %}
+{% block title %}home{% endblock %}
 
 {% block body %}
-    <h1>Welcome to TU</h1>
+    {% if user.is_authenticated %}
+        <h1>You will be able to explore fun memes below</h1>
+    {% else %}
+        <h1>Welcome to TUGag, a place of serious fun</h1>
+        <p></p>
+    {% endif %}
 {% endblock %}
