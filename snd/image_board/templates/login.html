@@ -6,7 +6,7 @@
 		<form action="{% url 'login_page' %}" method="post">
             {% csrf_token %}
 			<div class="form-group">
-				<label for="user">User Name</label>
+				<label for="user">Username</label>
                 <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="User does not exist." tabindex="-1">
 				    <input type="text" class="form-control" name="user" {% if error_pwd %}value="{{ error_pwd }}"{% endif %} maxlength="32" placeholder="Name">
                 </a>
