@@ -7,6 +7,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 
 def index(request):
     return render(request, 'index.html')
@@ -50,8 +52,18 @@ def login_page(request):
 def signup(request):
     if(request.method == 'POST'):
         name = request.POST['user']
+        if User.objects.filter(username=name).exists():
+            return render(request, 'signup.html', {'error_user': 'user already exists'})
+
         email = request.POST['email']
+        try:
+            validate_email(email)
+        except ValidationError:
+            return render(request, 'signup.html', {'error_email': 'email not valid', 'name': name})
+
         pwd = request.POST['pwd']
+        if len(pwd) < 8:
+            return render(request, 'signup.html', {'error_pwd': 'password not valid', 'name': name, 'email': email})
 
         user = User.objects.create_user(name, email, pwd)
         if user is not None:
