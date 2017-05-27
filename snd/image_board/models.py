@@ -2,15 +2,6 @@ from django.db import models
 from django.core.urlresolvers import reverse
 
 
-class UserPicture(models.Model):
-    picture_id = models.PositiveIntegerField(primary_key=True)
-    URL = models.URLField()
-    user_photo = models.ImageField()
-
-    def __str__(self):
-        return self.picture_id
-
-
 class User(models.Model):
     user_id = models.PositiveIntegerField(primary_key=True)
     password = models.CharField(max_length=20)
@@ -26,10 +17,10 @@ class User(models.Model):
     contact_skype = models.URLField(null=True)
     contact_facebook = models.URLField(null=True)
     contact_linkedin = models.URLField(null=True)
-    user_photo = models.ForeignKey(UserPicture, on_delete=models.CASCADE)
+    user_photo = models.ImageField(blank=True)
 
     def __str__(self):
-        return self.first_name
+        return self.first_name + " " + self.last_name
 
 
 class ContentItem(models.Model):
@@ -69,13 +60,8 @@ class ContentHashTag(models.Model):
     content_id = models.ForeignKey(ContentItem, limit_choices_to=ContentItem.content_id, on_delete= models.CASCADE)
     hashtag_id = models.ForeignKey(Hashtag, limit_choices_to=Hashtag.hashtag_id, on_delete= models.CASCADE)
 
-    def __str__(self):
-        return self.content_id
 
 
 class Favorites(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
-
-    def __str__(self):
-        return self.content_id
