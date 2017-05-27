@@ -6,16 +6,16 @@
     		<form action="{% url 'signup' %}" method="post">
                 {% csrf_token %}
     			<div class="form-group">
-    				<label for="user">Username</label>
-    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name">
+    				<label for="user">Username*</label>
+    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name", required>
     			</div>
     			<div class="form-group">
-    				<label for="email">Email Address</label>
-    				<input type="text" class="form-control" name="email" id="email" maxlength="64" placeholder="email">
+    				<label for="email">Email Address*</label>
+    				<input type="email" class="form-control" name="email" id="email" maxlength="64" placeholder="email", required>
     			</div>
     			<div class="form-group">
-    				<label for="description">Password</label>
-    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="64">
+    				<label for="description">Password*</label>
+    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="64", required>
     			</div>
     			<div id="lower-btn">
     				<button type="submit" class="btn btn-primary" value="Submit">Sign Up</button>
