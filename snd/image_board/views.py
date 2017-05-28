@@ -7,6 +7,10 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from PIL import Image
+
+from .models import ContentItem
 
 def index(request):
     return render(request, 'index.html')
@@ -60,3 +64,22 @@ def signup(request):
 def logout_page(request):
     logout(request)
     return redirect('index')
+
+
+def upload(request):
+    if request.method == 'POST' and request.FILES['file'] and request.user:
+        submitted_title = request.POST.get('title', '<<post error>>')
+        submitted_description = request.POST.get('description', '<<post error>>')
+        submitted_file = request.FILES['file']
+        try:
+            if submitted_file.size > 5242880:
+                raise ValueError("File is too large.")
+            trial_image = Image.open(submitted_file)
+            trial_image.verify()
+        except:
+            return redirect('create_post')
+
+        submitted_item = ContentItem(title=submitted_title, description=submitted_description, image=submitted_file, uploaded_by=request.user)
+        submitted_item.save()
+
+    return redirect('create_post')

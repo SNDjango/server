@@ -1,4 +1,8 @@
-# Pycharm 
+# project specific
+snd/db.sqlite3
+snd/media/
+
+# Pycharm
 .idea
 
 # Byte-compiled / optimized / DLL files
