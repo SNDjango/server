@@ -13,10 +13,6 @@
         {% block style %}
         {% endblock %}
 
-        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
-        <script src="{% static 'js/bootstrap.min.js' %}"></script>
-        {% block script %}
-        {% endblock %}
     </head>
     <body>
         <div class="container-fluid">
@@ -60,5 +56,9 @@
             {% block body %}
             {% endblock %}
         </div>
+        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        {% block script %}
+        {% endblock %}
     </body>
 </html>

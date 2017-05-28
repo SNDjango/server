@@ -28,6 +28,8 @@
         <hr />
         <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to sign in.</p>
 	</div>
+{% endblock %}
+{% block script %}
     {% if error_user %}
         <script>
             $(document).ready(function () {
