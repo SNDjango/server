@@ -24,17 +24,19 @@
         <p class="info-text">No Account?</p>
 		<a href="{% url 'signup' %}" class="btn btn-info lower-btn" style="width: 100%;">Sign Up</a>
 	</div>
-    {% if error_user %}
-        <script>
-            $(document).ready(function () {
-                $('#PopUserError').popover('show');
-              });
-        </script>
-    {% elif error_pwd %}
-        <script>
-            $(document).ready(function () {
-                $('#PopPwdError').popover('show');
-              });
-        </script>
-    {% endif %}
+{% endblock %}
+{% block script %}
+{% if error_user %}
+    <script>
+        $(document).ready(function () {
+            $('#PopUserError').popover('show');
+          });
+    </script>
+{% elif error_pwd %}
+    <script>
+        $(document).ready(function () {
+            $('#PopPwdError').popover('show');
+          });
+    </script>
+{% endif %}
 {% endblock %}

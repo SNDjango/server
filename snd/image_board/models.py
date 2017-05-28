@@ -1,10 +1,21 @@
 from django.db import models
 from django.core.urlresolvers import reverse
-from django.core.validators import EmailValidator, validate_image_file_extension
+from django.contrib.auth.models import User
+
+
+class ContentItem(models.Model):
+    upload_date = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=100, default='no title')
+    description = models.CharField(max_length=400, default='no description')
+    image = models.ImageField(upload_to='image_board/posts/', default='null')
+    uploaded_by = models.ForeignKey(User, default='0')
+
+    def __str__(self):
+        return self.title
 
 
 class User(models.Model):
-    email = models.EmailField(validators=[EmailValidator()])
+    email = models.EmailField()
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     personal_info = models.TextField()
@@ -16,22 +27,11 @@ class User(models.Model):
     contact_skype = models.URLField(null=True)
     contact_facebook = models.URLField(null=True)
     contact_linkedin = models.URLField(null=True)
-    user_photo = models.ImageField(blank=True, validators=[validate_image_file_extension])
+    user_photo = models.ImageField(blank=True)
 
     def __str__(self):
         return self.first_name + " " + self.last_name
 
-
-class ContentItem(models.Model):
-    title = models.CharField(max_length=100)
-    description = models.TextField()
-    URL = models.URLField(null=True)
-    file_type = models.CharField(max_length=5)
-    publication_date = models.DateField(null=True)
-    author_id = models.ForeignKey(User, on_delete= models.CASCADE)
-
-    def __str__(self):
-        return self.title
 
 
 class Comment(models.Model):
