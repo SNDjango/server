@@ -1,25 +1,42 @@
 {% extends 'base.html' %}
 {% block title%}login{% endblock %}
 {% block body %}
-   <div style="width: 50%;margin: 0 auto;">
-            <h1>Login</h1>
-        {% if error_message %}
-            <p style="color:red;"><strong>{{ error_message }}! Please try again</strong></p>
-        {% endif %}
-    		<form action="{% url 'login_page' %}" method="post">
-                {% csrf_token %}
-    			<div class="form-group">
-    				<label for="user">User Name</label>
-    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name">
-    			</div>
-    			<div class="form-group">
-    				<label for="pwd">Password</label>
-    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="160">
-    			</div>
-    			<div id="lower-btn">
-    				<button type="submit" class="btn btn-success" value="Submit">Login</button>
-    			</div>
-    		</form>
-		</div>
+   <div style="width: 350px;margin: 0 auto;">
+        <h1>Login</h1>
+		<form action="{% url 'login_page' %}" method="post">
+            {% csrf_token %}
+			<div class="form-group">
+				<label for="user">Username</label>
+                <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="User does not exist." tabindex="-1">
+				    <input type="text" class="form-control" name="user" {% if error_pwd %}value="{{ error_pwd }}"{% endif %} maxlength="32" placeholder="Name">
+                </a>
+			</div>
+			<div class="form-group">
+				<label for="pwd">Password</label>
+                <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Incorrect Password." tabindex="-1">
+				    <input type="password" class="form-control" name="pwd" maxlength="64">
+                </a>
+			</div>
+			<button type="submit" class="btn btn-primary lower-btn" value="Submit">Login</button>
+			<a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
+		</form>
+        <hr />
+        <p class="info-text">No Account?</p>
+		<a href="{% url 'signup' %}" class="btn btn-info lower-btn" style="width: 100%;">Sign Up</a>
+	</div>
 {% endblock %}
-
+{% block script %}
+{% if error_user %}
+    <script>
+        $(document).ready(function () {
+            $('#PopUserError').popover('show');
+          });
+    </script>
+{% elif error_pwd %}
+    <script>
+        $(document).ready(function () {
+            $('#PopPwdError').popover('show');
+          });
+    </script>
+{% endif %}
+{% endblock %}
