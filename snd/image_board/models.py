@@ -1,11 +1,12 @@
 from django.db import models
 from django.core.urlresolvers import reverse
+from django.core.validators import MinLengthValidator, EmailValidator, validate_image_file_extension
 
 
 class User(models.Model):
     user_id = models.PositiveIntegerField(primary_key=True)
-    password = models.CharField(max_length=20)
-    email = models.EmailField()
+    password = models.CharField(max_length=20, validators=[MinLengthValidator(6)])
+    email = models.EmailField(validators=[EmailValidator()])
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
     personal_info = models.TextField()
@@ -17,7 +18,7 @@ class User(models.Model):
     contact_skype = models.URLField(null=True)
     contact_facebook = models.URLField(null=True)
     contact_linkedin = models.URLField(null=True)
-    user_photo = models.ImageField(blank=True)
+    user_photo = models.ImageField(blank=True, validators=[validate_image_file_extension])
 
     def __str__(self):
         return self.first_name + " " + self.last_name
@@ -62,6 +63,6 @@ class ContentHashTag(models.Model):
 
 
 
-class Favorites(models.Model):
+class Favorite(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
