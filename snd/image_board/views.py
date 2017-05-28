@@ -10,6 +10,7 @@ from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
+
 def index(request):
     return render(request, 'index.html')
 
