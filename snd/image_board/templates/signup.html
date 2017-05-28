@@ -1,26 +1,52 @@
 {% extends 'base.html' %}
 {% block title%}signup{% endblock %}
 {% block body %}
-        <div style="width: 50%;margin: 0 auto;">
-            <h1>Sign Up</h1>
-    		<form action="{% url 'signup' %}" method="post">
-                {% csrf_token %}
-    			<div class="form-group">
-    				<label for="user">Username</label>
-    				<input type="text" class="form-control" name="user" id="user" maxlength="16" placeholder="Name">
-    			</div>
-    			<div class="form-group">
-    				<label for="email">Email Address</label>
-    				<input type="text" class="form-control" name="email" id="email" maxlength="64" placeholder="email">
-    			</div>
-    			<div class="form-group">
-    				<label for="description">Password</label>
-    				<input type="password" class="form-control" name="pwd" id="pwd" maxlength="64">
-    			</div>
-    			<div id="lower-btn">
-    				<button type="submit" class="btn btn-primary" value="Submit">Sign Up</button>
-    			</div>
-
-    		</form>
-		</div>
+    <div style="width: 350px;margin: 0 auto;">
+        <h1>Sign Up</h1>
+		<form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+			<div class="form-group">
+				<label for="user">Username</label>
+                <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="Username already taken." tabindex="-1">
+				    <input type="text" class="form-control" name="user" {% if error_pwd or error_email %}value="{{ name }}"{% endif %} maxlength="32" placeholder="max. 32 characters">
+                </a>
+			</div>
+			<div class="form-group">
+				<label for="email">Email Address</label>
+                <a href="#" data-toggle="popover" id="PopEmailError" style="text-decoration: none;" data-placement="right" data-content="Invalid email address." tabindex="-1">
+                    <input type="text" class="form-control" name="email" {% if error_pwd %}value="{{ email }}"{% endif %} maxlength="64" placeholder="email@example.com">
+                </a>
+            </div>
+			<div class="form-group">
+				<label for="description">Password</label>
+                <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Password must be longer than 8 characters." tabindex="-1">
+                    <input type="password" class="form-control" name="pwd" maxlength="64" placeholder="at least 8 characters">
+                </a>
+			</div>
+			<button type="submit" class="btn btn-primary lower-btn" style="width: 100%;" value="Submit">Sign Up</button>
+		</form>
+        <hr />
+        <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to sign in.</p>
+	</div>
+{% endblock %}
+{% block script %}
+    {% if error_user %}
+        <script>
+            $(document).ready(function () {
+                $('#PopUserError').popover('show');
+              });
+        </script>
+    {% elif error_email %}
+        <script>
+            $(document).ready(function () {
+                $('#PopEmailError').popover('show');
+              });
+        </script>
+    {% elif error_pwd %}
+        <script>
+            $(document).ready(function () {
+                $('#PopPwdError').popover('show');
+              });
+        </script>
+    {% endif %}
 {% endblock %}

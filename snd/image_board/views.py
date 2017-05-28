@@ -7,12 +7,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
-from django.core.files.storage import FileSystemStorage
+from django.core.validators import validate_email
+from django.core.exceptions import ValidationError
 from django.contrib import messages
 from PIL import Image
 
 from .models import ContentItem
-
 
 def index(request):
     return render(request, 'index.html')
@@ -41,13 +41,16 @@ def create_post(request):
 def login_page(request):
     if(request.method == 'POST'):
         name = request.POST['user']
+        if not User.objects.filter(username=name).exists():
+            return render(request, 'login.html', {'error_user': 'user does not exist'})
         pwd = request.POST['pwd']
         user = authenticate(username=name, password=pwd)
+
         if user is not None:
             login(request, user)
             return redirect('index')
         else:
-            return render(request, 'login.html',{'error_message': 'Invalid login'})
+            return render(request, 'login.html', {'error_pwd': name})
 
     else:
         return render(request, 'login.html')
@@ -56,12 +59,25 @@ def login_page(request):
 def signup(request):
     if(request.method == 'POST'):
         name = request.POST['user']
+        if User.objects.filter(username=name).exists():
+            return render(request, 'signup.html', {'error_user': 'user already exists'})
+
         email = request.POST['email']
+        try:
+            validate_email(email)
+        except ValidationError:
+            return render(request, 'signup.html', {'error_email': 'email not valid', 'name': name})
+
         pwd = request.POST['pwd']
+        if len(pwd) < 8:
+            return render(request, 'signup.html', {'error_pwd': 'password not valid', 'name': name, 'email': email})
 
         user = User.objects.create_user(name, email, pwd)
-        return redirect('login_page')
-
+        if user is not None:
+            login(request, user)
+            return redirect('index')
+        else:
+            return redirect('signup')
     else:
         return render(request, 'signup.html')
 
