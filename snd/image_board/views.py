@@ -30,6 +30,9 @@ def view_my_favorites(request):
     return render(request, 'favorites.html')
 
 def create_post(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+
     return render(request, 'createpost.html')
 
 
@@ -67,6 +70,9 @@ def logout_page(request):
 
 
 def upload(request):
+    if not request.user.is_authenticated:
+        return redirect('index')
+
     if request.method == 'POST' and request.FILES['file'] and request.user:
         submitted_title = request.POST.get('title', '<<post error>>')
         submitted_description = request.POST.get('description', '<<post error>>')
