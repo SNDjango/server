@@ -2,5 +2,24 @@
 {% block title%}myposts{% endblock %}
 {% block posts_active %}active{% endblock %}
 {% block body %}
-    <h1>My posts page</h1>
+        {% if user.is_authenticated %}
+        <h1>You will be able to explore fun memes below</h1>
+
+        {% for post in all_posts %}
+            <div>
+                <h3>{{ post.title }}</h3>
+                <p>{{ post.description }}</p>
+                <img src="http://blogs.ubc.ca/yangpei/files/2012/01/Just-do-it-tomorrow.jpg">
+                <p>{{ post.upload_date }} &nbsp;&nbsp; {{ post.uploaded_by }}</p>
+                <div>
+                    <button class="btn btn-primary">like</button>
+                    <button class="btn btn-info">comment</button>
+                    <button class="btn btn-success">share</button>
+                    <button class="btn btn-success">add to favorite</button>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <h1>Welcome to TUGag, a place of serious fun</h1>
+    {% endif %}
 {% endblock %}
