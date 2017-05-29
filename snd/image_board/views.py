@@ -117,3 +117,4 @@ def upload(request):
     else:
         messages.error(request, 'Bad request.')
         return redirect('create_post')
+      
