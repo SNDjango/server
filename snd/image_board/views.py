@@ -35,7 +35,7 @@ def profile(request):
 
 def view_my_posts(request):
     if request.user.is_authenticated:
-        all_posts = ContentItem.objects.filter(uploaded_by = request.user)
+        all_posts = ContentItem.objects.filter(uploaded_by = request.user).order_by('-upload_date')
         template = loader.get_template('myposts.html')
         context = {
           'all_posts': all_posts,

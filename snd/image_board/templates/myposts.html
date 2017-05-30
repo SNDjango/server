@@ -9,8 +9,9 @@
             <div>
                 <h3>{{ post.title }}</h3>
                 <p>{{ post.description }}</p>
-                <img src="http://blogs.ubc.ca/yangpei/files/2012/01/Just-do-it-tomorrow.jpg">
-                <p>{{ post.upload_date }} &nbsp;&nbsp; {{ post.uploaded_by }}</p>
+                <img src="{{ post.image.url }}">
+                <p class="info-text">{{ post.upload_date }} &nbsp;&nbsp;</p>
+                <p class="info-text"> uploaded by {{ post.uploaded_by }}</p>
                 <div>
                     <button class="btn btn-primary">like</button>
                     <button class="btn btn-info">comment</button>
