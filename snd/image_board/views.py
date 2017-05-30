@@ -20,8 +20,12 @@ from .models import ContentItem
 
 
 def index (request):
-    all_posts = ContentItem.objects.all().order_by('-upload_date')[:1]
-    return render(request, 'index.html', {'all_posts': all_posts})
+    if(request.method == 'POST'):
+        views = int(request.POST['views'])+2
+    else:
+        views = 2
+    all_posts = ContentItem.objects.all().order_by('-upload_date')[:views]
+    return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
 
 def profile(request):
     if not request.user.is_authenticated:

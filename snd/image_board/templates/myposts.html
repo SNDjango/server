@@ -3,25 +3,24 @@
 {% block posts_active %}active{% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
-        <div style="width: 650px;margin: 0 auto;">
+        <div style="width: 650px;margin: 0 auto;margin-bottom:20px;">
             <h1>Your Uploads</h1>
             <hr />
             {% for post in all_posts %}
                 <div class="image-cont">
                     <h3>{{ post.title }}</h3>
                     <p>{{ post.description }}</p>
-                    <img src="{{ post.image.url }}">
-                    <p>{{ post.upload_date }} &nbsp;&nbsp; {{ post.uploaded_by }}</p>
+                    <img src="{{ post.image.url }}" style="width: 650px">
+                    <p class="info-text">{{ post.upload_date }} &nbsp;&nbsp;</p>
+                    <p class="info-text">uploaded by {{ post.uploaded_by }}</p>
                     <div>
-                        <button class="btn btn-primary">like</button>
-                        <button class="btn btn-info">comment</button>
-                        <button class="btn btn-success">share</button>
-                        <button class="btn btn-success">add to favorite</button>
+                        <button class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></button>
+                        <button class="btn btn-info">Comment</button>
+                        <button class="btn btn-success">Share</button>
+                        <button class="btn btn-success">Add to Favorites</button>
                     </div>
                 </div>
             {% endfor %}
         </div>
-    {% else %}
-        <h1>Welcome to TUGag, a place of serious fun</h1>
     {% endif %}
 {% endblock %}
