@@ -2,5 +2,19 @@
 {% block title%}myposts{% endblock %}
 {% block posts_active %}active{% endblock %}
 {% block body %}
-    <h1>My posts page</h1>
+
+{% if posts %}
+{% for post in posts %}
+<div class="row upload-spacing-top">
+    <div class="col-md-offset-2 col-md-8 ">
+        <h1>{{post.title}}</h1>
+        <img src="{{ post.image.url }}" class="img-responsive">
+        <h1>{{post.description}}</h1>
+        <p>At {{post.upload_date}}</p>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+{% endif %}
+
 {% endblock %}

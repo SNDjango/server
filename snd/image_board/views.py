@@ -2,6 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -11,7 +12,6 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from PIL import Image
-
 from .models import ContentItem
 
 def index(request):
@@ -25,7 +25,14 @@ def profile(request):
         return render(request, 'profile.html')
 
 def view_my_posts(request):
-     return render(request,'myposts.html')
+    if not request.user.is_authenticated:
+        return redirect_to_login('view_my_posts', login_url='login_page')
+    else:
+        posts = ContentItem.objects.filter(uploaded_by = request.user)
+        return render(request, 'myposts.html', {
+            'posts' : posts,
+        })
+     #return render(request,'myposts.html')
 
 #favorites to be implemented in the future
 def view_my_favorites(request):

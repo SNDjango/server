@@ -1,7 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import Permission, User
 
 class ContentItem(models.Model):
+
     upload_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default='no title')
     description = models.CharField(max_length=400, default='no description')
