@@ -20,12 +20,8 @@ from .models import ContentItem
 
 
 def index (request):
-    all_posts = ContentItem.objects.all()
-    template = loader.get_template('index.html')
-    context = {
-        'all_posts': all_posts,
-    }
-    return HttpResponse(template.render(context, request))
+    all_posts = ContentItem.objects.all().order_by('-upload_date')[:1]
+    return render(request, 'index.html', {'all_posts': all_posts})
 
 def profile(request):
     if not request.user.is_authenticated:
@@ -36,11 +32,7 @@ def profile(request):
 def view_my_posts(request):
     if request.user.is_authenticated:
         all_posts = ContentItem.objects.filter(uploaded_by = request.user).order_by('-upload_date')
-        template = loader.get_template('myposts.html')
-        context = {
-          'all_posts': all_posts,
-        }
-        return HttpResponse(template.render(context, request))
+        return render(request, 'myposts.html', {'all_posts': all_posts})
     else:
         return render(request, 'login.html')
 

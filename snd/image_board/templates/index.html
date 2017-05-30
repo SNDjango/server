@@ -3,22 +3,26 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-        <h1>You will be able to explore fun memes below</h1>
-
-        {% for post in all_posts %}
-            <div>
-                <h3>{{ post.title }}</h3>
-                <p>{{ post.description }}</p>
-                <img src="http://blogs.ubc.ca/yangpei/files/2012/01/Just-do-it-tomorrow.jpg">
-                <p>{{ post.upload_date }} &nbsp;&nbsp; {{ post.uploaded_by }}</p>
-                <div>
-                    <button class="btn btn-primary">like</button>
-                    <button class="btn btn-info">comment</button>
-                    <button class="btn btn-success">share</button>
-                    <button class="btn btn-success">add to favorite</button>
+        <div style="width: 650px;margin: 0 auto;">
+            <h1>
+                <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+            </h1>
+            <hr />
+            {% for post in all_posts %}
+                <div class="image-cont">
+                    <h3>{{ post.title }}</h3>
+                    <p>{{ post.description }}</p>
+                    <img src="{{ post.image.url }}">
+                    <p>{{ post.upload_date }} &nbsp;&nbsp; {{ post.uploaded_by }}</p>
+                    <div>
+                        <button class="btn btn-primary">like</button>
+                        <button class="btn btn-info">comment</button>
+                        <button class="btn btn-success">share</button>
+                        <button class="btn btn-success">add to favorite</button>
+                    </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     {% else %}
         <h1>Welcome to TUGag, a place of serious fun</h1>
     {% endif %}
