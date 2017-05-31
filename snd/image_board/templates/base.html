@@ -17,10 +17,10 @@
     <body>
         <div class="container-fluid">
             <!-- Navigationsleiste oben -->
-            <nav class="navbar navbar-toggleable-md navbar-default bg-faded navbar-inverse">
+            <nav class="navbar navbar-toggleable-md navbar-default bg-faded navbar-inverse" id="navBack">
                 <input type="checkbox" id="navbar-toggle-cbox">
                 <div class="navbar-header">
-                    <a class="navbar-brand" href="{% url 'index' %}">Logo</a>
+                    <a class="navbar-brand" href="{% url 'index' %}"><img id="logo" src="../media/img/logo.png"></a>
                     <label for="navbar-toggle-cbox" class="navbar-toggle collapsed" data-toggle="collapse"
                            data-target="#newnav">
                         <span class="sr-only">Toggle navigation</span>
@@ -30,7 +30,7 @@
                     </label>
                 </div>
 
-                <div class="collapse navbar-collapse" id="newnav">Gag
+                <div class="collapse navbar-collapse" id="newnav">
                     {% if user.is_authenticated %}
                         <ul class="nav navbar-nav mr-auto">
                             <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>

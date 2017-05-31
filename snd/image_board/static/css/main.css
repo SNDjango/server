@@ -12,6 +12,21 @@ button {
 	margin-top:20px;
 }
 
+#logo{
+    width:100px;
+    margin-top:-40px;
+}
+
+#navBack{
+    margin-top:40px
+}
+
+.searching{
+    margin-top:7px;
+    width:500px;
+    margin-left:600px;
+}
+
 /* show the collapse when navbar toggle is checked */
 #navbar-toggle-cbox:checked ~ .collapse {
     display: block;
