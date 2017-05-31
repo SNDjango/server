@@ -6,6 +6,9 @@ python:
 services:
   - postgresql
 
+notifications:
+  email: false
+
 env:
   global:
     - PYTHONPATH="/home/travis/build/my_github_name/snd"
