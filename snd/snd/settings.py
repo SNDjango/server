@@ -20,8 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'd5-6!1=8baj88-iic*e_r-4u774)5nz=!$$$)!9jsld0b#cwhi'
+# SECURITY WARNING: set the environment variable TUGAG_SECRET_KEY
+SECRET_KEY = os.getenv('TUGAG_SECRET_KEY', 'd5-6!1=8baj88-iic*e_r-4u774)5nz=!$$$)!9jsld0b#cwhi')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -80,7 +80,7 @@ import os
 
 #Use the following live settings to build on Travis CI
 if os.getenv('BUILD_ON_TRAVIS', None):
-    SECRET_KEY = "SecretKeyForUseOnTravis"
+    SECRET_KEY = os.getenv('TUGAG_SECRET_KEY', 'SecretKeyForTravis')
     DEBUG = False
     TEMPLATE_DEBUG = True
 
@@ -94,13 +94,36 @@ if os.getenv('BUILD_ON_TRAVIS', None):
         }
     }
 else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    select_database = os.getenv('TUGAG_DATABASE', 'sqlite3')
+    if select_database == 'sqlite3':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
         }
-    }
-
+    elif select_database == 'postgresql':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql_psycopg2',
+                'NAME': 'tugag_db',
+                'USER': os.getenv('TUGAG_DB_USER'),
+                'PASSWORD': os.getenv('TUGAG_DB_PASSWORD'),
+                'HOST': os.getenv('TUGAG_DB_HOST', '127.0.0.1'),
+            }
+        }
+    elif select_database == 'mysql':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'NAME': 'tugag_db',
+                'USER': os.getenv('TUGAG_DB_USER'),
+                'PASSWORD': os.getenv('TUGAG_DB_PASSWORD'),
+                'HOST': os.getenv('TUGAG_DB_HOST', '127.0.0.1'),
+            }
+        }
+    else:
+        raise ValueError("Invalid database setting")
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

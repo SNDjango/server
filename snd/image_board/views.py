@@ -1,7 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
+from django.contrib.sessions.models import Session
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+from django.template import loader
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -14,9 +17,15 @@ from PIL import Image
 
 from .models import ContentItem
 
-def index(request):
-    return render(request, 'index.html')
 
+
+def index (request):
+    all_posts = ContentItem.objects.all()
+    template = loader.get_template('index.html')
+    context = {
+        'all_posts': all_posts,
+    }
+    return HttpResponse(template.render(context, request))
 
 def profile(request):
     if not request.user.is_authenticated:
@@ -25,7 +34,15 @@ def profile(request):
         return render(request, 'profile.html')
 
 def view_my_posts(request):
-     return render(request,'myposts.html')
+    if request.user.is_authenticated:
+        all_posts = ContentItem.objects.filter(uploaded_by = request.user)
+        template = loader.get_template('myposts.html')
+        context = {
+          'all_posts': all_posts,
+        }
+        return HttpResponse(template.render(context, request))
+    else:
+        return render(request, 'login.html')
 
 #favorites to be implemented in the future
 def view_my_favorites(request):
@@ -117,4 +134,3 @@ def upload(request):
     else:
         messages.error(request, 'Bad request.')
         return redirect('create_post')
-      
