@@ -1,5 +1,7 @@
 from django.db import models
+from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+
 
 class ContentItem(models.Model):
     upload_date = models.DateTimeField(auto_now=True)
@@ -10,3 +12,52 @@ class ContentItem(models.Model):
 
     def __str__(self):
         return self.title
+
+      
+class User(models.Model):
+    email = models.EmailField()
+    first_name = models.CharField(max_length=20)
+    last_name = models.CharField(max_length=20)
+    personal_info = models.TextField()
+    job_title = models.CharField(max_length=100)
+    department = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    expertise = models.TextField()
+    contact_phone = models.IntegerField(null=True)
+    contact_skype = models.URLField(null=True)
+    contact_facebook = models.URLField(null=True)
+    contact_linkedin = models.URLField(null=True)
+    user_photo = models.ImageField(blank=True)
+
+    def __str__(self):
+        return self.first_name + " " + self.last_name
+
+
+
+class Comment(models.Model):
+    title = models.CharField(max_length=100)
+    comment_text = models.TextField()
+    publication_date = models.DateField()
+    user_id = models.ForeignKey(User)
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+
+    def __str__(self):
+        return self.title
+
+
+class Hashtag(models.Model):
+    hashtag_text = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.hashtag_text
+
+
+class ContentHashTag(models.Model):
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+    hashtag_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
+
+
+
+class Favorite(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
