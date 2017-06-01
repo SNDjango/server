@@ -8,6 +8,7 @@
                 <div class="col">
                     <h1>
                         <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        Hot
                     </h1>
                     <hr />
                 </div>
@@ -32,10 +33,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn btn-primary"><span class="glyphicon glyphicon-thumbs-up"></span></button>
-                    <button class="btn btn-info">Comment</button>
-                    <button class="btn btn-success">Share</button>
-                    <button class="btn btn-success">Add to Favorites</button>
+                    <div class="col">
+                        <div class="btn-group btn-group-justified" role="group">
+                            <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-thumbs-up"></span></a>
+                            <a href="#" class="btn btn-primary-outline">Comment</a>
+                            <a href="#" class="btn btn-primary-outline">Share</a>
+                            <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-heart"></span></a>
+                        </div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
@@ -44,7 +49,7 @@
                     <form action="{% url 'index' %}" method="post">
                         {% csrf_token %}
                         <input type="hidden" class="form-control" name="views" value="{{ view_more }}">
-                        <button type="Submit" value="submit" class="btn btn-info lower-btn">View 2 more</button>
+                        <button type="Submit" value="submit" class="btn btn-default lower-btn">View 2 more</button>
                     </form>
                 </div>
             </div>

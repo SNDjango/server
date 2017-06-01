@@ -39,7 +39,6 @@ button {
 .navbar-custom {
 	width: 100%;
 	margin: 0;
-	opacity: 0.85;
 	border: 1px solid;
 	border-radius: 0;
 	color: #224444;
@@ -138,6 +137,22 @@ button {
 
 .upload-spacing-top {
 	padding-top: 30px;
+}
+
+.btn-primary-outline {
+  	background-color: transparent;
+  	border-color: #ccc;
+	text-decoration: none;
+	color: #fff;
+}
+
+a.btn-primary-outline:hover {
+	color: #aaaaaa;
+}
+
+.btn-group {
+	margin-top: 15px;
+	margin-bottom: 10px;
 }
 
 @media(max-width:767px){
