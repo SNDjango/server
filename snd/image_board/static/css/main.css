@@ -1,3 +1,10 @@
+body {
+	background-color: #252525;
+	color: #ffffff;
+	padding-top: 120px;
+	margin-top: 0;
+}
+
 #main {
 	position:relative;
 	margin-left:auto;
@@ -27,6 +34,57 @@ button {
     margin-left:600px;
 }
 
+.navbar {
+	margin-top: 0;
+}
+
+.navbar-custom {
+	width: 100%;
+	margin-top: 0;
+	opacity: 85%;
+	border: 1px solid;
+	border-radius: 0;
+	width: 100%;
+	vertical-align: middle;
+	color: #224444;
+	background-color: #000;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.navbar-custom .navbar-brand {
+    color: #777;
+}
+.navbar-custom .navbar-brand:hover,
+.navbar-custom .navbar-brand:focus {
+    color: #5E5E5E;
+}
+
+/* Link */
+.navbar-custom .navbar-nav > li > a {
+    color: #505050;
+	font-size: 16px;
+}
+
+.navbar-custom .navbar-nav > li > a:hover,
+.navbar-custom .navbar-nav > li > a:focus {
+    color: #333;
+}
+
+.navbar-custom .navbar-nav > .active > a,
+.navbar-custom .navbar-nav > .active > a:hover,
+.navbar-custom .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color: #8f8f8f;
+}
+
+.navbar-custom .navbar-nav > .open > a,
+.navbar-custom .navbar-nav > .open > a:hover,
+.navbar-custom .navbar-nav > .open > a:focus {
+    color: #555;
+    background-color: #D5D5D5;
+}
+
 /* show the collapse when navbar toggle is checked */
 #navbar-toggle-cbox:checked ~ .collapse {
     display: block;
@@ -34,16 +92,17 @@ button {
 
 /* the checkbox used only internally; don't display it */
 #navbar-toggle-cbox {
-  display:none
+	display:none
+}
+
+.navbar .nav.pull-right {
+	float: right;
+    margin-right: 0px;
 }
 
 .lower-btn {
 	margin-top:20px;
 	width: 100%;
-}
-
-.popover-content{
-    color: #c81212;
 }
 
 .popover-content{
@@ -57,4 +116,10 @@ button {
 
 .image-cont{
 	margin-bottom: 25px;
+}
+
+.content-cont{
+	width: 65%;
+	margin: 0 auto;
+	margin-bottom:20px;
 }

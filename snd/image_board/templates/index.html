@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block title %}Hot{% endblock %}
-
+{% block hot_active %}active{% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
-        <div style="width: 650px;margin: 0 auto;margin-bottom:20px;">
+        <div class="content-cont">
             <h1>
                 <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
             </h1>
@@ -12,7 +12,7 @@
                 <div id="{{ forloop.counter }}" class="image-cont">
                     <h3>{{ post.title }}</h3>
                     <p>{{ post.description }}</p>
-                    <img src="{{ post.image.url }}" style="width: 650px">
+                    <img src="{{ post.image.url }}" class="img-responsive">
                     <p class="info-text">{{ post.upload_date }} &nbsp;&nbsp;</p>
                     <p class="info-text">uploaded by {{ post.uploaded_by }}</p>
                     <div>
