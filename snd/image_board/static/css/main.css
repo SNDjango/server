@@ -13,7 +13,7 @@ button {
 }
 
 #logo{
-    width:100px;
+    width:70px;
     margin-top:-40px;
 }
 
@@ -53,4 +53,8 @@ button {
 .info-text{
     color: #9c9c9c;
 	margin-bottom: 0;
+}
+
+.image-cont{
+	margin-bottom: 25px;
 }
