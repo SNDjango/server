@@ -73,13 +73,18 @@ def signup(request):
     if(request.method == 'POST'):
         name = request.POST['user']
         if User.objects.filter(username=name).exists():
-            return render(request, 'signup.html', {'error_user': 'user already exists'})
+            return render(request, 'signup.html', {'error_user': 'Username already taken.'})
+        elif name == '':
+            return render(request, 'signup.html', {'error_user': 'Username must not be emtpy.'})
+
 
         email = request.POST['email']
         try:
             validate_email(email)
         except ValidationError:
-            return render(request, 'signup.html', {'error_email': 'email not valid', 'name': name})
+            return render(request, 'signup.html', {'error_email': 'Invalid email address.', 'name': name})
+        if User.objects.filter(email=email).exists():
+            return render(request, 'signup.html', {'error_email': 'An account with this email address already exists.'})
 
         pwd = request.POST['pwd']
         if len(pwd) < 8:
