@@ -7,13 +7,13 @@
             {% csrf_token %}
 			<div class="form-group">
 				<label for="user">Username</label>
-                <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="Username already taken." tabindex="-1">
+                <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" {% if error_user %}data-content="{{ error_user }}"{% endif %} tabindex="-1">
 				    <input type="text" class="form-control" name="user" {% if error_pwd or error_email %}value="{{ name }}"{% endif %} maxlength="32" placeholder="max. 32 characters">
                 </a>
 			</div>
 			<div class="form-group">
 				<label for="email">Email Address</label>
-                <a href="#" data-toggle="popover" id="PopEmailError" style="text-decoration: none;" data-placement="right" data-content="Invalid email address." tabindex="-1">
+                <a href="#" data-toggle="popover" id="PopEmailError" style="text-decoration: none;" data-placement="right" {% if error_email %}data-content="{{ error_email }}"{% endif %} tabindex="-1">
                     <input type="text" class="form-control" name="email" {% if error_pwd %}value="{{ email }}"{% endif %} maxlength="64" placeholder="email@example.com">
                 </a>
             </div>
@@ -24,9 +24,10 @@
                 </a>
 			</div>
 			<button type="submit" class="btn btn-primary lower-btn" style="width: 100%;" value="Submit">Sign Up</button>
+            <a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
 		</form>
         <hr />
-        <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to sign in.</p>
+        <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to login.</p>
 	</div>
 {% endblock %}
 {% block script %}
