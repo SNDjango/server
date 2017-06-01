@@ -1,29 +1,47 @@
 {% extends 'base.html' %}
 {% block title%}login{% endblock %}
 {% block body %}
-   <div style="width: 350px;margin: 0 auto;">
-        <h1>Login</h1>
-		<form action="{% url 'login_page' %}" method="post">
+    <div class="content-cont-sm">
+        <div class="row">
+            <h1>Login</h1>
+		</div>
+        <form action="{% url 'login_page' %}" method="post">
             {% csrf_token %}
-			<div class="form-group">
-				<label for="user">Username</label>
-                <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="User does not exist." tabindex="-1">
-				    <input type="text" class="form-control" name="user" {% if error_pwd %}value="{{ error_pwd }}"{% endif %} maxlength="32">
-                </a>
+			<div class="form-group row">
+                <div class="col">
+    				<label for="user">Username</label>
+                    <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" data-content="User does not exist." tabindex="-1">
+    				    <input type="text" class="form-control" name="user" {% if error_pwd %}value="{{ error_pwd }}"{% endif %} maxlength="32">
+                    </a>
+                </div>
 			</div>
-			<div class="form-group">
-				<label for="pwd">Password</label>
-                <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Incorrect Password." tabindex="-1">
-				    <input type="password" class="form-control" name="pwd" maxlength="64">
-                </a>
+			<div class="form-group row">
+                <div class="col">
+    				<label for="pwd">Password</label>
+                    <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Incorrect Password." tabindex="-1">
+    				    <input type="password" class="form-control" name="pwd" maxlength="64">
+                    </a>
+                </div>
 			</div>
-			<button type="submit" class="btn btn-primary lower-btn" value="Submit">Login</button>
-			<a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
+            <div class="row">
+                <div class="col">
+                    <button type="submit" class="btn btn-primary lower-btn" value="Submit">Login</button>
+                </div>
+			</div>
+            <div class="row">
+                <div class="col">
+    			    <a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
+                </div>
+            </div>
 		</form>
-        <hr />
-        <p class="info-text">No Account?</p>
-		<a href="{% url 'signup' %}" class="btn btn-info lower-btn" style="width: 100%;">Sign Up</a>
-	</div>
+        <div class="row">
+            <div class="col">
+                <hr />
+                <p class="info-text">No Account?</p>
+    		    <a href="{% url 'signup' %}" class="btn btn-info lower-btn" style="width: 100%;">Sign Up</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 {% block script %}
 {% if error_user %}

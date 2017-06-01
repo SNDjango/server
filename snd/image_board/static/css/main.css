@@ -1,7 +1,7 @@
 body {
 	background-color: #252525;
 	color: #ffffff;
-	padding-top: 120px;
+	padding-top: 90px;
 	margin-top: 0;
 }
 
@@ -24,10 +24,6 @@ button {
     margin-top:-40px;
 }
 
-#navBack{
-    margin-top:40px
-}
-
 .searching{
     margin-top:7px;
     width:500px;
@@ -36,16 +32,16 @@ button {
 
 .navbar {
 	margin-top: 0;
+	border: 0;
+	margin: 0;
 }
 
 .navbar-custom {
 	width: 100%;
-	margin-top: 0;
-	opacity: 85%;
+	margin: 0;
+	opacity: 0.85;
 	border: 1px solid;
 	border-radius: 0;
-	width: 100%;
-	vertical-align: middle;
 	color: #224444;
 	background-color: #fff;
 	padding-left: 30px;
@@ -122,4 +118,36 @@ button {
 	width: 65%;
 	margin: 0 auto;
 	margin-bottom:20px;
+}
+
+.content-cont-sm{
+	width: 35%;
+	margin: 0 auto;
+	margin-bottom:20px;
+}
+
+.upload-container {
+	width: 100%;
+	min-height: 200px;
+	background-color: #252525;
+	text-align: center;
+	border: 4px dashed lightgray;
+	border-radius: 4px;
+	padding: 15px;
+}
+
+.upload-spacing-top {
+	padding-top: 30px;
+}
+
+@media(max-width:767px){
+	.content-cont{
+		width: 90%;
+	}
+}
+
+@media(max-width:992px){
+	.content-cont-sm{
+		width: 85%;
+	}
 }
