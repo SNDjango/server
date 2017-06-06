@@ -1,6 +1,6 @@
 body {
-	background-color: #252525;
-	color: #ffffff;
+	background-color: #fff;
+	color: #000;
 	padding-top: 90px;
 	margin-top: 0;
 }
@@ -41,14 +41,14 @@ button {
 	margin: 0;
 	border: 1px solid;
 	border-radius: 0;
-	color: #224444;
-	background-color: #fff;
+	color: #474547;
+	background-color: #474547;
 	padding-left: 30px;
 	padding-right: 30px;
 }
 
 .navbar-custom .navbar-brand {
-    color: #777;
+    color: #fff;
 }
 .navbar-custom .navbar-brand:hover,
 .navbar-custom .navbar-brand:focus {
@@ -57,7 +57,7 @@ button {
 
 /* Link */
 .navbar-custom .navbar-nav > li > a {
-    color: #505050;
+    color: #fff;
 	font-size: 16px;
 }
 
@@ -105,7 +105,7 @@ button {
 }
 
 .info-text{
-    color: #9c9c9c;
+    color: #666262;
 	margin-bottom: 0;
 }
 
@@ -128,7 +128,7 @@ button {
 .upload-container {
 	width: 100%;
 	min-height: 200px;
-	background-color: #252525;
+	background-color: #fff;
 	text-align: center;
 	border: 4px dashed lightgray;
 	border-radius: 4px;
@@ -141,9 +141,9 @@ button {
 
 .btn-primary-outline {
   	background-color: transparent;
-  	border-color: #ccc;
+  	border-color: #000;
 	text-decoration: none;
-	color: #fff;
+	color: #000;
 }
 
 a.btn-primary-outline:hover {
