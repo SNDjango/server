@@ -1,6 +1,8 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class ContentItem(models.Model):
@@ -16,8 +18,8 @@ class ContentItem(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email = models.EmailField()
-    first_name = models.CharField(max_length=20)
+    #email = models.EmailField()
+    first_name = models.CharField(max_length=20, blank=True)
     last_name = models.CharField(max_length=20, blank=True)
     personal_info = models.TextField(blank=True)
     job_title = models.CharField(max_length=100, blank=True)
@@ -33,6 +35,14 @@ class Profile(models.Model):
     def __str__(self):
         return self.first_name + " " + self.last_name
 
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 
 class Comment(models.Model):
