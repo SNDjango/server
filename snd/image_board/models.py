@@ -13,20 +13,21 @@ class ContentItem(models.Model):
     def __str__(self):
         return self.title
 
-      
-class User(models.Model):
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     email = models.EmailField()
     first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    personal_info = models.TextField()
-    job_title = models.CharField(max_length=100)
-    department = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
-    expertise = models.TextField()
-    contact_phone = models.IntegerField(null=True)
-    contact_skype = models.URLField(null=True)
-    contact_facebook = models.URLField(null=True)
-    contact_linkedin = models.URLField(null=True)
+    last_name = models.CharField(max_length=20, blank=True)
+    personal_info = models.TextField(blank=True)
+    job_title = models.CharField(max_length=100, blank=True)
+    department = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    expertise = models.TextField(blank=True)
+    contact_phone = models.IntegerField(null=True, blank=True)
+    contact_skype = models.URLField(null=True, blank=True)
+    contact_facebook = models.URLField(null=True, blank=True)
+    contact_linkedin = models.URLField(null=True, blank=True)
     user_photo = models.ImageField(blank=True)
 
     def __str__(self):
