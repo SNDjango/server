@@ -30,6 +30,10 @@ button {
     margin-left:600px;
 }
 
+.line {
+	border:solid #909090 1px;
+}
+
 .navbar {
 	margin-top: 0;
 	border: 0;
@@ -42,7 +46,7 @@ button {
 	border: 1px solid;
 	border-radius: 0;
 	color: #474547;
-	background-color: #474547;
+	background-color: #404040;
 	padding-left: 30px;
 	padding-right: 30px;
 }
