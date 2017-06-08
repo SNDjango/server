@@ -12,7 +12,7 @@
 			<div class="form-group row">
                 <div class="col">
     				<label for="user">Username</label>
-                    <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="right" {% if error_user %}data-content="{{ error_user }}"{% endif %} tabindex="-1">
+                    <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="" {% if error_user %}data-content="{{ error_user }}"{% endif %} tabindex="-1">
     				    <input type="text" class="form-control" name="user" {% if error_pwd or error_email %}value="{{ name }}"{% endif %} maxlength="32" placeholder="max. 32 characters">
                     </a>
                 </div>
@@ -49,23 +49,33 @@
 	</div>
 {% endblock %}
 {% block script %}
+    <script>
+        function wheretoplace(){
+            var width = window.innerWidth;
+            if (width<768) return 'top';
+            return 'right';
+        }
     {% if error_user %}
-        <script>
-            $(document).ready(function () {
-                $('#PopUserError').popover('show');
-              });
-        </script>
+        $(document).ready(function () {
+            $('#PopUserError').popover({
+                placement: wheretoplace
+            });
+            $('#PopUserError').popover('show');
+          });
     {% elif error_email %}
-        <script>
-            $(document).ready(function () {
-                $('#PopEmailError').popover('show');
-              });
-        </script>
+        $(document).ready(function () {
+            $('#PopEmailError').popover({
+                placement: wheretoplace
+            });
+            $('#PopEmailError').popover('show');
+          });
     {% elif error_pwd %}
-        <script>
-            $(document).ready(function () {
-                $('#PopPwdError').popover('show');
-              });
-        </script>
+        $(document).ready(function () {
+            $('#PopPwdError').popover({
+                placement: wheretoplace
+            });
+            $('#PopPwdError').popover('show');
+          });
     {% endif %}
+    </script>
 {% endblock %}

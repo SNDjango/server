@@ -38,7 +38,7 @@
                             <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
                         </ul>
                         <ul class="nav navbar-nav pull-right mr-auto">
-                            <li><a href="{% url 'create_post' %}" class="glyphicon glyphicon-search nav-link"></a></li>
+                            <li><a href="{% url 'create_post' %}" id="searchlink" class="glyphicon glyphicon-search nav-link"></a></li>
                             <li><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
                             <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
                         </ul>
