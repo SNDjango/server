@@ -15,6 +15,7 @@ from django.core.exceptions import ValidationError
 from django.contrib import messages
 from PIL import Image
 from django.views import generic
+from django.contrib.messages.views import SuccessMessageMixin
 
 from .models import ContentItem
 from .models import Profile
@@ -43,11 +44,14 @@ class IndexView(generic.ListView):
         return Profile.objects.all()
 
 
-class UserUpdate(UpdateView):
+class UserUpdate(SuccessMessageMixin, UpdateView):
     model = Profile
     fields = ['personal_info','job_title','department', 'location','expertise', 'user_photo','phone_number','contact_facebook','contact_linkedin','contact_skype']
     template_name = 'user_form.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('profile')
+    success_message = " Profile was updated successfully"
+
+
 
     def get_object(self):
         return self.request.user.profile

@@ -17,8 +17,8 @@
                         {% csrf_token %}
                         {% include 'form-template.html' %}
                         <div class="form-group">
-                                <button type = "submit" class="btn btn-success bk-bs-col-lg ">Submit!</button>
-                                <a href={%  url 'profile' %}><input type="button" class = " col-sm-offset-6 btn btn-warning " name="cancel" value="Cancel" /></a>
+                            <button type = "submit" class="btn btn-success " style="position: relative; left: 30px">Submit!</button>
+                            <a href={%  url 'profile' %}><input type="button" class = " col-sm-offset-6 btn btn-warning " name="cancel" value="Cancel" style="position: relative; top: 10px;"/></a>
                         </div>
                         </form>
                     {% endif %}
