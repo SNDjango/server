@@ -1,6 +1,9 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.core.validators import RegexValidator
 
 
 class ContentItem(models.Model):
@@ -14,23 +17,32 @@ class ContentItem(models.Model):
         return self.title
 
       
-class User(models.Model):
-    email = models.EmailField()
-    first_name = models.CharField(max_length=20)
-    last_name = models.CharField(max_length=20)
-    personal_info = models.TextField()
-    job_title = models.CharField(max_length=100)
-    department = models.CharField(max_length=100)
-    location = models.CharField(max_length=100)
-    expertise = models.TextField()
-    contact_phone = models.IntegerField(null=True)
-    contact_skype = models.URLField(null=True)
-    contact_facebook = models.URLField(null=True)
-    contact_linkedin = models.URLField(null=True)
-    user_photo = models.ImageField(blank=True)
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    personal_info = models.TextField(blank=True)
+    job_title = models.CharField(max_length=100, blank=True)
+    department = models.CharField(max_length=100, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    expertise = models.TextField(blank=True)
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{5,15}$', message="Phone number must be entered in the format: '+123456'. Between 5 and 15 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=16, blank=True)
+    contact_skype = models.URLField(null=True, blank=True)
+    contact_facebook = models.URLField(null=True, blank=True)
+    contact_linkedin = models.URLField(null=True, blank=True)
+    user_photo = models.ImageField(upload_to='../media/img', blank=True)
 
     def __str__(self):
-        return self.first_name + " " + self.last_name
+        return self.job_title
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance)
+        instance.profile.save()
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
 
 
