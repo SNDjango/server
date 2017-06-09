@@ -29,6 +29,20 @@ def index (request):
     return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
 
 
+#def profile(request):
+    #if not request.user.is_authenticated:
+     #   return redirect_to_login('profile', login_url='login_page')
+    #else:
+       #return render(request, 'profile.html')
+
+
+class IndexView(generic.ListView):
+    template_name = 'profile.html'
+
+    def get_queryset(self):
+        return Profile.objects.all()
+
+
 class UserUpdate(UpdateView):
     model = Profile
     fields = ['personal_info','job_title','department', 'location','expertise', 'user_photo','phone_number','contact_facebook','contact_linkedin','contact_skype']
@@ -37,12 +51,6 @@ class UserUpdate(UpdateView):
 
     def get_object(self):
         return self.request.user.profile
-
-#def profile(request):
-    #if not request.user.is_authenticated:
-     #   return redirect_to_login('profile', login_url='login_page')
-    #else:
-    #   return render(request, 'profile.html')
 
 def view_my_posts(request):
     if request.user.is_authenticated:
