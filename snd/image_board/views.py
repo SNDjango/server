@@ -131,7 +131,7 @@ def upload(request):
             messages.error(request, 'Could not write to Database')
             return redirect('create_post')
         messages.success(request, 'Post created successfully.')
-        return redirect('view_my_posts')
+        return redirect('index')
     else:
         messages.error(request, 'Bad request.')
         return redirect('create_post')
