@@ -3,7 +3,6 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.core.validators import RegexValidator
 
 
 class ContentItem(models.Model):
@@ -27,9 +26,7 @@ class Profile(models.Model):
     department = models.CharField(max_length=100, blank=True)
     location = models.CharField(max_length=100, blank=True)
     expertise = models.TextField(blank=True)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{5,15}$', message="Phone number must be entered in the format: '+123456'. Between 5 and 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=16, blank=True)
-    #contact_phone = models.IntegerField(null=True, blank=True)
+    contact_phone = models.IntegerField(null=True, blank=True)
     contact_skype = models.URLField(null=True, blank=True)
     contact_facebook = models.URLField(null=True, blank=True)
     contact_linkedin = models.URLField(null=True, blank=True)
@@ -42,7 +39,6 @@ class Profile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-    instance.profile.save()
 
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
