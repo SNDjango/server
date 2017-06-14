@@ -2,9 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sessions.models import Session
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from django.template import loader
+from django.shortcuts import render, redirect, render_to_response
+from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -13,13 +12,12 @@ from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from PIL import Image
 
+from PIL import Image
 from .models import ContentItem
 
 
-
-def index (request):
+def index(request):
     if(request.method == 'POST'):
         views = int(request.POST['views'])+2
     else:
@@ -48,9 +46,16 @@ def view_my_favorites(request):
     return render(request, 'favorites.html')
 
 
+def search(request):
+    if not request.user.is_authenticated:
+        return redirect_to_login('index', login_url='login_page')
+    else:
+        return render(request, 'search.html')
+
+
 def create_post(request):
     if not request.user.is_authenticated:
-        return redirect('index')
+        return redirect_to_login('create_post', login_url='login_page')
 
     return render(request, 'createpost.html')
 

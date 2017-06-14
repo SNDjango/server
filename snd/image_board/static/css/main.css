@@ -59,6 +59,10 @@ button {
     color: #5E5E5E;
 }
 
+.navbar-custom .navbar-toggle .icon-bar {
+    background-color: white;
+}
+
 /* Link */
 .navbar-custom .navbar-nav > li > a {
     color: #fff;
@@ -120,13 +124,13 @@ button {
 .content-cont{
 	width: 65%;
 	margin: 0 auto;
-	margin-bottom:20px;
+	margin-bottom:150px;
 }
 
 .content-cont-sm{
 	width: 35%;
 	margin: 0 auto;
-	margin-bottom:20px;
+	margin-bottom:150px;
 }
 
 .upload-container {
@@ -160,13 +164,87 @@ a.btn-primary-outline:hover {
 }
 
 @media(max-width:767px){
-	.content-cont{
+	.content-cont {
 		width: 90%;
+	}
+
+	.content-cont-sm {
+		width: 85%;
+	}
+
+	.navbar-custom {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
-@media(max-width:992px){
-	.content-cont-sm{
-		width: 85%;
-	}
+@media(max-width:991px){
+
+}
+
+#search {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+
+    -webkit-transition: all 0.5s ease-in-out;
+	-moz-transition: all 0.5s ease-in-out;
+	-o-transition: all 0.5s ease-in-out;
+	-ms-transition: all 0.5s ease-in-out;
+	transition: all 0.5s ease-in-out;
+
+    -webkit-transform: translate(0px, -100%) scale(0, 0);
+	-moz-transform: translate(0px, -100%) scale(0, 0);
+	-o-transform: translate(0px, -100%) scale(0, 0);
+	-ms-transform: translate(0px, -100%) scale(0, 0);
+	transform: translate(0px, -100%) scale(0, 0);
+
+    opacity: 0;
+}
+
+#search.open {
+    -webkit-transform: translate(0px, 0px) scale(1, 1);
+    -moz-transform: translate(0px, 0px) scale(1, 1);
+	-o-transform: translate(0px, 0px) scale(1, 1);
+	-ms-transform: translate(0px, 0px) scale(1, 1);
+	transform: translate(0px, 0px) scale(1, 1);
+    opacity: 1;
+}
+
+#search input[type="search"] {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    background: rgba(0, 0, 0, 0);
+    font-size: 70px;
+    font-weight: 300;
+    text-align: center;
+    border: 0px;
+    margin: 0px auto;
+    margin-top: -51px;
+    padding-left: 30px;
+    padding-right: 30px;
+    outline: none;
+}
+#search .btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: 61px;
+    margin-left: -35px;
+}
+#search .close {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    color: #fff;
+	background-color: #428bca;
+	border-color: #357ebd;
+	opacity: 1;
+	padding: 10px 17px;
+	font-size: 27px;
 }
