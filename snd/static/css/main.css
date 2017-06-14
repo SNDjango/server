@@ -1,0 +1,74 @@
+#main {
+	position:relative;
+	margin-left:auto;
+	margin-right:auto;
+	top:30px;
+	max-width: 1200px;
+	padding-left:10px;
+	padding-right:10px;
+}
+
+button {
+	margin-top:20px;
+}
+
+#logo{
+    width:70px;
+    margin-top:-40px;
+}
+
+#navBack{
+    margin-top:40px
+}
+
+.profileData{
+    width:300px;
+    margin-left:350px;
+    margin-top:-300px;
+}
+
+.noProfilePic{
+    width:300px;
+}
+
+.editButton{
+    float:right;
+}
+
+.searching{
+    margin-top:7px;
+    width:500px;
+    margin-left:600px;
+}
+
+/* show the collapse when navbar toggle is checked */
+#navbar-toggle-cbox:checked ~ .collapse {
+    display: block;
+}
+
+/* the checkbox used only internally; don't display it */
+#navbar-toggle-cbox {
+  display:none
+}
+
+.lower-btn {
+	margin-top:20px;
+	width: 100%;
+}
+
+.popover-content{
+    color: #c81212;
+}
+
+.popover-content{
+    color: #c81212;
+}
+
+.info-text{
+    color: #9c9c9c;
+	margin-bottom: 0;
+}
+
+.image-cont{
+	margin-bottom: 25px;
+}

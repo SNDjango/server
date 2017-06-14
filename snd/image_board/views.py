@@ -27,13 +27,11 @@ def index (request):
     all_posts = ContentItem.objects.all().order_by('-upload_date')[:views]
     return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
 
-
 def profile(request):
     if not request.user.is_authenticated:
         return redirect_to_login('profile', login_url='login_page')
     else:
         return render(request, 'profile.html')
-
 
 def view_my_posts(request):
     if request.user.is_authenticated:
@@ -42,11 +40,9 @@ def view_my_posts(request):
     else:
         return render(request, 'login.html')
 
-
 #favorites to be implemented in the future
 def view_my_favorites(request):
     return render(request, 'favorites.html')
-
 
 def create_post(request):
     if not request.user.is_authenticated:
@@ -54,6 +50,12 @@ def create_post(request):
 
     return render(request, 'createpost.html')
 
+def profile(request):
+    if request.user.is_authenticated:
+        my_profile = User.objects.filter(email=request.user.email)
+        return render(request, 'profile.html', {'my_profile': my_profile})
+    else:
+        return render(request, 'login.html')
 
 def login_page(request):
     if(request.method == 'POST'):

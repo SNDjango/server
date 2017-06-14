@@ -2,10 +2,101 @@
 {% block title%}profile{% endblock %}
 {% block profile_active %}active{% endblock %}
 {% block body %}
-    <div class="content-cont">
-        <div class="row">
-            <h2>Profile page</h2>
-            <hr class="line"/>
-        </div>
-    </div>
+    {% if user.is_authenticated %}
+        <div style="width: 650px;margin: 0 auto;margin-bottom:20px;">
+            <button type="button" class="btn btn-primary editButton">Edit Profile</button>
+            <h1>Your Profile</h1>
+            <hr />
+
+            {% for post in my_profile %}
+                {% if post.user_photo %}
+                    <img class="noProfilePic" src="{{ post.user_photo }}">
+                {% else %}
+                    <img class="noProfilePic" src="../../media/img/noPrifilePic.png">
+                {% endif %}
+                    <div class="profileData">
+
+                        <h3>Basic Info</h3>
+                        <hr />
+                        {% if post.first_name %}
+                            <p>{{ post.first_name }}</p>
+                        {% else %}
+                            <p>no first name</p>
+                        {% endif %}
+
+                        {% if post.last_name %}
+                            <p>{{ post.last_name }}</p>
+                        {% else %}
+                            <p>no last name</p>
+                        {% endif %}
+
+                        {% if post.email %}
+                            <p>{{ post.email }}</p>
+                        {% else %}
+                            <p>no E-Mail</p>
+                        {% endif %}
+
+                        <h3>Detailed Info</h3>
+                        <hr />
+                        {% if post.personal_info %}
+                            <p>{{ post.personal_info }}</p>
+                        {% else %}
+                            <p>no personal info</p>
+                        {% endif %}
+
+                        {% if post.job_title %}
+                            <p>{{ post.job_title }}</p>
+                        {% else %}
+                            <p>no job title</p>
+                        {% endif %}
+
+                        {% if post.department %}
+                            <p>{{ post.department }}</p>
+                        {% else %}
+                            <p>no department</p>
+                        {% endif %}
+
+                        {% if post.location %}
+                            <p>{{ post.location }}</p>
+                        {% else %}
+                            <p>no location</p>
+                        {% endif %}
+
+                        {% if post.expertise %}
+                            <p>{{ post.expertise }}</p>
+                        {% else %}
+                            <p>no expertise</p>
+                        {% endif %}
+
+
+                        <h3>Contact Info</h3>
+                        <hr />
+                        {% if post.contact_phone %}
+                            <p>{{ post.contact_phone }}</p>
+                        {% else %}
+                            <p>no phone number</p>
+                        {% endif %}
+
+                        {% if post.contact_skype %}
+                            <p>{{ post.contact_skype }}</p>
+                        {% else %}
+                            <p>no skype contact</p>
+                        {% endif %}
+
+                        {% if post.contact_facebook %}
+                            <p>{{ post.contact_facebook }}</p>
+                        {% else %}
+                            <p>no facebook contact</p>
+                        {% endif %}
+
+                        {% if post.contact_linkedin %}
+                            <p>{{ post.contact_linkedin }}</p>
+                        {% else %}
+                            <p>no linkedin contact</p>
+                        {% endif %}
+
+
+                    </div>
+                {% endfor %}
+    {% endif %}
 {% endblock %}
