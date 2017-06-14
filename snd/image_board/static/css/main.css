@@ -59,6 +59,10 @@ button {
     color: #5E5E5E;
 }
 
+.navbar-custom .navbar-toggle .icon-bar {
+    background-color: white;
+}
+
 /* Link */
 .navbar-custom .navbar-nav > li > a {
     color: #fff;
@@ -160,13 +164,20 @@ a.btn-primary-outline:hover {
 }
 
 @media(max-width:767px){
-	.content-cont{
+	.content-cont {
 		width: 90%;
+	}
+
+	.content-cont-sm {
+		width: 85%;
+	}
+
+	.navbar-custom {
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
-@media(max-width:992px){
-	.content-cont-sm{
-		width: 85%;
-	}
+@media(max-width:991px){
+
 }
