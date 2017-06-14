@@ -15,37 +15,35 @@
 
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <!-- Navigationsleiste oben -->
-            <nav class="navbar navbar-toggleable-md navbar-default bg-faded navbar-inverse" id="navBack">
-                <input type="checkbox" id="navbar-toggle-cbox">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{% url 'index' %}"><img id="logo" src="../media/img/logo.png"></a>
-                    <label for="navbar-toggle-cbox" class="navbar-toggle collapsed" data-toggle="collapse"
-                           data-target="#newnav">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </label>
-                </div>
+            <nav class="navbar navbar-custom navbar-toggleable-md navbar-fixed-top" role="navigation" id="navBack">
+                <a class="navbar-brand" href="{% url 'index' %}"><b>B</b></a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-                <div class="collapse navbar-collapse" id="newnav">
+                <div class="navbar-collapse collapse" id="main-nav">
                     {% if user.is_authenticated %}
-                        <ul class="nav navbar-nav mr-auto">
-                            <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
-                            <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
-                            <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
-                        </ul>
-                        <p class="navbar-btn navbar-right"><a href="{% url 'create_post' %}" class="btn btn-primary" style="margin-right:10px;">Make
-                            Post</a></p>
-                        <p class="navbar-btn navbar-right"><a href="{% url 'logout_page' %}" class="btn btn-primary"
-                                                              style="margin-right:10px;">Logout</a></p>
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="{% block hot_active %}{% endblock %}"><a href="{% url 'index' %}" class="nav-link">Hot</a></li>
+                        <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
+                        <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
+                        <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="{% url 'create_post' %}" class="glyphicon glyphicon-search nav-link"></a></li>
+                        <li><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
+                        <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
+                    </ul>
                     {% else %}
-                        <p class="navbar-btn navbar-right"><a href="{% url 'login_page' %}" class="btn btn-primary"
-                                                              style="margin-right:10px;">Login</a></p>
-                        <p class="navbar-btn navbar-right"><a href="{% url 'signup' %}" class="btn btn-primary"
-                                                              style="margin-right:10px;">Sign Up</a></p>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li style="margin-right:10px;"><a href="{% url 'signup' %}">Sign Up</a></li>
+                        <li style="margin-right:10px;"><a href="{% url 'login_page' %}">Login</a></li>
+                    </ul>
                     {% endif %}
                 </div>
             </nav>
