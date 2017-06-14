@@ -44,17 +44,26 @@
     </div>
 {% endblock %}
 {% block script %}
-{% if error_user %}
     <script>
+        function wheretoplace(){
+            var width = window.innerWidth;
+            if (width<768) return 'top';
+            return 'right';
+        }
+    {% if error_user %}
         $(document).ready(function () {
+            $('#PopUserError').popover({
+                placement: wheretoplace
+            });
             $('#PopUserError').popover('show');
           });
-    </script>
-{% elif error_pwd %}
-    <script>
+    {% elif error_pwd %}
         $(document).ready(function () {
+            $('#PopPwdError').popover({
+                placement: wheretoplace
+            });
             $('#PopPwdError').popover('show');
           });
+    {% endif %}
     </script>
-{% endif %}
 {% endblock %}

@@ -64,8 +64,8 @@
     <script>
         var max = 0;
         $('.image-cont').each(function(){
-            max = Math.max(this.id, max);
-        });
+                max = Math.max(this.id, max);
+            });
         document.getElementById(max-2).scrollIntoView();
     </script>
 {% endblock %}

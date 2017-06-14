@@ -35,7 +35,7 @@
                         <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{% url 'create_post' %}" class="glyphicon glyphicon-search nav-link"></a></li>
+                        <li><a href="#search" class="glyphicon glyphicon-search nav-link"></a></li>
                         <li><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
                         <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
                     </ul>
@@ -48,6 +48,14 @@
                 </div>
             </nav>
         </div>
+        <div id="search">
+            <form action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <input type="search"  placeholder="Keywords" />
+                <button type="submit" class="btn btn-primary-outline" style="color:#fff; border-color:#fff;">Search</button>
+            </form>
+        </div>
+
 
         <div class="container">
                 {% if messages %}
@@ -63,6 +71,21 @@
         </div>
         <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script>
+            $(function () {
+                $('a[href="#search"]').on('click', function(event) {
+                    event.preventDefault();
+                    $('#search').addClass('open');
+                    $('#search > form > input[type="search"]').focus();
+                });
+
+                $('#search, #search button.close').on('click keyup', function(event) {
+                    if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+                        $(this).removeClass('open');
+                    }
+                });
+            });
+        </script>
         {% block script %}
         {% endblock %}
     </body>
