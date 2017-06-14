@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^signup$', views.signup, name='signup'),
     url(r'^logout$', views.logout_page, name='logout_page'),
     url(r'^upload$', views.upload, name='upload'),
+    url(r'^search$', views.search, name='search'),
 
 ]
 

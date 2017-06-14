@@ -16,9 +16,12 @@ class ContentItem(models.Model):
     def __str__(self):
         return self.title
 
-      
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #email = models.EmailField()
+    #first_name = models.CharField(max_length=20, blank=True)
+    #last_name = models.CharField(max_length=20, blank=True)
     personal_info = models.TextField(blank=True)
     job_title = models.CharField(max_length=100, blank=True)
     department = models.CharField(max_length=100, blank=True)
@@ -43,7 +46,6 @@ class Profile(models.Model):
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
         instance.profile.save()
-
 
 
 class Comment(models.Model):

@@ -2,9 +2,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sessions.models import Session
-from django.contrib.auth.models import User
-from django.shortcuts import render, redirect
-from django.template import loader
+from django.shortcuts import render, redirect, render_to_response
+from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
@@ -16,25 +15,17 @@ from django.contrib import messages
 from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
-
+from PIL import Image
 from .models import ContentItem
 from .models import Profile
 
-
-def index (request):
+def index(request):
     if(request.method == 'POST'):
         views = int(request.POST['views'])+2
     else:
         views = 2
     all_posts = ContentItem.objects.all().order_by('-upload_date')[:views]
     return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
-
-
-#def profile(request):
-    #if not request.user.is_authenticated:
-     #   return redirect_to_login('profile', login_url='login_page')
-    #else:
-       #return render(request, 'profile.html')
 
 
 class IndexView(generic.ListView):
@@ -56,6 +47,13 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
     def get_object(self):
         return self.request.user.profile
 
+#def profile(request):
+ #   if not request.user.is_authenticated:
+  #      return redirect_to_login('profile', login_url='login_page')
+   # else:
+    #    return render(request, 'profile.html')
+
+
 def view_my_posts(request):
     if request.user.is_authenticated:
         all_posts = ContentItem.objects.filter(uploaded_by = request.user).order_by('-upload_date')
@@ -63,13 +61,22 @@ def view_my_posts(request):
     else:
         return render(request, 'login.html')
 
+
 #favorites to be implemented in the future
 def view_my_favorites(request):
     return render(request, 'favorites.html')
 
+
+def search(request):
+    if not request.user.is_authenticated:
+        return redirect_to_login('index', login_url='login_page')
+    else:
+        return render(request, 'search.html')
+
+
 def create_post(request):
     if not request.user.is_authenticated:
-        return redirect('index')
+        return redirect_to_login('create_post', login_url='login_page')
 
     return render(request, 'createpost.html')
 
@@ -154,7 +161,7 @@ def upload(request):
             messages.error(request, 'Could not write to Database')
             return redirect('create_post')
         messages.success(request, 'Post created successfully.')
-        return redirect('create_post')
+        return redirect('index')
     else:
         messages.error(request, 'Bad request.')
         return redirect('create_post')
