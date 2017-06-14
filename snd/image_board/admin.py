@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Profile
 from .models import Hashtag
 from  .models import ContentItem
 from  .models import Comment
 from .models import ContentHashTag
 from  .models import Favorite
+from .models import Profile
 
 
 
