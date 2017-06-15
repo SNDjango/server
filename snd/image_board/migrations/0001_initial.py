@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('contact_skype', models.URLField(blank=True, null=True)),
                 ('contact_facebook', models.URLField(blank=True, null=True)),
                 ('contact_linkedin', models.URLField(blank=True, null=True)),
-                ('user_photo', models.ImageField(blank=True, upload_to='../media/img')),
+                ('user_photo', models.ImageField(default='../media/img/anon.png', upload_to='../media/img')),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
