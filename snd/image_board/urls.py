@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^upload$', views.upload, name='upload'),
     url(r'^changepassword$', views.change_password, name='changepw'),
     url(r'^search$', views.search, name='search'),
-    url(r'^like-post/$', views.like_post, name='like_post')
+    url(r'^like-post/$', views.like_post, name='like_post'),
     url(r'^faq-page$', views.view_faq_page, name='faq_page')
 
 ]
