@@ -69,9 +69,6 @@ def view_my_favorites(request):
 
 #FAQ-page to be implemented
 def view_faq_page(request):
-    if not request.user.is_authenticated:
-        return redirect_to_login('faq.html', login_url='login_page')
-
     return render(request, 'faq.html')
 
 
