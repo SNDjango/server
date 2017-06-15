@@ -28,6 +28,11 @@ def index(request):
     else:
         views = 2
     all_posts = ContentItem.objects.all().order_by('-upload_date')[:views]
+    for post in all_posts:
+        tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
+        filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
+        post.tags = filtered_tags
+
     return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
 
 
@@ -58,6 +63,10 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
 def view_my_posts(request):
     if request.user.is_authenticated:
         all_posts = ContentItem.objects.filter(uploaded_by = request.user).order_by('-upload_date')
+        for post in all_posts:
+            tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
+            filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
+            post.tags = filtered_tags
         return render(request, 'myposts.html', {'all_posts': all_posts})
     else:
         return render(request, 'login.html')

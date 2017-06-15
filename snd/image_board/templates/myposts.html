@@ -8,30 +8,26 @@
                 <h2>Your Uploads</h2>
                 <hr class="line"/>
             </div>
-            {% for post in all_posts %}
-                <div class="image-cont">
-                    <div class="row">
-                        <div class="col">
-                            <h3>{{ post.title }}</h3>
-                            <p>{{ post.description }}</p>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <img src="{{ post.image.url }}" class="img-responsive line">
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-2 col-md-10">
-                            <p class="info-text" style="margin-top: 5px;">{{ post.upload_date }} &nbsp;&nbsp;</p>
-                            <p class="info-text">uploaded by {{ post.uploaded_by }}</p>
-                        </div>
-                        <div class="col-sm-2 col-md-2">
-                            <button class="btn btn-block btn-primary-outline pull-right" style="margin-top:5px;"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; {{ post.get_likes }}</button>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
+            {% include "content_items.html" %}
         </div>
     {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(e) {
+            $('.post-likes').click(function() {
+                var id;
+                id = $(this).attr('data-post-id');
+                var proxy = $(this)
+                $.get('/like-post/', {
+                    post_id: id
+                }, function(data) {
+                    proxy.find('div').html(data);
+                    // $('.XD').html(data);
+                });
+                return false;
+            });
+        });
+    </script>
 {% endblock %}
