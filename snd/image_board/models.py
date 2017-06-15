@@ -16,6 +16,13 @@ class ContentItem(models.Model):
     def __str__(self):
         return self.title
 
+    def get_likes(self):
+        no = self.like_set.all().count()
+        if no is not None:
+            return no
+        else:
+            return 0
+
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -73,5 +80,10 @@ class ContentHashTag(models.Model):
 
 
 class Favorite(models.Model):
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+
+
+class Like(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
