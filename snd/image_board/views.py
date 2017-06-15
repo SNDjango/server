@@ -19,6 +19,8 @@ from PIL import Image
 from .models import ContentItem
 from .models import Profile
 from .models import Like
+from .models import Hashtag, ContentHashTag
+from django.db import IntegrityError
 
 def index(request):
     if(request.method == 'POST'):
@@ -143,14 +145,22 @@ def upload(request):
         messages.warning(request, 'You need to be authenticated to create a new post.')
         return redirect('index')
 
-    if request.method == 'POST' and request.FILES['file'] and request.user:
+    submitted_file = request.FILES.get('file', False)
+
+    if request.method == 'POST' and submitted_file and request.user:
         submitted_title = request.POST.get('title', '<<post error>>')
         submitted_description = request.POST.get('description', '<<post error>>')
-        submitted_file = request.FILES['file']
+        tags = request.POST.get('tag-input', '').split(',')
+        content_item = None
+
         try:
             if submitted_file.size > 5242880:
                 messages.error(request, 'File is too large. Max is 5MB')
                 raise ValueError("File is too large.")
+
+            if submitted_file.size < 1:
+                messages.error(request, 'File not valid')
+                raise ValueError("File is too small.")
             trial_image = Image.open(submitted_file)
             trial_image.verify()
         except:
@@ -163,6 +173,23 @@ def upload(request):
         except:
             messages.error(request, 'Could not write to Database')
             return redirect('create_post')
+
+        for tag in tags:
+            if tag == '':
+                continue
+
+            tag = tag[:50]
+            try:
+                new_tag = Hashtag(hashtag_text=tag)
+                new_tag.save()
+            except IntegrityError:
+                pass
+
+            saved_tag = Hashtag.objects.get(hashtag_text=tag)
+
+            content_hashtag = ContentHashTag(content_id=submitted_item, hashtag_id=saved_tag)
+            content_hashtag.save()
+
         messages.success(request, 'Post created successfully.')
         return redirect('index')
     else:

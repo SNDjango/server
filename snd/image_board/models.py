@@ -67,7 +67,7 @@ class Comment(models.Model):
 
 
 class Hashtag(models.Model):
-    hashtag_text = models.CharField(max_length=50)
+    hashtag_text = models.CharField(unique=True, max_length=50)
 
     def __str__(self):
         return self.hashtag_text
