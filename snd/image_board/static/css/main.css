@@ -260,3 +260,10 @@ a.btn-primary-outline:hover {
     width:600px;
 }
 
+th { 
+	font-size: 13px; 
+}
+
+td { 
+	font-size: 11px; 
+}
