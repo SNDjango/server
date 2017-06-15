@@ -7,6 +7,8 @@
 
         <title>{% block title %}Social Network{% endblock %}</title>
 
+        <link rel="icon" href="../../media/img/B.png">
+
         <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'css/main.css' %}">
@@ -15,41 +17,47 @@
 
     </head>
     <body>
-        <div class="container-fluid">
+        <div class="container">
             <!-- Navigationsleiste oben -->
-            <nav class="navbar navbar-toggleable-md navbar-default bg-faded navbar-inverse" id="navBack">
-                <input type="checkbox" id="navbar-toggle-cbox">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="{% url 'index' %}"><img id="logo" src="../media/img/logo.png"></a>
-                    <label for="navbar-toggle-cbox" class="navbar-toggle collapsed" data-toggle="collapse"
-                           data-target="#newnav">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </label>
-                </div>
+            <nav class="navbar navbar-custom navbar-toggleable-md navbar-fixed-top" role="navigation" id="navBack">
+                <a class="navbar-brand" href="{% url 'index' %}"><b>B</b></a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
 
-                <div class="collapse navbar-collapse" id="newnav">
+                <div class="navbar-collapse collapse" id="main-nav">
                     {% if user.is_authenticated %}
-                        <ul class="nav navbar-nav mr-auto">
-                            <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
-                            <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
-                            <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
-                        </ul>
-                        <p class="navbar-btn navbar-right"><a href="{% url 'create_post' %}" class="btn btn-primary" style="margin-right:10px;">Make
-                            Post</a></p>
-                        <p class="navbar-btn navbar-right"><a href="{% url 'logout_page' %}" class="btn btn-primary"
-                                                              style="margin-right:10px;">Logout</a></p>
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="{% block hot_active %}{% endblock %}"><a href="{% url 'index' %}" class="nav-link">Hot</a></li>
+                        <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
+                        <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
+                        <li class="{% block newpost_active %}{% endblock %}"><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#search" class="glyphicon glyphicon-search nav-link"></a></li>
+                        <li><a href="{% url 'profile' %}" class="nav-link"><img src="{{ user.profile.user_photo }}" class="img-circle" style="height:25px; width:25px; margin: 0;"></a></li>
+                        <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
+                    </ul>
                     {% else %}
-                        <p class="navbar-btn navbar-right"><a href="{% url 'login_page' %}" class="btn btn-primary"
-                                                              style="margin-right:10px;">Login</a></p>
-                        <p class="navbar-btn navbar-right"><a href="{% url 'signup' %}" class="btn btn-primary"
-                                                              style="margin-right:10px;">Sign Up</a></p>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li style="margin-right:10px;"><a href="{% url 'signup' %}">Sign Up</a></li>
+                        <li style="margin-right:10px;"><a href="{% url 'login_page' %}">Login</a></li>
+                    </ul>
                     {% endif %}
                 </div>
             </nav>
         </div>
+        <div id="search">
+            <form action="{% url 'search' %}" method="post">
+                {% csrf_token %}
+                <input type="search"  placeholder="Keywords" />
+                <button type="submit" class="btn btn-primary-outline" style="color:#fff; border-color:#fff;">Search</button>
+            </form>
+        </div>
+
 
         <div class="container">
                 {% if messages %}
@@ -63,8 +71,24 @@
             {% block body %}
             {% endblock %}
         </div>
-        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>                        <!-- <li><a href="{% url 'profile' %}" class="nav-link"><img src="/media/img/anon.png" style="height:20px; margin: 0;"></a></li> -->
+
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
+        <script>
+            $(function () {
+                $('a[href="#search"]').on('click', function(event) {
+                    event.preventDefault();
+                    $('#search').addClass('open');
+                    $('#search > form > input[type="search"]').focus();
+                });
+
+                $('#search, #search button.close').on('click keyup', function(event) {
+                    if (event.target == this || event.target.className == 'close' || event.keyCode == 27) {
+                        $(this).removeClass('open');
+                    }
+                });
+            });
+        </script>
         {% block script %}
         {% endblock %}
     </body>

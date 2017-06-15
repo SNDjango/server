@@ -1,23 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Make a new Post{% endblock %}
-
-{% block style %}
-<style>
-    .upload-container {
-        width: 100%;
-        min-height: 200px;
-        background-color: #fdfdfd;
-        text-align: center;
-        border: 4px dashed lightgray;
-        border-radius: 4px;
-        padding: 15px;
-    }
-
-    .upload-spacing-top {
-        padding-top: 30px;
-    }
-</style>
-{% endblock %}
+{% block newpost_active %}active{% endblock %}
 
 {% block script %}
 <script>
@@ -30,16 +13,17 @@
 
 {% block body %}
     {% load static %}
-
+    <div class="content-cont">
     <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
-            <div class="col-md-offset-2 col-md-8 ">
+            <div class="col">
                 <h2>Make a new Post</h2>
+                <hr class="line"/>
             </div>
         </div>
         <div class="row upload-spacing-top">
-            <div class="col-md-offset-2 col-md-8 ">
+            <div class="col">
                 <div class="form-group">
                   <label for="upload-title">Title:</label>
                   <input type="text" class="form-control" id="upload-title" maxlength="100" name="title">
@@ -47,7 +31,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-offset-2 col-md-8 ">
+            <div class="col">
                 <div class="upload-container">
                     <img id="image-preview" class="img-responsive center-block">
                     <div class="upload-spacing-top">
@@ -60,7 +44,7 @@
             </div>
         </div>
         <div class="row upload-spacing-top">
-            <div class="col-md-offset-2 col-md-8 ">
+            <div class="col">
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <textarea class="form-control" rows="5" id="description" name="description" maxlength="500"></textarea>
@@ -68,9 +52,12 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-offset-2 col-md-8 ">
-                <button type="submit" class="btn btn-success btn-lg pull-right">Upload!</button>
+            <div class="col">
+                <a href={%  url 'index' %}><input type="button" class="btn btn-default btn-lg pull-right" style="margin-top: 20px; margin-left: 10px;" value="Cancel"></a>
+            <div class="col">
+                <button type="submit" class="btn btn-default btn-lg pull-right">Upload</button>
             </div>
         </div>
     </form>
+    </div>
 {% endblock %}
