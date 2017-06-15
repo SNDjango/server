@@ -165,3 +165,35 @@ def upload(request):
     else:
         messages.error(request, 'Bad request.')
         return redirect('create_post')
+
+
+def change_password(request):
+    if not request.user.is_authenticated:
+        messages.warning(request, 'You need to be authenticated to change your password.')
+        return redirect('index')
+
+    if not request.method == 'POST':
+        return render(request, 'changepassword.html')
+
+    username = request.user
+
+    old_password = request.POST['old_pwd']
+    new_password = request.POST['new_pwd']
+    repeated_new_password = request.POST['repeat_new_pwd']
+
+    authenticate_user = authenticate(request, username=username, password=old_password)
+    if authenticate_user is None:
+        return render(request, 'changepassword.html', {'error_pwd': 'Password is wrong.'})
+
+    if new_password != repeated_new_password:
+        return render(request, 'changepassword.html', {'error_repeat_pwd': 'Password does not match'})
+
+    if len(new_password) < 8:
+        return render(request, 'changepassword.html', {'error_new_pwd': 'password not valid'})
+
+    u = User.objects.get(username__exact=username)
+    u.set_password(new_password)
+    u.save()
+
+    messages.success(request, 'Password successfully changed.')
+    return redirect('login_page')

@@ -19,7 +19,7 @@ td{
 </style>
 
     {% if user.is_authenticated %}
-    <h1>{{ request.user }}'s Profile</h1>
+    <h1>{{ request.user }}'s Profile</h1> <a href={%  url 'changepw' %}><input type="button" class="btn btn-default btn-lg pull-right" style="margin-top: 20px; margin-left: 10px;" value="Change password"></a>
     <br>
     <table>
     <tr>
