@@ -262,3 +262,9 @@ a.btn-primary-outline:hover {
 #indexDesign{
     width:600px;
 }
+
+.profile-pic {
+	width:100%;
+	margin-top:25px;
+	margin-bottom:25px;
+}
