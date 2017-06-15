@@ -1,92 +1,87 @@
 {% extends 'base.html' %}
 {% block title%}profile{% endblock %}
-{% block body %}
 
-
+{% block style %}
 <style>
-table{
-    width: 50%;
-}
-td{
-    padding-left: 5px;
-    padding-bottom: 3px;
-    font-size: large;
-    height: 40px;
-}
+    table {
+        width: 50%;
+    }
 
-
+    td {
+        padding-left: 5px;
+        padding-bottom: 3px;
+        font-size: large;
+        height: 40px;
+    }
 </style>
+{% endblock %}
 
+{% block body %}
+    <div class="content-cont">
     {% if user.is_authenticated %}
-    <h1>{{ request.user }}'s Profile</h1> <a href={%  url 'changepw' %}><input type="button" class="btn btn-default btn-lg pull-right" style="margin-top: 20px; margin-left: 10px;" value="Change password"></a>
-    <br>
-    <table>
-    <tr>
-        <td>Username:</td>
-        <td>{{ user.username }}</td>
-    </tr>
-    <tr>
-        <td>First Name:</td>
-        <td>{{ user.first_name }}</td>
-    </tr>
-    <tr>
-        <td>Last Name:</td>
-        <td>{{ user.last_name }}</td>
-    </tr>
-    <tr>
-        <td>Email:</td>
-        <td>{{ user.email }}</td>
-    </tr>
-    <tr>
-        <td>Personal Info:</td>
-        <td>{{ user.profile.personal_info }}</td>
-    </tr>
-    <tr>
-        <td>Job Title:</td>
-        <td>{{ user.profile.job_title }}</td>
-    </tr>
-    <tr>
-        <td>Department:</td>
-        <td>{{ user.profile.department }}</td>
-    </tr>
-    <tr>
-        <td>Location:</td>
-        <td>{{ user.profile.location }}</td>
-    </tr>
-    <tr>
-        <td>Expertise:</td>
-        <td>{{ user.profile.expertise }}</td>
-    </tr>
-    <tr>
-        <td>Phone Number:</td>
-        <td>{{ user.profile.phone_number }}</td>
-    </tr>
-    <tr>
-        <td>Contact Skype:</td>
-        <td>{{ user.profile.contact_skype }}</td>
-    </tr>
-    <tr>
-        <td>Contact Facebook:</td>
-        <td>{{ user.profile.contact_facebook }}</td>
-    </tr>
-    <tr>
-        <td>Contact Linkedin:</td>
-        <td>{{ user.profile.contact_linkedin }}</td>
-    </tr>
-    </table>
-    <br>
-    <br>
-
-    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% include 'form-template.html' %}
-            <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                    <a href={%  url 'profile_edit' %}><input type="button" class = " col-sm-offset-2 btn bk-bs-btn-warning btn-lg pull-right" name="edit" value="Edit" /></a>
-                </div>
+        <h1>{{ request.user }}'s Profile</h1>
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td>{{ user.username }}</td>
+            </tr>
+            <tr>
+                <td>First Name:</td>
+                <td>{{ user.first_name }}</td>
+            </tr>
+            <tr>
+                <td>Last Name:</td>
+                <td>{{ user.last_name }}</td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td>{{ user.email }}</td>
+            </tr>
+            <tr>
+                <td>Personal Info:</td>
+                <td>{{ user.profile.personal_info }}</td>
+            </tr>
+            <tr>
+                <td>Job Title:</td>
+                <td>{{ user.profile.job_title }}</td>
+            </tr>
+            <tr>
+                <td>Department:</td>
+                <td>{{ user.profile.department }}</td>
+            </tr>
+            <tr>
+                <td>Location:</td>
+                <td>{{ user.profile.location }}</td>
+            </tr>
+            <tr>
+                <td>Expertise:</td>
+                <td>{{ user.profile.expertise }}</td>
+            </tr>
+            <tr>
+                <td>Phone Number:</td>
+                <td>{{ user.profile.phone_number }}</td>
+            </tr>
+            <tr>
+                <td>Contact Skype:</td>
+                <td>{{ user.profile.contact_skype }}</td>
+            </tr>
+            <tr>
+                <td>Contact Facebook:</td>
+                <td>{{ user.profile.contact_facebook }}</td>
+            </tr>
+            <tr>
+                <td>Contact Linkedin:</td>
+                <td>{{ user.profile.contact_linkedin }}</td>
+            </tr>
+        </table>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <a class="btn btn-default pull-right" href="{%  url 'profile_edit' %}">Edit Profile</a>
+                <a class="btn btn-default pull-right" href="{%  url 'changepw' %}" style="margin-right:20px;">Change Password</a>
             </div>
-    </form>
+        </div>
     {% else %}
         <h2>Please login to see your Profile</h2>
     {% endif %}
+    </div>
 {% endblock %}
