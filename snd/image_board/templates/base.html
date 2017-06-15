@@ -32,11 +32,11 @@
                         <li class="{% block hot_active %}{% endblock %}"><a href="{% url 'index' %}" class="nav-link">Hot</a></li>
                         <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
                         <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
-                        <li class="{% block profile_active %}{% endblock %}"><a href="{% url 'profile' %}" class="nav-link">My Profile</a></li>
+                        <li class="{% block newpost_active %}{% endblock %}"><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#search" class="glyphicon glyphicon-search nav-link"></a></li>
-                        <li><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
+                        <li><a href="{% url 'profile' %}" class="nav-link"><img src="/media/img/anon.png" class="img-circle" style="height:22px; margin: 0;"></a></li>
                         <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
                     </ul>
                     {% else %}
@@ -69,7 +69,8 @@
             {% block body %}
             {% endblock %}
         </div>
-        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+        <script src="{% static 'js/jquery-3.2.1.min.js' %}"></script>                        <!-- <li><a href="{% url 'profile' %}" class="nav-link"><img src="/media/img/anon.png" style="height:20px; margin: 0;"></a></li> -->
+
         <script src="{% static 'js/bootstrap.min.js' %}"></script>
         <script>
             $(function () {

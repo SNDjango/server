@@ -42,8 +42,6 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
     success_url = reverse_lazy('profile')
     success_message = " Profile was updated successfully"
 
-
-
     def get_object(self):
         return self.request.user.profile
 
