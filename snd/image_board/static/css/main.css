@@ -179,10 +179,13 @@ a.btn-primary-outline:hover {
 		padding-left: 0;
 		padding-right: 0;
 	}
+
 }
 
 @media(max-width:991px){
-
+		#indexDesign{
+		    display: none;
+		}
 }
 
 #search {
