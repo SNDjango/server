@@ -36,7 +36,7 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#search" class="glyphicon glyphicon-search nav-link"></a></li>
-                        <li><a href="{% url 'profile' %}" class="nav-link"><img src="/media/img/anon.png" class="img-circle" style="height:22px; margin: 0;"></a></li>
+                        <li><a href="{% url 'profile' %}" class="nav-link"><img src="{{ user.profile.user_photo }}" class="img-circle" style="height:25px; width:25px; margin: 0;"></a></li>
                         <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
                     </ul>
                     {% else %}
