@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Make a new Post{% endblock %}
 {% block newpost_active %}active{% endblock %}
 
 {% block script %}
+<script src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
 <script>
     var loadFile = function(event) {
         var output = document.getElementById('image-preview');
         output.src = URL.createObjectURL(event.target.files[0]);
     };
 </script>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/bootstrap-tagsinput.css' %}">
+<style>
+    .bootstrap-tagsinput {
+      width: 100% !important;
+    }
+</style>
 {% endblock %}
 
 {% block body %}
@@ -48,6 +59,14 @@
                 <div class="form-group">
                     <label for="description">Description:</label>
                     <textarea class="form-control" rows="5" id="description" name="description" maxlength="500"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row upload-spacing-top">
+            <div class="col">
+                <div class="form-group">
+                    <label for="tag-input">Tags:</label>
+                    <input type="text" class="form-control" id="tag-input" name="tag-input" data-role="tagsinput">
                 </div>
             </div>
         </div>
