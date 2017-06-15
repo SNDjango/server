@@ -22,9 +22,12 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col">
-                            <p class="info-text">{{ post.upload_date }} &nbsp;&nbsp;</p>
+                        <div class="col-sm-2 col-md-10">
+                            <p class="info-text" style="margin-top: 5px;">{{ post.upload_date }} &nbsp;&nbsp;</p>
                             <p class="info-text">uploaded by {{ post.uploaded_by }}</p>
+                        </div>
+                        <div class="col-sm-2 col-md-2">
+                            <button class="btn btn-block btn-primary-outline pull-right" style="margin-top:5px;"><span class="glyphicon glyphicon-thumbs-up"></span>&nbsp; {{ post.get_likes }}</button>
                         </div>
                     </div>
                 </div>

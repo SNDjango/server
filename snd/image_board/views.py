@@ -18,6 +18,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from PIL import Image
 from .models import ContentItem
 from .models import Profile
+from .models import Like
 
 def index(request):
     if(request.method == 'POST'):
@@ -197,3 +198,14 @@ def change_password(request):
 
     messages.success(request, 'Password successfully changed.')
     return redirect('login_page')
+
+# https://www.sujinlee.me/blog/django-like-button/
+def like_post(request):
+    if request.method == 'GET':
+        post_id = int(request.GET['post_id'])
+        post = ContentItem.objects.get(id=post_id)
+        new_like, created = Like.objects.get_or_create(user_id=request.user, content_id=post)
+        if not created:
+            Like.objects.filter(user_id=request.user, content_id=post).delete()
+        likes = post.get_likes()
+    return HttpResponse(likes)
