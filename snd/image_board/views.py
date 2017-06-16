@@ -20,6 +20,7 @@ from .models import ContentItem
 from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
+from .models import Comment
 from django.db import IntegrityError
 
 def index(request):
@@ -244,4 +245,5 @@ def like_post(request):
         likes = post.get_likes()
     return HttpResponse(likes)
 
-#def make_comment(request):
+
+
