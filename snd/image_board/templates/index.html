@@ -14,37 +14,8 @@
                     <hr class="line"/>
                 </div>
             </div>
-            {% for post in all_posts %}
-            <div id="{{ forloop.counter }}" class="image-cont">
-                <div class="row">
-                    <div class="col">
-                        <h3>{{ post.title }}</h3>
-                        <p>{{ post.description }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs">
-                        <img src="{{ post.image.url }}" class="img-responsive line">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <p class="info-text">{{ post.upload_date }} &nbsp;&nbsp;</p>
-                        <p class="info-text">uploaded by {{ post.uploaded_by }}</p>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="btn-group btn-group-justified" role="group">
-                            <a href="#" class="btn btn-primary-outline post-likes" data-post-id="{{ post.id }}"><span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;<div class="like_live" style="display:inline;">{{ post.get_likes }}</div></a>
-                            <a href="#" class="btn btn-primary-outline">Comment</a>
-                            <a href="#" class="btn btn-primary-outline">Share</a>
-                            <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+            {% include "content_items.html" %}
+            {% if all_posts|length > 1 %}
             <div class="row">
                 <div class="col">
                     <form action="{% url 'index' %}" method="post">
@@ -54,54 +25,63 @@
                     </form>
                 </div>
             </div>
+            {% endif %}
         </div>
     {% else %}
-        <img id="indexDesign" src="../../media/img/index_design.png">
-        <div id="indexSignup">
-            <div class="content-cont">
-                <h1>Sign up and have fun!</h1>
-                <form action="{% url 'signup' %}" method="post">
-                {% csrf_token %}
-                <div class="form-group row">
-                    <div class="col">
-                        <label for="user">Username</label>
-                        <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="" {% if error_user %}data-content="{{ error_user }}"{% endif %} tabindex="-1">
-                            <input type="text" class="form-control" name="user" {% if error_pwd or error_email %}value="{{ name }}"{% endif %} maxlength="32" placeholder="max. 32 characters">
-                        </a>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col">
-                        <label for="email">Email Address</label>
-                        <a href="#" data-toggle="popover" id="PopEmailError" style="text-decoration: none;" data-placement="right" {% if error_email %}data-content="{{ error_email }}"{% endif %} tabindex="-1">
-                            <input type="text" class="form-control" name="email" {% if error_pwd %}value="{{ email }}"{% endif %} maxlength="64" placeholder="email@example.com">
-                        </a>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <div class="col">
-                        <label for="description">Password</label>
-                        <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Password must be longer than 8 characters." tabindex="-1">
-                            <input type="password" class="form-control" name="pwd" maxlength="64" placeholder="at least 8 characters">
-                        </a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary lower-btn" value="Submit">Sign Up</button>
-                        <a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
-                    </div>
-                </div>
-                </form>
-                <div class="row">
-                    <div class="col">
-                        <hr />
-                        <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to login.</p>
+        <div class="row">
+            <div class="col-md-6">
+                <img id="indexDesign" class="img-responsive" src="../../media/img/index_design.png">
+            </div>
+            <div class="col-md-6" style="margin-top: 50px;">
+                <div id="">
+                    <div class="content-cont">
+                        <div class="row">
+                            <div class="col">
+                                <h1>Sign up and have fun!</h1>
+                            </div>
+                        </div>
+                        <form action="{% url 'signup' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="user">Username</label>
+                                    <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="" {% if error_user %}data-content="{{ error_user }}"{% endif %} tabindex="-1">
+                                        <input type="text" class="form-control" name="user" {% if error_pwd or error_email %}value="{{ name }}"{% endif %} maxlength="32" placeholder="max. 32 characters">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="email">Email Address</label>
+                                    <a href="#" data-toggle="popover" id="PopEmailError" style="text-decoration: none;" data-placement="right" {% if error_email %}data-content="{{ error_email }}"{% endif %} tabindex="-1">
+                                        <input type="text" class="form-control" name="email" {% if error_pwd %}value="{{ email }}"{% endif %} maxlength="64" placeholder="email@example.com">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="description">Password</label>
+                                    <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Password must be longer than 8 characters." tabindex="-1">
+                                        <input type="password" class="form-control" name="pwd" maxlength="64" placeholder="at least 8 characters">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary lower-btn" value="Submit">Sign Up</button>
+                                    <a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col">
+                                <hr />
+                                <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to login.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div>
         </div>
     {% endif %}
 {% endblock %}
