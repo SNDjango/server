@@ -6,6 +6,8 @@ from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
 
+
+
 class ContentItem(models.Model):
     upload_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default='no title')
@@ -56,11 +58,10 @@ class Profile(models.Model):
 
 
 class Comment(models.Model):
-    title = models.CharField(max_length=100)
     comment_text = models.TextField()
-    publication_date = models.DateField()
-    user_id = models.ForeignKey(User)
-    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+    publication_date = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User)
+    contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
 
     def __str__(self):
         return self.title
