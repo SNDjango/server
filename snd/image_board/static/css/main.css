@@ -260,7 +260,7 @@ a.btn-primary-outline:hover {
     width:600px;
 }
 
-<<<<<<< HEAD
+
 th { 
 	font-size: 22px; 
 }
@@ -268,7 +268,8 @@ th {
 td { 
 	font-size: 15px; 
 }
-=======
+
+
 .center-image {
 	display: block;
 	margin: 0 auto;
@@ -322,4 +323,3 @@ td {
 	color: #484848;
 	padding: 25px 35px 0;
 }
->>>>>>> origin/devel
