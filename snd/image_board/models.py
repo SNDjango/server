@@ -58,7 +58,6 @@ class Profile(models.Model):
 
 
 class Comment(models.Model):
-    post = models.ForeignKey(ContentItem, related_name='comments')
     comment_text = models.TextField()
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
