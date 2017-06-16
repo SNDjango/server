@@ -243,3 +243,5 @@ def like_post(request):
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
     return HttpResponse(likes)
+
+#def make_comment(request):
