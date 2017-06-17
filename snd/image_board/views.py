@@ -22,19 +22,38 @@ from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
 from django.db import IntegrityError
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 def index(request):
-    if(request.method == 'POST'):
-        views = int(request.POST['views'])+2
+    items_on_page = 1
+    max_pages_full = 8
+
+    all_posts = ContentItem.objects.all().order_by('-upload_date')
+
+    paginator = Paginator(all_posts, items_on_page)
+    page = request.GET.get('page')
+
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(paginator.num_pages)
+
+    if paginator.num_pages > max_pages_full:
+        ntl = paginator.num_pages - 1
+        nntl = paginator.num_pages - 2
     else:
-        views = 2
-    all_posts = ContentItem.objects.all().order_by('-upload_date')[:views]
+        ntl = 0
+        nntl = 0
+
     for post in all_posts:
         tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
         filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
         post.tags = filtered_tags
 
-    return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
+    return render(request, 'index.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl})
 
 
 class IndexView(generic.ListView):
@@ -63,12 +82,34 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
 
 def view_my_posts(request):
     if request.user.is_authenticated:
+        items_on_page = 2
+        max_pages_full = 8
+
         all_posts = ContentItem.objects.filter(uploaded_by = request.user).order_by('-upload_date')
+
+        paginator = Paginator(all_posts, items_on_page)
+        page = request.GET.get('page')
+
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
+        if paginator.num_pages > max_pages_full:
+            ntl = paginator.num_pages - 1
+            nntl = paginator.num_pages - 2
+        else:
+            ntl = 0
+            nntl = 0
+
         for post in all_posts:
             tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
             filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
             post.tags = filtered_tags
-        return render(request, 'myposts.html', {'all_posts': all_posts})
+
+        return render(request, 'myposts.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl})
     else:
         return render(request, 'login.html')
 
@@ -244,6 +285,3 @@ def like_post(request):
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
     return HttpResponse(likes)
-
-
-

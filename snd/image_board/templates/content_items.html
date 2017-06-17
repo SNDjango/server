@@ -1,4 +1,4 @@
-{% for post in all_posts %}
+{% for post in pages %}
 <div id="{{ forloop.counter }}" class="image-cont">
     <div class="row">
         <div class="col-md-12">
@@ -46,3 +46,5 @@
     </div>
 </div>
 {% endfor %}
+
+{% include "pagination.html" %}
