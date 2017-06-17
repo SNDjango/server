@@ -34,14 +34,14 @@
         <div class="col-md-12">
             <div class="btn-group btn-group-justified" role="group">
                 <a href="#" class="btn btn-primary-outline post-likes" data-post-id="{{ post.id }}"><span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;<div class="like_live" style="display:inline;">{{ post.get_likes }}</div></a>
-                <a href="#" class="btn btn-primary-outline">Comment</a>
+                <a href="{% url 'comment_on_item' post.id %}" class="btn btn-primary-outline">Comment</a>
                 <a href="#" class="btn btn-primary-outline">Share</a>
                 <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
             </div>
             <div>
                 <a href="#" class="btn btn-primary-outline btn-sm pull-left">View all comments</a>
-
             </div>
+            <div></div>
         </div>
     </div>
 </div>
