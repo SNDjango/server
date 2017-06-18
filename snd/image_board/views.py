@@ -261,6 +261,5 @@ def comment_on_item(request, content_id):
         messages.warning(request, "Please write something.")
         return render(request, 'createcomment.html')
 
-
     return render(request, 'createcomment.html')
 

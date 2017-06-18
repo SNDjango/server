@@ -38,24 +38,31 @@
                 <a href="#" class="btn btn-primary-outline">Share</a>
                 <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
             </div>
-            <div>
-              <!--  <a href="#" class="btn btn-primary-outline btn-sm pull-right">View all comments</a>-->
-            </div>
 
-        </div>
-
-    </div>
-
-    <div class="row">
-        {% for comment in post.comments.all %}
-        <div class="col-md-12">
-            <div class="comment-container">
-               <p> <img src="{{ comment.author.user_profile.user_photo.url }}" class="img-circle" alt="Cinque Terre" width="45" height="45"> said at {{ comment.publication_date }}</p>
-                <p>{{ comment.comment_text }}</p>
+            <div class='pull-right'>
+                <button class="btn btn-default" data-toggle="collapse" data-target="#comment-section">
+                    <span class="glyphicon glyphicon-envelope"></span>{{ post.comments.count }} comments
+                </button>
             </div>
         </div>
-            {% endfor %}
     </div>
+
+
+
+        <div class="row" id="comment-section">
+         {% for comment in post.comments.all %}
+            <div class="col-md-12">
+                <div class="comment-container">
+                    <p><img src="{{ comment.author.user_profile.user_photo.url }}" class="img-circle" alt="Cinque Terre"
+                            width="45" height="45"> <span
+                            class="glyphicon glyphicon-time"></span>{{ comment.publication_date|timesince }} ago</p>
+                    <ul><p>{{ comment.comment_text }}</p></ul>
+
+                </div>
+            </div>
+{% endfor %}
+        </div>
+
 
 
 </div>
