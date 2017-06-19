@@ -50,7 +50,7 @@
 
                 <div class='pull-right'>
                     <button class="btn btn-default" data-toggle="collapse" data-target=".comment-section">
-                        <span class="glyphicon glyphicon-envelope"></span>{{ post.comments.count }} comments
+                        <span class="glyphicon glyphicon-envelope"></span>view all {{ post.comments.count }} comments
                     </button>
                 </div>
             </div>
@@ -60,12 +60,18 @@
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
                     <div class="comment-section">
-                        <p><img src="{{ comment.author.user_profile.user_photo.url }}" class="img-circle"
-                                alt="Cinque Terre"
-                                width="45" height="45"> <span
-                                class="glyphicon glyphicon-time"></span>{{ comment.publication_date|timesince }} ago</p>
-                        <ul><p>{{ comment.comment_text }}</p></ul>
+                        <div class="panel panel-danger">
 
+                                <img src="{{ comment.author.user_profile.user_photo.url }}" class="img-circle"
+                                        alt="Cinque Terre"
+                                        width="45" height="45"> <span
+                                        class="glyphicon glyphicon-time"></span>{{ comment.publication_date|timesince }}
+                                    ago
+
+
+                               <div style="padding-left: 50px"> <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p></div>
+
+                        </div>
                     </div>
                 </div>
             {% endfor %}
