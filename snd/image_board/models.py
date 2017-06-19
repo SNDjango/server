@@ -6,6 +6,8 @@ from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
 
+
+
 class ContentItem(models.Model):
     upload_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default='no title')
@@ -25,7 +27,7 @@ class ContentItem(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='user_profile',on_delete=models.CASCADE)
     #email = models.EmailField()
     #first_name = models.CharField(max_length=20, blank=True)
     #last_name = models.CharField(max_length=20, blank=True)
@@ -48,22 +50,22 @@ class Profile(models.Model):
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
-        instance.profile.save()
+        instance.user_profile.save()
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+        instance.user_profile.save()
 
 
 class Comment(models.Model):
-    title = models.CharField(max_length=100)
     comment_text = models.TextField()
-    publication_date = models.DateField()
-    user_id = models.ForeignKey(User)
-    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
-
-    def __str__(self):
-        return self.title
+    publication_date = models.DateTimeField(auto_now=True)
+    author = models.ForeignKey(User)
+    contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+    class Meta:
+        ordering = ['-publication_date']
+    #def __str__(self):
+       # return self.title
 
 
 class Hashtag(models.Model):

@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sessions.models import Session
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -20,6 +20,7 @@ from .models import ContentItem
 from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
+from .models import Comment
 from django.db import IntegrityError
 
 def index(request):
@@ -243,3 +244,22 @@ def like_post(request):
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
     return HttpResponse(likes)
+
+
+def comment_on_item(request, content_id):
+    if not request.user.is_authenticated:
+        return redirect_to_login('createcomment', login_url='login_page')
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment_text')
+        if comment_text:
+            author = request.user
+            contentItem = ContentItem.objects.get(pk=content_id)
+            new_comment = Comment(author=author, comment_text=comment_text, contentItem=contentItem)
+            new_comment.save()
+            messages.success(request, 'Comment sent successfully.')
+            return redirect('index')
+        messages.warning(request, "Please write something.")
+        return render(request, 'createcomment.html')
+
+    return render(request, 'createcomment.html')
+
