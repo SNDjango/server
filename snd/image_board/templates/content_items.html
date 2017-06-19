@@ -49,17 +49,17 @@
                 </div>
 
                 <div class='pull-right'>
-                    <button class="btn btn-default" data-toggle="collapse" data-target="#comment-section">
+                    <button class="btn btn-default" data-toggle="collapse" data-target=".comment-section">
                         <span class="glyphicon glyphicon-envelope"></span>{{ post.comments.count }} comments
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="row" id="comment-section">
+        <div class="row" id="">
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
-                    <div class="comment-container">
+                    <div class="comment-section">
                         <p><img src="{{ comment.author.user_profile.user_photo.url }}" class="img-circle"
                                 alt="Cinque Terre"
                                 width="45" height="45"> <span
