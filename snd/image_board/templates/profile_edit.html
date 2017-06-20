@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title%}Your Profile{% endblock %}
+
+{% block body %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-12 col-md-7">
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            {% if error_message %}
+                                <p><strong>{{ error_message }}</strong></p>
+                            {% endif %}
+                            {% if user.is_authenticated %}
+                                <h2 style="margin-bottom:40px"> {{ user.username }}'s Profile</h2>
+
+                                <form class="form-horizontal" action="" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ user_form.as_p }}
+                                    {{ profile_form.as_p }}
+                                    {% if form.errors %}
+                                    <div class="alert alert-error">
+                                        <ul>
+                                            {% for error in form.non_field_errors %}
+                                            <li>{{ error }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                    {% endif %}
+                                    <div class="form-group">
+                                        <a class="btn btn-default pull-right" href="{%  url 'profile' %}" style="margin-right:20px; margin-top:20px;">Cancel</a>
+                                        <button type="submit" class="btn btn-default pull-right" style="margin-right:20px;">Save changes</button>
+                                    </div>
+                                </form>
+
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endblock %}

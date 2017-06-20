@@ -82,12 +82,14 @@
                 </table>
             </div>
             <div class="col-md-4">
-                <img src="{{ user.profile.user_photo }}" class="profile-pic img-responsive">
+                <a href="{%  url 'profile_pic_edit' %}">
+                    <img src="{{ user.profile.user_photo }}" class="profile-pic img-responsive">
+                </a>
             </div>
         </div>
         <div class="row">
             <div class="col">
-                <a class="btn btn-default lower-btn" href="{%  url 'profile_edit' %}">Edit Profile</a>
+                <a class="btn btn-default lower-btn" href="{%  url 'profile_edit' %}" >Edit Profile</a>
                 <a class="btn btn-default lower-btn" href="{%  url 'changepw' %}" style="margin-right:20px;">Change Password</a>
             </div>
         </div>
