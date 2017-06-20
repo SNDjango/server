@@ -165,6 +165,18 @@ a.btn-primary-outline:hover {
 	margin-bottom: 10px;
 }
 
+.bluebutton {
+    background-color:#5bc0de;
+    margin-right:20px;
+    margin-top:20px;
+}
+
+.redbutton {
+    background-color:#d9534f;
+    margin-right:20px;
+    margin-top:20px;
+}
+
 @media(max-width:767px){
 	.content-cont {
 		width: 90%;

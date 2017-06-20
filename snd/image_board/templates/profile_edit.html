@@ -4,7 +4,7 @@
 {% block body %}
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-12 col-md-7">
+                <div class="col-sm-12 col-md-6">
                     <div class="panel panel-default">
                         <div class="panel-body">
                             {% if error_message %}
@@ -27,8 +27,8 @@
                                     </div>
                                     {% endif %}
                                     <div class="form-group">
-                                        <a class="btn btn-default pull-right" href="{%  url 'profile' %}" style="margin-right:20px; margin-top:20px;">Cancel</a>
-                                        <button type="submit" class="btn btn-default pull-right" style="margin-right:20px;">Save changes</button>
+                                        <a class="btn btn-primary-outline redbutton pull-right" href="{%  url 'profile' %}">Cancel</a>
+                                        <button type="submit" class="btn btn-primary-outline bluebutton pull-right">Save changes</button>
                                     </div>
                                 </form>
 
