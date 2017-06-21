@@ -4,8 +4,13 @@
 {% block body %}
     <div class="content-cont">
         <div class="row">
-            <h2>My favorites page</h2>
+            <h2>{{ request.user }}'s favorites</h2>
             <hr class="line"/>
         </div>
+
+        {% if not user.favorite_set.all %}
+        <H2>Oops, You don't have any Favorites </H2>
+        Please visit <a href="{% url 'index' %}">our page</a> and favorite some memes
+        {% endif %}
     </div>
 {% endblock %}

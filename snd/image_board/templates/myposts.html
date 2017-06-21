@@ -9,6 +9,10 @@
                 <hr class="line"/>
             </div>
             {% include "content_items.html" %}
+        {% if not user.contentitem_set.all %}
+        <H2>Oops, You don't have any any post, yet! </H2>
+        Please <a href="{% url 'create_post' %}">Create</a> some posts, share and enjoy!!
+        {% endif %}
         </div>
     {% endif %}
 {% endblock %}
