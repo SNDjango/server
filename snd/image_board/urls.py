@@ -19,8 +19,9 @@ urlpatterns = [
     url(r'^upload$', views.upload, name='upload'),
     url(r'^changepassword$', views.change_password, name='changepw'),
     url(r'^search$', views.search, name='search'),
-    url(r'^like-post/$', views.like_post, name='like_post')
-
+    url(r'^like-post/$', views.like_post, name='like_post'),
+    url(r'^([0-9]+)/createcomments/$', views.comment_on_item, name='comment_on_item'),
+    url(r'^createcoment/$', views.comment_on_item, name='comment_on_item'),
 ]
 
 if settings.DEBUG:

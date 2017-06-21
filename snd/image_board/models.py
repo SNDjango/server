@@ -27,7 +27,7 @@ class ContentItem(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='user_profile',on_delete=models.CASCADE)
     #email = models.EmailField()
     #first_name = models.CharField(max_length=20, blank=True)
     #last_name = models.CharField(max_length=20, blank=True)
@@ -50,19 +50,20 @@ class Profile(models.Model):
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
-        instance.profile.save()
+        instance.user_profile.save()
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-        instance.profile.save()
+        instance.user_profile.save()
 
 
 class Comment(models.Model):
     comment_text = models.TextField()
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
-    contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
-
+    contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+    class Meta:
+        ordering = ['-publication_date']
     #def __str__(self):
        # return self.title
 
