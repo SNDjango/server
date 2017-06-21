@@ -48,7 +48,7 @@ def index(request):
         ntl = 0
         nntl = 0
 
-    for post in all_posts:
+    for post in pages:
         tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
         filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
         post.tags = filtered_tags
@@ -303,4 +303,3 @@ def comment_on_item(request, content_id):
         return render(request, 'createcomment.html')
 
     return render(request, 'createcomment.html')
-
