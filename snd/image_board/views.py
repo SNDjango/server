@@ -12,10 +12,12 @@ from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.template import RequestContext
 from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from PIL import Image
+import json
 from .models import ContentItem
 from .models import Profile
 from .models import Like
@@ -289,17 +291,20 @@ def like_post(request):
 
 def comment_on_item(request, content_id):
     if not request.user.is_authenticated:
-        return redirect_to_login('createcomment', login_url='login_page')
+        return redirect_to_login('comment', login_url='login_page')
     if request.method == 'POST':
-        comment_text = request.POST.get('comment_text')
-        if comment_text:
+        comment_text = request.POST['comment_text']
+        if comment_text and not comment_text == "":
             author = request.user
             contentItem = ContentItem.objects.get(pk=content_id)
             new_comment = Comment(author=author, comment_text=comment_text, contentItem=contentItem)
             new_comment.save()
-            messages.success(request, 'Comment sent successfully.')
-            return redirect('index')
+            data = json.dumps({
+                'auth': author.username,
+                'pic': author.user_profile.user_photo.url,
+                'text': comment_text,
+            })
+        return HttpResponse(data, content_type='application/json')
         messages.warning(request, "Please write something.")
-        return render(request, 'createcomment.html')
-
-    return render(request, 'createcomment.html')
+        # return HttpResponse("404")
+    return HttpResponse("403")

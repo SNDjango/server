@@ -80,24 +80,32 @@
             $('.post-likes').click(function() {
                 var id;
                 id = $(this).attr('data-post-id');
-                var proxy = $(this)
+                var proxy = $(this);
                 $.get('/like-post/', {
                     post_id: id
                 }, function(data) {
                     proxy.find('div').html(data);
-                    // $('.XD').html(data);
                 });
                 return false;
             });
 
-
-            if ($('.image-cont').length > 2) {
-                var max = 0;
-                $('.image-cont').each(function(){
-                        max = Math.max(this.id, max);
+            $("#write-comment").keypress(function (e) {
+                // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
+                if(e.which == 13 && !e.shiftKey) {
+                    // POST comment without reloading site (AJAX)
+                    var id;
+                    id = $(this).attr('data-com-id');
+                    var form = $(this).closest("form");
+                    $.post('/comment/' + id, form.serialize(), function(data){
+                       var obj = JSON.parse(JSON.stringify(data));
+                    //    alert(obj.auth);
                     });
-                document.getElementById(max-2).scrollIntoView();''
-            }
+                    $(this).closest("textarea").val('');
+                    return false;
+                }
+            });
+
+
 
         });
     </script>
