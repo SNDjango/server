@@ -165,6 +165,20 @@ a.btn-primary-outline:hover {
 	margin-bottom: 10px;
 }
 
+
+.bluebutton {
+    background-color:#5bc0de;
+    margin-right:20px;
+    margin-top:20px;
+}
+
+.redbutton {
+    background-color:#d9534f;
+    margin-right:20px;
+    margin-top:20px;
+}
+
+
 .pagination {
 	margin-top: 5px;
 	margin-bottom: 50px;
@@ -218,6 +232,7 @@ a.btn-primary-outline:hover {
     background-color: #e5e4e1;
     border: 1px solid #000;
 }
+
 
 
 @media(max-width:767px){

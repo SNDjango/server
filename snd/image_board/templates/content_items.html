@@ -57,7 +57,7 @@
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
                     <div class="comment-section">
-                        <p><img src="{{ comment.author.user_profile.user_photo.url }}" class="img-circle"
+                        <p><img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
                                 alt="Cinque Terre"
                                 width="45" height="45"> <span
                                 class="glyphicon glyphicon-time"></span>{{ comment.publication_date|timesince }} ago</p>
