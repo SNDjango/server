@@ -1,12 +1,9 @@
-{% for post in all_posts %}
-    <div id="{{ forloop.counter }}" class="image-cont">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="title-container">
-                    <h3>{{ post.title }}
-                        <small class="pull-right content-title-subscript">uploaded by {{ post.uploaded_by }}, {{ post.upload_date }}</small>
-                    </h3>
-                </div>
+{% for post in pages %}
+<div id="{{ forloop.counter }}" class="image-cont">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="title-container">
+                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by {{ post.uploaded_by }}, {{ post.upload_date }}</small></h3>
             </div>
         </div>
 
@@ -74,3 +71,5 @@
         </div>
     </div>
 {% endfor %}
+
+{% include "pagination.html" %}

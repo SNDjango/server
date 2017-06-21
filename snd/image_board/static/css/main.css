@@ -165,6 +165,61 @@ a.btn-primary-outline:hover {
 	margin-bottom: 10px;
 }
 
+.pagination {
+	margin-top: 5px;
+	margin-bottom: 50px;
+	display: flex;
+    justify-content: center;
+}
+
+.pagination li {
+    display: inline;
+}
+
+.pagination li a {
+    color: #000000;
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li span {
+    color: #000000;
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li span:hover {
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li.active span{
+    background-color: #000000;
+    border: 1px solid #000;
+}
+
+.pagination li a:hover:not(.active) {
+    background-color: #008080;
+    color: #ffffff;
+    border: 1px solid #000;
+}
+
+.pagination li.active span:hover {
+    background-color: #000000;
+    border: 1px solid #000;
+}
+
+.pagination li.disabled span {
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li.disabled span:hover {
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+
 @media(max-width:767px){
 	.content-cont {
 		width: 90%;
