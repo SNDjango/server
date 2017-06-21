@@ -15,17 +15,6 @@
                 </div>
             </div>
             {% include "content_items.html" %}
-            {% if all_posts|length > 1 %}
-            <div class="row">
-                <div class="col">
-                    <form action="{% url 'index' %}" method="post">
-                        {% csrf_token %}
-                        <input type="hidden" class="form-control" name="views" value="{{ view_more }}">
-                        <button type="Submit" value="submit" class="btn btn-default lower-btn view-more">View 2 more</button>
-                    </form>
-                </div>
-            </div>
-            {% endif %}
         </div>
     {% else %}
         <div class="row">
