@@ -24,7 +24,11 @@ from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
 from django.db import IntegrityError
+
+from .forms import UserForm, ProfileForm
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 
 
 def index(request):
@@ -74,6 +78,38 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
 
     def get_object(self):
         return self.request.user.profile
+
+
+class PicUpdate(SuccessMessageMixin, UpdateView):
+    model = Profile
+    fields = ['user_photo']
+    template_name = 'user_form.html'
+    success_url = reverse_lazy('profile')
+    success_message = " Profile was updated successfully"
+
+    def get_object(self):
+        return self.request.user.profile
+
+
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, ('Your profile was successfully updated!'))
+            return redirect('profile')
+        else:
+            messages.error(request, ('Please correct the error below.'))
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'profile_edit.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
 
 #def profile(request):
  #   if not request.user.is_authenticated:
