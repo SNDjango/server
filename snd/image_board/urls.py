@@ -1,8 +1,13 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework import routers
+
 from . import views
+
+router = routers.DefaultRouter()
+router.register(r'users', views.UserViewSet)
 
 
 urlpatterns = [
@@ -22,6 +27,8 @@ urlpatterns = [
     url(r'^search$', views.search, name='search'),
     url(r'^like-post/$', views.like_post, name='like_post'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
+    url(r'^restapi/', include(router.urls)),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 if settings.DEBUG:

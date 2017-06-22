@@ -29,6 +29,9 @@ from .forms import UserForm, ProfileForm
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from rest_framework import viewsets
+from .serializers import UserSerializer
+
 
 
 def index(request):
@@ -358,3 +361,11 @@ def comment_on_item(request, content_id):
         messages.warning(request, "Please write something.")
         # return HttpResponse("404")
     return HttpResponse("403")
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = UserSerializer
