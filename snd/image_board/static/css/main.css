@@ -67,12 +67,15 @@ button {
 .navbar-custom .navbar-nav > li > a {
     color: #fff;
 	font-size: 16px;
+	line-height: 55px;
+	height: 55px;
+	padding-top: 0;
 }
 
 .navbar-custom .navbar-nav > li > a:hover,
 .navbar-custom .navbar-nav > li > a:focus {
     color: #333;
-	height: 55px;
+	/*height: 55px;*/
 }
 
 .navbar-custom .navbar-nav > .active > a,
@@ -80,7 +83,7 @@ button {
 .navbar-custom .navbar-nav > .active > a:focus {
     color: #ffffff;
     background-color: #8f8f8f;
-	height: 55px;
+	/*height: 55px;*/
 }
 
 .navbar-custom .navbar-nav > .open > a,
@@ -252,7 +255,7 @@ a.btn-primary-outline:hover {
 	.navbar-custom .navbar-nav > li > a:hover,
 	.navbar-custom .navbar-nav > li > a:focus {
 	    color: #333;
-		height: 100%;
+		/*height: 100%;*/
 	}
 
 	.navbar-custom .navbar-nav > .active > a,
@@ -260,7 +263,7 @@ a.btn-primary-outline:hover {
 	.navbar-custom .navbar-nav > .active > a:focus {
 	    color: #ffffff;
 	    background-color: #8f8f8f;
-		height: 100%;
+		/*height: 100%;*/
 	}
 
 }
