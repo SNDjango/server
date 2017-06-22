@@ -142,7 +142,7 @@ def view_my_posts(request):
             ntl = 0
             nntl = 0
 
-        for post in all_posts:
+        for post in pages:
             tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
             filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
             post.tags = filtered_tags
@@ -161,6 +161,21 @@ def search(request):
     if not request.user.is_authenticated:
         return redirect_to_login('index', login_url='login_page')
     else:
+        if request.method == 'GET':
+            ref = request.GET.get('ref')
+            keyword = request.GET.get('keyword')
+            if ref == 'hashtag':
+                pages = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+            else:
+                pages_hashtag = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+                pages_title = set(ContentItem.objects.filter(title__icontains=keyword))
+                pages = pages_hashtag | pages_title
+
+            for post in pages:
+                tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
+                filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
+                post.tags = filtered_tags
+            return render(request, 'search.html', {'pages': pages})
         return render(request, 'search.html')
 
 
@@ -271,7 +286,6 @@ def upload(request):
                 pass
 
             saved_tag = Hashtag.objects.get(hashtag_text=tag)
-
             content_hashtag = ContentHashTag(content_id=submitted_item, hashtag_id=saved_tag)
             content_hashtag.save()
 

@@ -11,7 +11,7 @@
             <div class="col-md-12">
                 <div class="hashtag-container">
                     {% for tag in post.tags %}
-                        <span class="hashtag-frame">{{ tag }}</span>
+                        <span class="hashtag-frame"><a href="/search?keyword={{ tag }}&ref=hashtag" class="hashtag-link">{{ tag }}</a></span>
                     {% endfor %}
                 </div>
             </div>
@@ -51,11 +51,11 @@
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="form-group col-md-12 comment-section-{{ post.id }} collapse">
-                  <label for="comment_text">New comment:</label>
+                    <label for="comment_text">New comment:</label>
                     <textarea type="text" class="form-control" id="write-comment" data-com-id="{{ post.id }}" maxlength="400" name="comment_text" placeholder="max. 400 characters" style="height: 80px;"></textarea>
                 </div>
             </form>
-            <div id="comments">
+            <div id="comments" class="comments">
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
                     <div class="comment-section-{{ post.id }} collapse">
