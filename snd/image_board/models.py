@@ -27,7 +27,7 @@ class ContentItem(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name='user_profile',on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile',on_delete=models.CASCADE)
     #email = models.EmailField()
     #first_name = models.CharField(max_length=20, blank=True)
     #last_name = models.CharField(max_length=20, blank=True)
@@ -50,11 +50,11 @@ class Profile(models.Model):
     def create_user_profile(sender, instance, created, **kwargs):
         if created:
             Profile.objects.create(user=instance)
-        instance.user_profile.save()
+        instance.profile.save()
 
     @receiver(post_save, sender=User)
     def save_user_profile(sender, instance, **kwargs):
-        instance.user_profile.save()
+        instance.profile.save()
 
 
 class Comment(models.Model):
