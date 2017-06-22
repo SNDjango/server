@@ -281,6 +281,7 @@ a.btn-primary-outline:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
+	z-index: 1000;
 
     -webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
@@ -339,6 +340,12 @@ a.btn-primary-outline:hover {
 	opacity: 1;
 	padding: 10px 17px;
 	font-size: 27px;
+}
+
+.hashtag-link,
+a.hashtag-link:hover {
+	text-decoration: none;
+	color: #fff;
 }
 
 #indexSignup{
