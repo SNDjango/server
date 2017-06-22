@@ -301,7 +301,7 @@ def comment_on_item(request, content_id):
             new_comment.save()
             data = json.dumps({
                 'auth': author.username,
-                'pic': author.user_profile.user_photo.url,
+                'pic': author.profile.user_photo.url,
                 'text': comment_text,
             })
         return HttpResponse(data, content_type='application/json')

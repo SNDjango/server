@@ -55,6 +55,7 @@
                     <textarea type="text" class="form-control" id="write-comment" data-com-id="{{ post.id }}" maxlength="400" name="comment_text" placeholder="max. 400 characters" style="height: 80px;"></textarea>
                 </div>
             </form>
+            <div id="comments">
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
                     <div class="comment-section-{{ post.id }} collapse">
@@ -68,6 +69,7 @@
                     </div>
                 </div>
             {% endfor %}
+            </div>
         </div>
     </div>
 {% endfor %}
