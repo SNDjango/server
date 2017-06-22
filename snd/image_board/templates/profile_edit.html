@@ -2,11 +2,10 @@
 {% block title%}Your Profile{% endblock %}
 
 {% block body %}
-        <div class="container-fluid">
+        <div class="content-cont">
             <div class="row">
-                <div class="col-sm-12 col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-body">
+                <div class="col-sm-12 col-md-12">
+                    <div style="margin: 0 auto;">
                             {% if error_message %}
                                 <p><strong>{{ error_message }}</strong></p>
                             {% endif %}
@@ -27,13 +26,11 @@
                                     </div>
                                     {% endif %}
                                     <div class="form-group">
-                                        <a class="btn btn-primary-outline redbutton pull-right" href="{%  url 'profile' %}">Cancel</a>
-                                        <button type="submit" class="btn btn-primary-outline bluebutton pull-right">Save changes</button>
+                                        <a class="btn btn-primary bluebutton pull-right" href="{%  url 'profile' %}">Cancel</a>
+                                        <button type="submit" class="btn btn-primary bluebutton pull-right">Save changes</button>
                                     </div>
                                 </form>
-
                             {% endif %}
-                        </div>
                     </div>
                 </div>
             </div>

@@ -36,36 +36,40 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="btn-group btn-group-justified" role="group">
-                    <a href="#" class="btn btn-primary-outline post-likes" data-post-id="{{ post.id }}"><span
-                            class="glyphicon glyphicon-thumbs-up"></span> &nbsp;<div class="like_live"
-                                                                                     style="display:inline;">{{ post.get_likes }}</div>
+                    <a href="#" class="btn btn-primary-outline post-likes" data-post-id="{{ post.id }}">
+                        <span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;
+                        <div class="like_live" style="display:inline;">{{ post.get_likes }}</div>
                     </a>
-                    <a href="{% url 'comment_on_item' post.id %}" class="btn btn-primary-outline">Comment</a>
+                    <a href="#!" class="btn btn-primary-outline" data-toggle="collapse" data-target=".comment-section-{{ post.id }}"><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ post.comments.count }}</a>
                     <a href="#" class="btn btn-primary-outline">Share</a>
                     <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
-                </div>
-
-                <div class='pull-right'>
-                    <button class="btn btn-default" data-toggle="collapse" data-target=".comment-section">
-                        <span class="glyphicon glyphicon-envelope"></span>{{ post.comments.count }} comments
-                    </button>
                 </div>
             </div>
         </div>
 
         <div class="row" id="">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group col-md-12 comment-section-{{ post.id }} collapse">
+                  <label for="comment_text">New comment:</label>
+                    <textarea type="text" class="form-control" id="write-comment" data-com-id="{{ post.id }}" maxlength="400" name="comment_text" placeholder="max. 400 characters" style="height: 80px;"></textarea>
+                </div>
+            </form>
+            <div id="comments">
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
-                    <div class="comment-section">
-                        <p><img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
-                                alt="Cinque Terre"
-                                width="45" height="45"> <span
-                                class="glyphicon glyphicon-time"></span>{{ comment.publication_date|timesince }} ago</p>
-                        <ul><p>{{ comment.comment_text }}</p></ul>
-
+                    <div class="comment-section-{{ post.id }} collapse">
+                        <div class="panel panel-danger" style="border-radius: 10px;">
+                                <img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
+                                        alt="user"
+                                        style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">
+                                        <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by {{ comment.author }}<p>
+                               <div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p></div>
+                        </div>
                     </div>
                 </div>
             {% endfor %}
+            </div>
         </div>
     </div>
 {% endfor %}
