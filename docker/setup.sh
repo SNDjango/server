@@ -1,7 +1,14 @@
 #!/bin/bash
 
-echo "Setup"
-service start apache2
-service start postgresql
-service status apache2
-service status postgresql
+echo "SNDjango setup"
+
+echo "sndjangocore" > /etc/hostname
+
+cd /opt/server/
+
+echo "Setting up python environment"
+pyvenv venv
+source venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt
+
