@@ -20,6 +20,7 @@ cd ..
 echo "setting up permissions"
 chmod 664 /opt/server/snd/db.sqlite3
 chmod 775 /opt/server/snd
+chmod 775 -R /opt/server/snd/media
 
 chown :www-data /opt/server/snd/db.sqlite3
 chown :www-data /opt/server/snd
