@@ -12,6 +12,10 @@ source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
+cd snd
+python manage.py migrate
+cd ..
+
 
 echo "setting up permissions"
 chmod 664 /opt/server/snd/db.sqlite3
@@ -23,5 +27,5 @@ chown :www-data /opt/server/snd
 echo "configuring apache"
 cp docker/100-sndjango.conf /etc/apache2/sites-available/
 a2ensite 100-sndjango.conf
-service apache restart
+apachectl restart
 
