@@ -6,3 +6,4 @@ RUN apt-get update && apt-get install -y apache2 && apt-get install -y libapache
 RUN cd /opt; git clone https://github.com/SNDjango/server.git; cd server; git checkout docker;
 RUN mkdir /root/install/; cp /opt/server/docker/setup.sh /root/install/setup.sh; chmod +x /root/install/setup.sh;
 
+CMD ["/usr/sbin/apache2ctl", "-D", "FOREGROUND"]
