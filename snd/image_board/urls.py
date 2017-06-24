@@ -22,8 +22,10 @@ urlpatterns = [
     url(r'^search$', views.search, name='search'),
     url(r'^like-post/$', views.like_post, name='like_post'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
-    url(r'^boards/([0-9a-zA-Z]+)$', views.boards, name='boards'),
+    url(r'^boards/([0-9a-zA-Z ]+)$', views.boards, name='boards'),
     url(r'^boards$', views.boards, name='boards'),
+    url(r'^createboard$', views.create_board, name='create_board'),
+    url(r'^makeboard$', views.make_board, name='make_board'),
 ]
 
 if settings.DEBUG:

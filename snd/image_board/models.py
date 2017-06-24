@@ -81,12 +81,12 @@ class ContentHashTag(models.Model):
 
 
 class Board(models.Model):
-    board_name = models.CharField(unique=True, max_length=50)
-    board_desc = models.CharField(unique=True, max_length=150)
-    board_admin = models.ForeignKey(User, on_delete= models.CASCADE)
+    name = models.CharField(unique=True, max_length=50)
+    description = models.CharField(unique=True, max_length=150)
+    admin = models.ForeignKey(User, on_delete= models.CASCADE)
 
     def __str__(self):
-        return self.board_name
+        return self.name
 
 
 class ContentBoard(models.Model):

@@ -1,69 +1,56 @@
 {% extends 'base.html' %}
-{% block title%}myposts{% endblock %}
+{% block title%}{% if board_name %}{{ board_name }}{% else %}All Boards{% endif %}{% endblock %}
 {% block boards_active %}active{% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
-    <div class="row">
-        <div class="col-md-12">
-            <div class="content-cont">
-                <div class="row">
-                    <div class="col-md-11 col-xs-10">
-                        <h2>Boards</h2>
-                    </div>
-                    <div class="col-md-1 col-xs-2">
-                        <div class="dropdown pull-right">
-                            <button class="btn btn-primary-outline dropdown-toggle" type="button" data-toggle="dropdown">
-                            <span class="glyphicon glyphicon-menu-down"></span></button>
-                            <ul class="dropdown-menu">
-                                {% for board in top_boards %}
-                                <li><a href="/boards/{{ board }}">{{ board.board_name }}</a></li>
-                                {% endfor %}
-                                <li><hr style="border:solid #ccc 1px;" /></li>
-                                <li><a href="/boards">Show All</a></li>
-                                <li><a href="#">Create New</a></li>
-                                <li><a href="#">Search</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <hr class="line"/>
-                    </div>
-                </div>
+    <div class="content-cont">
+        <div class="row">
+            <div class="col-md-11 col-xs-10">
                 {% if board_name %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>{{ board_name }}</h3>
-                    </div>
-                </div>
-                    {% include "content_items.html" %}
-                    {% if not user.contentitem_set.all %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>Oops, nothing to see here!</h3>
-                    </div>
-                </div>
-                    {% endif %}
+                <h2>{{ board_name }}</h2>
                 {% else %}
-                <div class="row">
-                    <div class="col-md-12">
-                        <h3>All Boards</h3>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        {% for board in all_boards %}
-                        <a href="/boards/{{ board }}"><i>{{ board.board_name }}</i></a>
-                        {% endfor %}
-                    </div>
-                </div>
+                <h2>All Boards</h2>
                 {% endif %}
             </div>
+            <div class="col-md-1 col-xs-2">
+                <div class="dropdown pull-right">
+                    <button class="btn btn-primary-outline dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-menu-down"></span></button>
+                    <ul class="dropdown-menu">
+                        {% for board in top_boards %}
+                        <li><a href="/boards/{{ board }}">{{ board.name }}</a></li>
+                        {% endfor %}
+                        <li><hr style="border:solid #ccc 1px;" /></li>
+                        <li><a href="{% url 'boards' %}">Show All</a></li>
+                        <li><a href="{% url 'create_board' %}">Create New</a></li>
+                        <li><a href="#">Search</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
-        <!-- <div class="col-md-2">
-            <div style="background-color: #000; height: 50px; margin-top: ">
-        </div> -->
+        <div class="row">
+            <div class="col-md-12">
+                <hr class="line"/>
+            </div>
+        </div>
+        {% if board_name %}
+            {% include "content_items.html" %}
+            {% if not user.contentitem_set.all %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Oops, nothing to see here!</h3>
+            </div>
+        </div>
+            {% endif %}
+        {% else %}
+            {% for board in all_boards %}
+        <div class="row">
+            <div class="col-md-12">
+                <h4><a href="/boards/{{ board }}">{{ board }}</a></h4>
+            </div>
+        </div>
+            {% endfor %}
+        {% endif %}
     </div>
     {% endif %}
 {% endblock %}

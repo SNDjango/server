@@ -367,10 +367,36 @@ def boards(request, board_name="def"):
     if not request.user.is_authenticated:
         return redirect_to_login('boards', login_url='login_page')
     else:
-        top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')
-        if board_name == "def" or len(Board.objects.filter(board_name=board_name)) == 0:
-            boards = Board.objects.values_list('board_name', flat=True)
+        top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')[:3]
+        if board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
+            boards = Board.objects.values_list('name', flat=True)
             return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards})
         else:
-            board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(board_name=board_name.lower()).values_list('id', flat=True)).values_list('content_id', flat=True))
+            board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('id', flat=True)).values_list('content_id', flat=True))
             return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards})
+
+
+def create_board(request):
+    if not request.user.is_authenticated:
+        return redirect_to_login('createboard', login_url='login_page')
+    else:
+        return render(request, 'createboard.html')
+
+
+def make_board(request):
+    if not request.user.is_authenticated:
+        return redirect_to_login('create_board', login_url='login_page')
+    else:
+        if request.method == 'POST' and request.user:
+            submitted_name = request.POST.get('title', '<<post error>>')
+            submitted_description = request.POST.get('description', '<<post error>>')
+            try:
+                submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user)
+                submitted_board.save()
+                return render(request, 'createboard.html')
+            except:
+                messages.error(request, 'Could not write to Database')
+                return redirect('create_board')
+        else:
+            messages.error(request, 'Bad request.')
+            return redirect('create_board')
