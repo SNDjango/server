@@ -27,6 +27,7 @@ chown :www-data /opt/server/snd
 
 echo "configuring apache"
 cp docker/100-sndjango.conf /etc/apache2/sites-available/
+echo "disabling default configuration"
 a2dissite 000-default.conf
 a2ensite 100-sndjango.conf
 apachectl restart
