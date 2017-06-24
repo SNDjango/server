@@ -24,6 +24,8 @@ chmod 775 -R /opt/server/snd/media
 
 chown :www-data /opt/server/snd/db.sqlite3
 chown :www-data /opt/server/snd
+chown :www-data -R /opt/server/snd/media
+
 
 echo "configuring apache"
 cp docker/100-sndjango.conf /etc/apache2/sites-available/
