@@ -358,3 +358,10 @@ def comment_on_item(request, content_id):
         messages.warning(request, "Please write something.")
         # return HttpResponse("404")
     return HttpResponse("403")
+
+
+def boards(request):
+   if not request.user.is_authenticated:
+       return redirect_to_login('boards', login_url='login_page')
+   else:
+       return render(request, 'boards.html')

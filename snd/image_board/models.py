@@ -80,6 +80,20 @@ class ContentHashTag(models.Model):
     hashtag_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
 
 
+class Board(models.Model):
+    board_name = models.CharField(unique=True, max_length=50)
+    board_desc = models.CharField(unique=True, max_length=150)
+    board_admin = models.ForeignKey(User, on_delete= models.CASCADE)
+
+    def __str__(self):
+        return self.hashtag_text
+
+
+class ContentBoard(models.Model):
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
+
+
 
 class Favorite(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

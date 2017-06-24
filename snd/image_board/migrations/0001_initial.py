@@ -83,6 +83,23 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
+        migrations.CreateModel(
+            name='Board',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('board_name', models.CharField(max_length=50, unique=True)),
+                ('board_desc', models.CharField(max_length=150, unique=True)),
+                ('board_admin', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ContentBoard',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('board_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.Hashtag')),
+                ('content_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.ContentItem')),
+            ],
+        ),
         migrations.AddField(
             model_name='contenthashtag',
             name='content_id',
