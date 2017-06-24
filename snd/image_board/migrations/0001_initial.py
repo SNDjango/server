@@ -96,7 +96,7 @@ class Migration(migrations.Migration):
             name='ContentBoard',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('board_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.Hashtag')),
+                ('board_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.Board')),
                 ('content_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.ContentItem')),
             ],
         ),

@@ -86,12 +86,12 @@ class Board(models.Model):
     board_admin = models.ForeignKey(User, on_delete= models.CASCADE)
 
     def __str__(self):
-        return self.hashtag_text
+        return self.board_name
 
 
 class ContentBoard(models.Model):
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
-    board_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
 
 
 

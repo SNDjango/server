@@ -13,6 +13,7 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.template import RequestContext
+from django.db.models import Count
 from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
@@ -23,6 +24,7 @@ from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
+from .models import Board, ContentBoard
 from django.db import IntegrityError
 
 from .forms import UserForm, ProfileForm
@@ -360,8 +362,15 @@ def comment_on_item(request, content_id):
     return HttpResponse("403")
 
 
-def boards(request):
-   if not request.user.is_authenticated:
-       return redirect_to_login('boards', login_url='login_page')
-   else:
-       return render(request, 'boards.html')
+
+def boards(request, board_name="def"):
+    if not request.user.is_authenticated:
+        return redirect_to_login('boards', login_url='login_page')
+    else:
+        top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')
+        if board_name == "def" or len(Board.objects.filter(board_name=board_name)) == 0:
+            boards = Board.objects.values_list('board_name', flat=True)
+            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards})
+        else:
+            board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(board_name=board_name.lower()).values_list('id', flat=True)).values_list('content_id', flat=True))
+            return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards})
