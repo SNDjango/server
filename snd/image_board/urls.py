@@ -8,6 +8,12 @@ from . import views
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
+router.register(r'profiles', views.ProfileViewSet)
+router.register(r'posts', views.ContentItemViewSet)
+router.register(r'hashtags', views.HashtagViewSet)
+router.register(r'content-hashtag', views.ContentHashtagViewSet)
+router.register(r'likes', views.LikeViewSet)
+router.register(r'comments', views.CommentViewSet)
 
 
 urlpatterns = [
