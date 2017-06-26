@@ -89,36 +89,35 @@
                 return false;
             });
 
-            $("#write-comment").keypress(function (e) {
+            $(document).keypress(function (e) {
                 // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
-                if(e.which == 13 && !e.shiftKey) {
+                var tag = e.target.tagName.toLowerCase();
+                if(e.which == 13 && !e.shiftKey && tag != 'input') {
                     // POST comment without reloading site (AJAX)
+                    var el = e.target;
+                    el = $(el);
                     var id;
-                    id = $(this).attr('data-com-id');
-                    var form = $(this).closest("form");
+                    id = el.attr('data-com-id');
+                    var form = el.closest("form");
                     $.post('/comment/' + id, form.serialize(), function(data){
                         var obj = JSON.parse(JSON.stringify(data));
                         var newhtml = '<div class="col-md-12">';
                         newhtml += '<div class="comment-section-' + id + ' collapse in">';
                         newhtml += '<div class="panel panel-danger" style="border-radius: 10px;">';
                         newhtml += '<img src="' + obj.pic + '" class="img-circle" alt="user" style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">';
-                        newhtml += '<p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;0 min ago by ' + obj.auth + '<p>';
+                        newhtml += '<p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;0 minutes ago by ' + obj.auth + '<p>';
                         newhtml += '<div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">' + obj.text + '</p></div>';
                         newhtml += '</div>';
                         newhtml += '</div>';
                         newhtml += '</div>';
                         var template = document.createElement('template');
                         template.innerHTML = newhtml;
-                        var el = document.getElementById('comments');
-                        $("#comments").prepend($(newhtml));
+                        el.parent().parent().next().prepend($(newhtml));
                     });
-                    $(this).closest("textarea").val('');
+                    el.closest("textarea").val('');
                     return false;
                 }
             });
-
-
-
         });
     </script>
 {% endblock %}
