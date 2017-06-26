@@ -5,6 +5,7 @@ from  .models import Comment
 from .models import ContentHashTag
 from  .models import Favorite
 from .models import Profile
+from .models import CustomUser
 
 
 
@@ -15,3 +16,5 @@ admin.site.register(ContentItem)
 admin.site.register(Comment)
 admin.site.register(ContentHashTag)
 admin.site.register(Favorite)
+admin.site.register(CustomUser)
+
