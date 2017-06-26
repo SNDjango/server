@@ -62,6 +62,7 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+    downvotes = models.PositiveIntegerField(default=0)
     class Meta:
         ordering = ['-publication_date']
     #def __str__(self):

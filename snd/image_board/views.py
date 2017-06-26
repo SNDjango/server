@@ -16,6 +16,7 @@ from django.template import RequestContext
 from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 from PIL import Image
 import json
 from .models import ContentItem
@@ -338,6 +339,25 @@ def like_post(request):
         likes = post.get_likes()
     return HttpResponse(likes)
 
+@login_required
+def downvote_comment(request):
+    comment_id = None
+    if request.method == 'GET':
+        comment_id = request.GET['comment_id']
+    downvotes = 0
+    if comment_id:
+        comment = Comment.objects.get(id=int(comment_id))
+        if comment:
+            downvotes = comment.downvotes + 1
+            comment.downvotes = downvotes
+            comment.save()
+            data = json.dumps({
+                'downvotes': downvotes,
+
+
+            })
+
+    return HttpResponse(data, content_type='application/json')#   return HttpResponse(data, content_type='application/json')
 
 def comment_on_item(request, content_id):
     if not request.user.is_authenticated:
