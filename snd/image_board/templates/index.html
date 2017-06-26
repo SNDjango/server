@@ -134,17 +134,30 @@
             // JQuery code to be added in here. $("input[name*='nation']")
            $('.downvotes').click(function (e) {
                 console.log("Button clicked");
-                var el = e.target;
-                    el = $(el);
-                var commentid;
-                commentid = $(this).attr("data-comment-id");
+                var el = $(e.target);
+                var commentid = $(this).attr("data-comment-id");
+                console.log("comment id: " + commentid);
+                console.log("get span" + el.children("span"));
                 $.get('/downvote_comment/', {comment_id: commentid}, function (data) {
-                    var obj = JSON.parse(JSON.stringify(data));
-                    el.closest("p").html(obj.downvotes);
-                  <!--  $('#downvote_count').html(data);-->
+                   <!-- el.prev().text(data.downvotes);-->
+                    el.children("span").text(data.downvotes);
 
                 });
             });
+
+            $('.upvotes').click(function (e) {
+                console.log("Button clicked");
+                var el = $(e.target);
+                var commentid = $(this).attr("data-comment-id");
+                console.log("comment id: " + commentid);
+                console.log("get span" + el.children("span"));
+                $.get('/upvote_comment/', {comment_id: commentid}, function (data) {
+                   <!-- el.prev().text(data.downvotes);-->
+                    el.children("span").text(data.upvotes);
+
+                });
+            });
+
 
         });
 

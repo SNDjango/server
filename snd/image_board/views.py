@@ -359,6 +359,26 @@ def downvote_comment(request):
 
     return HttpResponse(data, content_type='application/json')#   return HttpResponse(data, content_type='application/json')
 
+@login_required
+def upvote_comment(request):
+    comment_id = None
+    if request.method == 'GET':
+        comment_id = request.GET['comment_id']
+    upvotes = 0
+    if comment_id:
+        comment = Comment.objects.get(id=int(comment_id))
+        if comment:
+            upvotes = comment.upvotes + 1
+            comment.upvotes = upvotes
+            comment.save()
+            data = json.dumps({
+                'upvotes': upvotes,
+
+
+            })
+
+    return HttpResponse(data, content_type='application/json')
+
 def comment_on_item(request, content_id):
     if not request.user.is_authenticated:
         return redirect_to_login('comment', login_url='login_page')

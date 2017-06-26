@@ -23,6 +23,8 @@ urlpatterns = [
     url(r'^like-post/$', views.like_post, name='like_post'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
     url(r'^downvote_comment/$', views.downvote_comment, name='downvote_comment'),
+    url(r'^upvote_comment/$', views.upvote_comment, name='upvote_comment'),
+
 ]
 
 if settings.DEBUG:

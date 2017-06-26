@@ -68,11 +68,18 @@
                                      <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p>
 
                             {% if user.is_authenticated %}
-                                  <p id="downvote_count">{{ comment.downvotes}}</p>
+                               <!-- <p id="downvote_count">{{ comment.downvotes}}</p>-->
+                                <div class="text-right vote-buttons" style="margin-right: 10px">
                                 <button class="downvotes" data-comment-id="{{ comment.id }}" class="btn btn-primary" type="button">
-                                    <span class="glyphicon glyphicon-thumbs-down"></span>
-                                    Down
+                                    <span class="glyphicon glyphicon-thumbs-down">{{ comment.downvotes}}</span>
+
                                 </button>
+
+                                <button class="upvotes" data-comment-id="{{ comment.id }}" class="btn btn-primary" type="button">
+                                    <span class="glyphicon glyphicon-thumbs-up">{{ comment.upvotes}}</span>
+
+                                </button>
+                                </div>
 
 
                             {% endif %}
