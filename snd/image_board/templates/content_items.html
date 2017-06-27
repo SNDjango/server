@@ -1,4 +1,4 @@
-{% for post in all_posts %}
+{% for post in pages %}
 <div id="{{ forloop.counter }}" class="image-cont">
     <div class="row">
         <div class="col-md-12">
@@ -6,39 +6,72 @@
                 <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by {{ post.uploaded_by }}, {{ post.upload_date }}</small></h3>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="hashtag-container">
-                {% for tag in post.tags %}
-                    <span class="hashtag-frame">{{ tag }}</span>
-                {% endfor %}
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hashtag-container">
+                    {% for tag in post.tags %}
+                        <span class="hashtag-frame"><a href="/search?keyword={{ tag }}&ref=hashtag" class="hashtag-link">{{ tag }}</a></span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="image-container">
+                    <img src="{{ post.image.url }}" class="img-responsive line center-image">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="description-container">
+                    <p>{{ post.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group btn-group-justified" role="group">
+                    <a href="#" class="btn btn-primary-outline post-likes" data-post-id="{{ post.id }}">
+                        <span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;
+                        <div class="like_live" style="display:inline;">{{ post.get_likes }}</div>
+                    </a>
+                    <a href="#!" class="btn btn-primary-outline" data-toggle="collapse" data-target=".comment-section-{{ post.id }}"><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ post.comments.count }}</a>
+                    <a href="#" class="btn btn-primary-outline">Share</a>
+                    <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" id="">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group col-md-12 comment-section-{{ post.id }} collapse">
+                    <label for="comment_text">New comment:</label>
+                    <textarea type="text" class="form-control" id="write-comment" data-com-id="{{ post.id }}" maxlength="400" name="comment_text" placeholder="max. 400 characters" style="height: 80px;"></textarea>
+                </div>
+            </form>
+            <div id="comments" class="comments">
+            {% for comment in post.comments.all %}
+                <div class="col-md-12">
+                    <div class="comment-section-{{ post.id }} collapse">
+                        <div class="panel panel-danger" style="border-radius: 10px;">
+                                <img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
+                                        alt="user"
+                                        style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">
+                                        <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by {{ comment.author }}<p>
+                               <div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p></div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="image-container">
-                <img src="{{ post.image.url }}" class="img-responsive line center-image">
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="description-container">
-                <p>{{ post.description }}</p>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <div class="btn-group btn-group-justified" role="group">
-                <a href="#" class="btn btn-primary-outline post-likes" data-post-id="{{ post.id }}"><span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;<div class="like_live" style="display:inline;">{{ post.get_likes }}</div></a>
-                <a href="#" class="btn btn-primary-outline">Comment</a>
-                <a href="#" class="btn btn-primary-outline">Share</a>
-                <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
-            </div>
-        </div>
-    </div>
-</div>
 {% endfor %}
+
+{% include "pagination.html" %}

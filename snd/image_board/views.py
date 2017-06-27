@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, DetailView, UpdateView, DeleteView, ListView
 from django.core.urlresolvers import reverse_lazy
 from django.contrib.sessions.models import Session
-from django.shortcuts import render, redirect, render_to_response
+from django.shortcuts import render, redirect, render_to_response, get_object_or_404
 from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
@@ -12,28 +12,54 @@ from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.template import RequestContext
 from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from PIL import Image
+import json
 from .models import ContentItem
 from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
+from .models import Comment
 from django.db import IntegrityError
 
+from .forms import UserForm, ProfileForm
+
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+
+
 def index(request):
-    if(request.method == 'POST'):
-        views = int(request.POST['views'])+2
+    items_on_page = 1
+    max_pages_full = 8
+
+    all_posts = ContentItem.objects.all().order_by('-upload_date')
+
+    paginator = Paginator(all_posts, items_on_page)
+    page = request.GET.get('page')
+
+    try:
+        pages = paginator.page(page)
+    except PageNotAnInteger:
+        pages = paginator.page(1)
+    except EmptyPage:
+        pages = paginator.page(paginator.num_pages)
+
+    if paginator.num_pages > max_pages_full:
+        ntl = paginator.num_pages - 1
+        nntl = paginator.num_pages - 2
     else:
-        views = 2
-    all_posts = ContentItem.objects.all().order_by('-upload_date')[:views]
-    for post in all_posts:
+        ntl = 0
+        nntl = 0
+
+    for post in pages:
         tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
         filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
         post.tags = filtered_tags
 
-    return render(request, 'index.html', {'all_posts': all_posts, 'view_more': views})
+    return render(request, 'index.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl})
 
 
 class IndexView(generic.ListView):
@@ -53,6 +79,38 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
     def get_object(self):
         return self.request.user.profile
 
+
+class PicUpdate(SuccessMessageMixin, UpdateView):
+    model = Profile
+    fields = ['user_photo']
+    template_name = 'user_form.html'
+    success_url = reverse_lazy('profile')
+    success_message = " Profile was updated successfully"
+
+    def get_object(self):
+        return self.request.user.profile
+
+
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UserForm(request.POST, instance=request.user)
+        profile_form = ProfileForm(request.POST, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, ('Your profile was successfully updated!'))
+            return redirect('profile')
+        else:
+            messages.error(request, ('Please correct the error below.'))
+    else:
+        user_form = UserForm(instance=request.user)
+        profile_form = ProfileForm(instance=request.user.profile)
+    return render(request, 'profile_edit.html', {
+        'user_form': user_form,
+        'profile_form': profile_form
+    })
+
+
 #def profile(request):
  #   if not request.user.is_authenticated:
   #      return redirect_to_login('profile', login_url='login_page')
@@ -62,12 +120,34 @@ class UserUpdate(SuccessMessageMixin, UpdateView):
 
 def view_my_posts(request):
     if request.user.is_authenticated:
+        items_on_page = 2
+        max_pages_full = 8
+
         all_posts = ContentItem.objects.filter(uploaded_by = request.user).order_by('-upload_date')
-        for post in all_posts:
+
+        paginator = Paginator(all_posts, items_on_page)
+        page = request.GET.get('page')
+
+        try:
+            pages = paginator.page(page)
+        except PageNotAnInteger:
+            pages = paginator.page(1)
+        except EmptyPage:
+            pages = paginator.page(paginator.num_pages)
+
+        if paginator.num_pages > max_pages_full:
+            ntl = paginator.num_pages - 1
+            nntl = paginator.num_pages - 2
+        else:
+            ntl = 0
+            nntl = 0
+
+        for post in pages:
             tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
             filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
             post.tags = filtered_tags
-        return render(request, 'myposts.html', {'all_posts': all_posts})
+
+        return render(request, 'myposts.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl})
     else:
         return render(request, 'login.html')
 
@@ -85,6 +165,21 @@ def search(request):
     if not request.user.is_authenticated:
         return redirect_to_login('index', login_url='login_page')
     else:
+        if request.method == 'GET':
+            ref = request.GET.get('ref')
+            keyword = request.GET.get('keyword')
+            if ref == 'hashtag':
+                pages = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+            else:
+                pages_hashtag = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+                pages_title = set(ContentItem.objects.filter(title__icontains=keyword))
+                pages = pages_hashtag | pages_title
+
+            for post in pages:
+                tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
+                filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
+                post.tags = filtered_tags
+            return render(request, 'search.html', {'pages': pages})
         return render(request, 'search.html')
 
 
@@ -195,7 +290,6 @@ def upload(request):
                 pass
 
             saved_tag = Hashtag.objects.get(hashtag_text=tag)
-
             content_hashtag = ContentHashTag(content_id=submitted_item, hashtag_id=saved_tag)
             content_hashtag.save()
 
@@ -247,3 +341,24 @@ def like_post(request):
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
     return HttpResponse(likes)
+
+
+def comment_on_item(request, content_id):
+    if not request.user.is_authenticated:
+        return redirect_to_login('comment', login_url='login_page')
+    if request.method == 'POST':
+        comment_text = request.POST['comment_text']
+        if comment_text and not comment_text == "":
+            author = request.user
+            contentItem = ContentItem.objects.get(pk=content_id)
+            new_comment = Comment(author=author, comment_text=comment_text, contentItem=contentItem)
+            new_comment.save()
+            data = json.dumps({
+                'auth': author.username,
+                'pic': author.profile.user_photo.url,
+                'text': comment_text,
+            })
+        return HttpResponse(data, content_type='application/json')
+        messages.warning(request, "Please write something.")
+        # return HttpResponse("404")
+    return HttpResponse("403")

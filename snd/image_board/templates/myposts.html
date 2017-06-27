@@ -5,10 +5,14 @@
     {% if user.is_authenticated %}
         <div class="content-cont">
             <div class="row">
-                <h2>Your Uploads</h2>
+                <h2>{{ user }}'s Uploads</h2>
                 <hr class="line"/>
             </div>
             {% include "content_items.html" %}
+        {% if not user.contentitem_set.all %}
+        <H2>Oops, You don't have any any post, yet! </H2>
+        Please <a href="{% url 'create_post' %}">Create</a> some posts, share and enjoy!!
+        {% endif %}
         </div>
     {% endif %}
 {% endblock %}
@@ -27,6 +31,36 @@
                     // $('.XD').html(data);
                 });
                 return false;
+            });
+
+            $(document).keypress(function (e) {
+                // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
+                var tag = e.target.tagName.toLowerCase();
+                if(e.which == 13 && !e.shiftKey && tag != 'input') {
+                    // POST comment without reloading site (AJAX)
+                    var el = e.target;
+                    el = $(el);
+                    var id;
+                    id = el.attr('data-com-id');
+                    var form = el.closest("form");
+                    $.post('/comment/' + id, form.serialize(), function(data){
+                        var obj = JSON.parse(JSON.stringify(data));
+                        var newhtml = '<div class="col-md-12">';
+                        newhtml += '<div class="comment-section-' + id + ' collapse in">';
+                        newhtml += '<div class="panel panel-danger" style="border-radius: 10px;">';
+                        newhtml += '<img src="' + obj.pic + '" class="img-circle" alt="user" style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">';
+                        newhtml += '<p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;0 minutes ago by ' + obj.auth + '<p>';
+                        newhtml += '<div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">' + obj.text + '</p></div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        var template = document.createElement('template');
+                        template.innerHTML = newhtml;
+                        el.parent().parent().next().prepend($(newhtml));
+                    });
+                    el.closest("textarea").val('');
+                    return false;
+                }
             });
         });
     </script>

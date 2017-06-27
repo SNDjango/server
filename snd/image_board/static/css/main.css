@@ -67,11 +67,15 @@ button {
 .navbar-custom .navbar-nav > li > a {
     color: #fff;
 	font-size: 16px;
+	line-height: 55px;
+	height: 55px;
+	padding-top: 0;
 }
 
 .navbar-custom .navbar-nav > li > a:hover,
 .navbar-custom .navbar-nav > li > a:focus {
     color: #333;
+	/*height: 55px;*/
 }
 
 .navbar-custom .navbar-nav > .active > a,
@@ -79,6 +83,7 @@ button {
 .navbar-custom .navbar-nav > .active > a:focus {
     color: #ffffff;
     background-color: #8f8f8f;
+	/*height: 55px;*/
 }
 
 .navbar-custom .navbar-nav > .open > a,
@@ -163,6 +168,76 @@ a.btn-primary-outline:hover {
 	margin-bottom: 10px;
 }
 
+
+.bluebutton {
+    /*background-color:#5bc0de;*/
+    margin-right:20px;
+    margin-top:20px;
+}
+
+.redbutton {
+    background-color:#d9534f;
+    margin-right:20px;
+    margin-top:20px;
+}
+
+
+.pagination {
+	margin-top: 5px;
+	margin-bottom: 50px;
+	display: flex;
+    justify-content: center;
+}
+
+.pagination li {
+    display: inline;
+}
+
+.pagination li a {
+    color: #000000;
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li span {
+    color: #000000;
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li span:hover {
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li.active span{
+    background-color: #000000;
+    border: 1px solid #000;
+}
+
+.pagination li a:hover:not(.active) {
+    background-color: #008080;
+    color: #ffffff;
+    border: 1px solid #000;
+}
+
+.pagination li.active span:hover {
+    background-color: #000000;
+    border: 1px solid #000;
+}
+
+.pagination li.disabled span {
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+.pagination li.disabled span:hover {
+    background-color: #e5e4e1;
+    border: 1px solid #000;
+}
+
+
+
 @media(max-width:767px){
 	.content-cont {
 		width: 90%;
@@ -176,10 +251,27 @@ a.btn-primary-outline:hover {
 		padding-left: 0;
 		padding-right: 0;
 	}
+
+	.navbar-custom .navbar-nav > li > a:hover,
+	.navbar-custom .navbar-nav > li > a:focus {
+	    color: #333;
+		/*height: 100%;*/
+	}
+
+	.navbar-custom .navbar-nav > .active > a,
+	.navbar-custom .navbar-nav > .active > a:hover,
+	.navbar-custom .navbar-nav > .active > a:focus {
+	    color: #ffffff;
+	    background-color: #8f8f8f;
+		/*height: 100%;*/
+	}
+
 }
 
 @media(max-width:991px){
-
+		#indexDesign{
+		    display: none;
+		}
 }
 
 #search {
@@ -189,6 +281,7 @@ a.btn-primary-outline:hover {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
+	z-index: 1000;
 
     -webkit-transition: all 0.5s ease-in-out;
 	-moz-transition: all 0.5s ease-in-out;
@@ -249,6 +342,12 @@ a.btn-primary-outline:hover {
 	font-size: 27px;
 }
 
+.hashtag-link,
+a.hashtag-link:hover {
+	text-decoration: none;
+	color: #fff;
+}
+
 #indexSignup{
     width:540px;
     height:600px;
@@ -260,6 +359,7 @@ a.btn-primary-outline:hover {
     width:600px;
 }
 
+<<<<<<< HEAD
 
 th { 
 	font-size: 22px; 
@@ -270,6 +370,13 @@ td {
 }
 
 
+=======
+.profile-pic {
+	width:100%;
+	margin-top:25px;
+	margin-bottom:25px;
+}
+>>>>>>> 96d478559b5bbff8fde8c103578c5c23ad43ca5e
 .center-image {
 	display: block;
 	margin: 0 auto;
@@ -299,8 +406,8 @@ td {
 }
 
 .title-container {
-	padding: 10px;
-	margin: -5px;
+	padding: 5px;
+	margin: -20px;
 	margin-bottom: 7px;
 }
 

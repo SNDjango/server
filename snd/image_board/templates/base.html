@@ -3,7 +3,7 @@
 {% load static %}
     <head>
         <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
 
         <title>{% block title %}Social Network{% endblock %}</title>
 
@@ -53,9 +53,8 @@
             </nav>
         </div>
         <div id="search">
-            <form action="{% url 'search' %}" method="post">
-                {% csrf_token %}
-                <input type="search"  placeholder="Keywords" />
+            <form action="{% url 'search' %}" method="get">
+                <input type="search"  name="keyword" placeholder="Keywords" />
                 <button type="submit" class="btn btn-primary-outline" style="color:#fff; border-color:#fff;">Search</button>
             </form>
         </div>

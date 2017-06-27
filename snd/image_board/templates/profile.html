@@ -21,7 +21,7 @@
     {% if user.is_authenticated %}
         <div class="row">
             <div class="col">
-                <h1>{{ request.user }}'s Profile</h1>
+                <h2 style="margin-bottom:40px">{{ request.user }}'s Profile</h2>
             </div>
         </div>
         <div class="row">
@@ -82,13 +82,15 @@
                 </table>
             </div>
             <div class="col-md-4">
-                <img src="{{ user.profile.user_photo }}" class="profile-pic">
+                <a href="{%  url 'profile_pic_edit' %}">
+                    <img src="{{ user.profile.user_photo }}" class="profile-pic img-responsive">
+                </a>
             </div>
         </div>
         <div class="row">
-            <div class="col">
-                <a class="btn btn-default lower-btn" href="{%  url 'profile_edit' %}">Edit Profile</a>
-                <a class="btn btn-default lower-btn" href="{%  url 'changepw' %}" style="margin-right:20px;">Change Password</a>
+            <div class="col-md-8">
+                <a class="btn btn-primary pull-right bluebutton" href="{%  url 'changepw' %}">Change Password</a>
+                <a class="btn btn-primary pull-right bluebutton" href="{%  url 'profile_edit' %}">Edit Profile</a>
             </div>
         </div>
     {% else %}
