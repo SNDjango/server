@@ -427,3 +427,11 @@ th {
 td {
 	font-size: 15px;
 }
+
+.td-bold {
+font-weight: bold;
+}
+
+.td-italic {
+font-style: italic;
+}
