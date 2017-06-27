@@ -359,24 +359,13 @@ a.hashtag-link:hover {
     width:600px;
 }
 
-<<<<<<< HEAD
-
-th { 
-	font-size: 22px; 
-}
-
-td { 
-	font-size: 15px; 
-}
-
-
-=======
 .profile-pic {
 	width:100%;
 	margin-top:25px;
 	margin-bottom:25px;
 }
->>>>>>> 96d478559b5bbff8fde8c103578c5c23ad43ca5e
+
+
 .center-image {
 	display: block;
 	margin: 0 auto;
@@ -429,4 +418,12 @@ td {
 	height: 100%;
 	color: #484848;
 	padding: 25px 35px 0;
+}
+
+th {
+	font-size: 22px;
+}
+
+td {
+	font-size: 15px;
 }
