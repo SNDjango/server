@@ -150,9 +150,11 @@
                 var el = $(e.target);
                 var commentid = $(this).attr("data-comment-id");
                 console.log("comment id: " + commentid);
-                console.log("get span" + el.children("span"));
+                console.log("get span " + el.children("span"));
+                console.log("current count "+el.children("span").text());
                 $.get('/upvote_comment/', {comment_id: commentid}, function (data) {
                    <!-- el.prev().text(data.downvotes);-->
+                    console.log("dasd ");
                     el.children("span").text(data.upvotes);
 
                 });

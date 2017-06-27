@@ -24,6 +24,7 @@ from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
+from .models import Downvote, Upvote
 from django.db import IntegrityError
 
 from .forms import UserForm, ProfileForm
@@ -339,6 +340,26 @@ def like_post(request):
         likes = post.get_likes()
     return HttpResponse(likes)
 
+# @login_required
+# def downvote_comment(request):
+#     comment_id = None
+#     if request.method == 'GET':
+#         comment_id = request.GET['comment_id']
+#     downvotes = 0
+#     if comment_id:
+#         comment = Comment.objects.get(id=int(comment_id))
+#         if comment:
+#             downvotes = comment.downvotes + 1
+#             comment.downvotes = downvotes
+#             comment.save()
+#             data = json.dumps({
+#                 'downvotes': downvotes,
+#
+#
+#             })
+#
+#     return HttpResponse(data, content_type='application/json')#   return HttpResponse(data, content_type='application/json')
+
 @login_required
 def downvote_comment(request):
     comment_id = None
@@ -348,13 +369,11 @@ def downvote_comment(request):
     if comment_id:
         comment = Comment.objects.get(id=int(comment_id))
         if comment:
-            downvotes = comment.downvotes + 1
-            comment.downvotes = downvotes
-            comment.save()
+            downvote = Downvote(user_id=request.user, comment_id=comment)
+            downvote.save()
+            downvotes = comment.downvotes.count()
             data = json.dumps({
-                'downvotes': downvotes,
-
-
+                'downvotes': downvotes
             })
 
     return HttpResponse(data, content_type='application/json')#   return HttpResponse(data, content_type='application/json')
@@ -364,20 +383,39 @@ def upvote_comment(request):
     comment_id = None
     if request.method == 'GET':
         comment_id = request.GET['comment_id']
-    upvotes = 0
+    #upvotes = 0
     if comment_id:
         comment = Comment.objects.get(id=int(comment_id))
+       # upvotes = comment.upvotes.count
         if comment:
-            upvotes = comment.upvotes + 1
-            comment.upvotes = upvotes
-            comment.save()
+            upvote = Upvote(user_id=request.user, comment_id=comment)
+            upvote.save()
+            upvotes = comment.upvotes.count()
             data = json.dumps({
-                'upvotes': upvotes,
-
-
+                'upvotes': upvotes
             })
 
-    return HttpResponse(data, content_type='application/json')
+    return HttpResponse(data, content_type='application/json')#   return HttpResponse(data, content_type='application/json')
+
+# @login_required
+# def upvote_comment(request):
+#     comment_id = None
+#     if request.method == 'GET':
+#         comment_id = request.GET['comment_id']
+#     upvotes = 0
+#     if comment_id:
+#         comment = Comment.objects.get(id=int(comment_id))
+#         if comment:
+#             upvotes = comment.upvotes + 1
+#             comment.upvotes = upvotes
+#             comment.save()
+#             data = json.dumps({
+#                 'upvotes': upvotes,
+#
+#
+#             })
+#
+#     return HttpResponse(data, content_type='application/json')
 
 def comment_on_item(request, content_id):
     if not request.user.is_authenticated:
