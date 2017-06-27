@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block title%}{% if board_name %}{{ board_name }}{% else %}All Boards{% endif %}{% endblock %}
 {% block boards_active %}active{% endblock %}
+
 {% block body %}
     {% if user.is_authenticated %}
     <div class="content-cont">
@@ -29,7 +30,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12">
+            <div class="col">
                 <hr class="line"/>
             </div>
         </div>
@@ -43,15 +44,23 @@
         </div>
             {% endif %}
         {% else %}
-            {% for board in all_boards %}
         <div class="row">
-            <div class="col-md-12">
-                <h4><a href="/boards/{{ board }}">{{ board }}</a></h4>
-            </div>
-        </div>
+            {% for board in all_boards %}
+            <a href="/boards/{{ board }}" class="concealed-link">
+                <div class="col-md-4 col-xs-6">
+                    <div class="board-tile">
+                        <div class="board-tile-img" {% if board.top != None %}style="background-image: url('{{ board.top.image.url }}');"{% endif %}></div>
+                        <p></p>
+                        <p>&nbsp;</p>
+                        <p style="margin: 10px;">{{ board.name }}</p>
+                    </div>
+                </div>
+            </a>
             {% endfor %}
+        </div>
         {% endif %}
     </div>
+    {% if board %}x{{ board.top.image.url }}{% endif %}
     {% endif %}
 {% endblock %}
 

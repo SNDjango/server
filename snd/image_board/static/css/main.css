@@ -421,3 +421,47 @@ a.hashtag-link:hover {
 	color: #484848;
 	padding: 25px 35px 0;
 }
+
+
+.concealed-link,
+a.concealed-link:hover {
+	color: #000;
+	text-decoration: none;
+}
+
+
+.board-tile {
+	/*overflow: auto;*/
+  	position: relative;
+	z-index: 900;
+	height:120px;
+	width: 100%;
+	font-size: 120%;
+	text-align: center;
+	text-overflow: ellipsis;
+  	white-space: nowrap;
+  	overflow: hidden;
+	border: solid 1px #000;
+	border-radius: 5px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.board-tile-img {
+	content: "";
+	display: block;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+	overflow-y: hidden ! important;
+	overflow-x: hidden ! important;
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center;
+	-webkit-filter: blur(5px);
+  	-moz-filter: blur(5px);
+  	-o-filter: blur(5px);
+  	-ms-filter: blur(5px);
+  	filter: blur(5px);
+}

@@ -185,7 +185,8 @@ def create_post(request):
     if not request.user.is_authenticated:
         return redirect_to_login('create_post', login_url='login_page')
 
-    return render(request, 'createpost.html')
+    boards = Board.objects.all().values_list('name', flat=True)
+    return render(request, 'createpost.html', {'boards': boards})
 
 
 def login_page(request):
@@ -291,6 +292,12 @@ def upload(request):
             content_hashtag = ContentHashTag(content_id=submitted_item, hashtag_id=saved_tag)
             content_hashtag.save()
 
+        board = request.POST.get('board', '<<post error>>')
+        if board in set(Board.objects.all().values_list('name', flat=True)):
+            board = Board.objects.get(name=board)
+            content_board = ContentBoard(content_id=submitted_item, board_id=board)
+            content_board.save()
+
         messages.success(request, 'Post created successfully.')
         return redirect('index')
     else:
@@ -329,7 +336,7 @@ def change_password(request):
     messages.success(request, 'Password successfully changed.')
     return redirect('login_page')
 
-# https://www.sujinlee.me/blog/django-like-button/
+
 def like_post(request):
     if request.method == 'GET':
         post_id = int(request.GET['post_id'])
@@ -362,6 +369,14 @@ def comment_on_item(request, content_id):
     return HttpResponse("403")
 
 
+def update_board_top_post(name):
+    this = Board.objects.get(name=name)
+    # get most liked post of the board
+    top_post = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id=Board.objects.filter(name=name)).values_list('content_id', flat=True)).annotate(count=Count('like')).order_by('-count')[:1]
+    if len(top_post) > 0:
+        top_post = top_post.get()
+        this.top = top_post
+        this.save()
 
 def boards(request, board_name="def"):
     if not request.user.is_authenticated:
@@ -369,10 +384,14 @@ def boards(request, board_name="def"):
     else:
         top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')[:3]
         if board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
-            boards = Board.objects.values_list('name', flat=True)
+            boards = Board.objects.all()
+            print(set(Board.objects.all().values_list('name', flat=True)))
             return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards})
         else:
-            board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('id', flat=True)).values_list('content_id', flat=True))
+            update_board_top_post(board_name)
+            board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('pk', flat=True)).values_list('content_id', flat=True))
+            print(ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('pk', flat=True)))
+            print(ContentBoard.objects.all())
             return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards})
 
 
@@ -391,9 +410,9 @@ def make_board(request):
             submitted_name = request.POST.get('title', '<<post error>>')
             submitted_description = request.POST.get('description', '<<post error>>')
             try:
-                submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user)
+                submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user, top=None)
                 submitted_board.save()
-                return render(request, 'createboard.html')
+                return redirect('boards')
             except:
                 messages.error(request, 'Could not write to Database')
                 return redirect('create_board')
