@@ -67,17 +67,24 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['-publication_date']
-    #def __str__(self):
+
+
+            #def __str__(self):
        # return self.title
 
 
 class Downvote(models.Model):
     comment_id = models.ForeignKey(Comment, related_name="downvotes", on_delete=models.CASCADE)
     user_id = models.ForeignKey(User)
+    class Meta:
+        unique_together = (('user_id', 'comment_id'),)
 
 class Upvote(models.Model):
     comment_id = models.ForeignKey(Comment, related_name="upvotes", on_delete=models.CASCADE)
     user_id = models.ForeignKey(User)
+    class Meta:
+        unique_together = (('user_id', 'comment_id'),)
+
 
 
 class Hashtag(models.Model):
