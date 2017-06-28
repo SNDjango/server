@@ -101,6 +101,14 @@ class Migration(migrations.Migration):
                 ('content_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.ContentItem')),
             ],
         ),
+        migrations.CreateModel(
+            name='SubBoard',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('board_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.Board')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
         migrations.AddField(
             model_name='contenthashtag',
             name='content_id',

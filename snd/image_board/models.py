@@ -95,6 +95,10 @@ class ContentBoard(models.Model):
     board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
 
 
+class SubBoard(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
+
 
 class Favorite(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -24,7 +24,7 @@ from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
-from .models import Board, ContentBoard
+from .models import Board, ContentBoard, SubBoard
 from django.db import IntegrityError
 
 from .forms import UserForm, ProfileForm
@@ -383,16 +383,17 @@ def boards(request, board_name="def"):
         return redirect_to_login('boards', login_url='login_page')
     else:
         top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')[:3]
-        if board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
+        if board_name == "subscribed":
+            boards = Board.objects.filter(pk__in=SubBoard.objects.filter(user=request.user).values_list('user', flat=True))
+            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards, 'sub': True})
+        elif board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
             boards = Board.objects.all()
-            print(set(Board.objects.all().values_list('name', flat=True)))
             return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards})
         else:
+            subbed = len(SubBoard.objects.filter(user=request.user).filter(board_id=Board.objects.get(name=board_name)))
             update_board_top_post(board_name)
             board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('pk', flat=True)).values_list('content_id', flat=True))
-            print(ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('pk', flat=True)))
-            print(ContentBoard.objects.all())
-            return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards})
+            return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards, 'subbed': subbed})
 
 
 def create_board(request):
@@ -407,7 +408,7 @@ def make_board(request):
         return redirect_to_login('create_board', login_url='login_page')
     else:
         if request.method == 'POST' and request.user:
-            submitted_name = request.POST.get('title', '<<post error>>')
+            submitted_name = request.POST.get('title', '<<post error>>').lower()
             submitted_description = request.POST.get('description', '<<post error>>')
             try:
                 submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user, top=None)
@@ -419,3 +420,14 @@ def make_board(request):
         else:
             messages.error(request, 'Bad request.')
             return redirect('create_board')
+
+
+def sub_board(request):
+    if request.method == 'GET':
+        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+        board_name = request.GET['board_name']
+        board = Board.objects.get(name=board_name)
+        new_sub, created = SubBoard.objects.get_or_create(user=request.user, board_id=board)
+        if not created:
+            SubBoard.objects.filter(user=request.user, board_id=board).delete()
+    return HttpResponse(created)

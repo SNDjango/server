@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^boards$', views.boards, name='boards'),
     url(r'^createboard$', views.create_board, name='create_board'),
     url(r'^makeboard$', views.make_board, name='make_board'),
+    url(r'^subscribe/$', views.sub_board, name='sub_board'),
 ]
 
 if settings.DEBUG:
