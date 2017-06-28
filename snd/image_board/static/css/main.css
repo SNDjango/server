@@ -419,19 +419,3 @@ a.hashtag-link:hover {
 	color: #484848;
 	padding: 25px 35px 0;
 }
-
-th {
-	font-size: 22px;
-}
-
-td {
-	font-size: 15px;
-}
-
-.td-bold {
-font-weight: bold;
-}
-
-.td-italic {
-font-style: italic;
-}
