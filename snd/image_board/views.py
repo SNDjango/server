@@ -12,8 +12,6 @@ from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
-from django.template import RequestContext
-from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from PIL import Image
@@ -29,6 +27,8 @@ from .forms import UserForm, ProfileForm
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from rest_framework import viewsets
+from . import serializers
 
 
 def index(request):
@@ -331,6 +331,7 @@ def change_password(request):
     messages.success(request, 'Password successfully changed.')
     return redirect('login_page')
 
+
 # https://www.sujinlee.me/blog/django-like-button/
 def like_post(request):
     if request.method == 'GET':
@@ -362,3 +363,59 @@ def comment_on_item(request, content_id):
         messages.warning(request, "Please write something.")
         # return HttpResponse("404")
     return HttpResponse("403")
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = User.objects.all().order_by('-date_joined')
+    serializer_class = serializers.UserSerializer
+
+
+class ProfileViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows user profiles with full information to be viewed or edited.
+    """
+    queryset = Profile.objects.all()
+    serializer_class = serializers.ProfileSerializer
+
+
+class ContentItemViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows content items to be viewed or edited.
+    """
+    queryset = ContentItem.objects.all().order_by('-upload_date')
+    serializer_class = serializers.ContentItemSerializer
+
+
+class HashtagViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows hashtags to be viewed or edited.
+    """
+    queryset = Hashtag.objects.all()
+    serializer_class = serializers.HashtagSerializer
+
+
+class ContentHashtagViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows hashtags assigned to items to be viewed or edited.
+    """
+    queryset = ContentHashTag.objects.all()
+    serializer_class = serializers.ContentHashtagSerializer
+
+
+class LikeViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows likes to be viewed or edited.
+    """
+    queryset = Like.objects.all()
+    serializer_class = serializers.LikeSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows comments to be viewed or edited.
+    """
+    queryset = Comment.objects.all()
+    serializer_class = serializers.CommentSerializer
