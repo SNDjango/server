@@ -12,6 +12,9 @@ from django.conf import settings
 from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.template import RequestContext
+from django.db.models import Count
+from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
 from PIL import Image
@@ -21,6 +24,7 @@ from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
+from .models import Board, ContentBoard, SubBoard
 from django.db import IntegrityError
 
 from .forms import UserForm, ProfileForm
@@ -180,6 +184,11 @@ def search(request):
             keyword = request.GET.get('keyword')
             if ref == 'hashtag':
                 pages = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+            elif ref is not None:
+                # search in referred board
+                pages_hashtag = set(ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=set(Board.objects.filter(name=ref).values_list('pk', flat=True))).values_list('content_id', flat=True)).filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+                pages_title = set(ContentItem.objects.filter(title__icontains=keyword, pk__in=ContentBoard.objects.filter(board_id__in=set(Board.objects.filter(name=ref).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+                pages = pages_hashtag | pages_title
             else:
                 pages_hashtag = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
                 pages_title = set(ContentItem.objects.filter(title__icontains=keyword))
@@ -197,7 +206,8 @@ def create_post(request):
     if not request.user.is_authenticated:
         return redirect_to_login('create_post', login_url='login_page')
 
-    return render(request, 'createpost.html')
+    boards = Board.objects.all().values_list('name', flat=True)
+    return render(request, 'createpost.html', {'boards': boards})
 
 
 def login_page(request):
@@ -303,6 +313,12 @@ def upload(request):
             content_hashtag = ContentHashTag(content_id=submitted_item, hashtag_id=saved_tag)
             content_hashtag.save()
 
+        board = request.POST.get('board', '<<post error>>')
+        if board in set(Board.objects.all().values_list('name', flat=True)):
+            board = Board.objects.get(name=board)
+            content_board = ContentBoard(content_id=submitted_item, board_id=board)
+            content_board.save()
+
         messages.success(request, 'Post created successfully.')
         return redirect('index')
     else:
@@ -342,7 +358,6 @@ def change_password(request):
     return redirect('login_page')
 
 
-# https://www.sujinlee.me/blog/django-like-button/
 def like_post(request):
     if request.method == 'GET':
         post_id = int(request.GET['post_id'])
@@ -373,6 +388,72 @@ def comment_on_item(request, content_id):
         messages.warning(request, "Please write something.")
         # return HttpResponse("404")
     return HttpResponse("403")
+
+
+def update_board_top_post(name):
+    this = Board.objects.get(name=name)
+    # get most liked post of the board
+    top_post = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id=Board.objects.filter(name=name)).values_list('content_id', flat=True)).annotate(count=Count('like')).order_by('-count')[:1]
+    if len(top_post) > 0:
+        top_post = top_post.get()
+        this.top = top_post
+        this.save()
+
+def boards(request, board_name="def"):
+    if not request.user.is_authenticated:
+        return redirect_to_login('boards', login_url='login_page')
+    else:
+        top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')[:3]
+        if board_name == "subscribed":
+            boards = Board.objects.filter(pk__in=SubBoard.objects.filter(user=request.user).values_list('board_id', flat=True))
+            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards, 'sub': True})
+        elif board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
+            boards = Board.objects.all()
+            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards})
+        else:
+            subbed = len(SubBoard.objects.filter(user=request.user).filter(board_id=Board.objects.get(name=board_name)))
+            update_board_top_post(board_name)
+            board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('pk', flat=True)).values_list('content_id', flat=True))
+            return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards, 'subbed': subbed})
+
+
+def create_board(request):
+    if not request.user.is_authenticated:
+        return redirect_to_login('createboard', login_url='login_page')
+    else:
+        return render(request, 'createboard.html')
+
+
+def make_board(request):
+    if not request.user.is_authenticated:
+        return redirect_to_login('create_board', login_url='login_page')
+    else:
+        if request.method == 'POST' and request.user:
+            submitted_name = request.POST.get('title', '<<post error>>').lower()
+            if not any(char.isalpha() or char.isdigit() for char in submitted_name):
+                messages.error(request, 'Name must contain at least one character or digit.')
+                return redirect('create_board')
+            submitted_description = request.POST.get('description', '<<post error>>')
+            try:
+                submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user, top=None)
+                print(submitted_board.save())
+                return redirect('boards')
+            except:
+                messages.error(request, 'Could not write to Database')
+                return redirect('create_board')
+        else:
+            messages.error(request, 'Bad request.')
+            return redirect('create_board')
+
+
+def sub_board(request):
+    if request.method == 'GET':
+        board_name = request.GET['board_name']
+        board = Board.objects.get(name=board_name)
+        new_sub, created = SubBoard.objects.get_or_create(user=request.user, board_id=board)
+        if not created:
+            SubBoard.objects.filter(user=request.user, board_id=board).delete()
+    return HttpResponse(created)
 
 
 class UserViewSet(viewsets.ModelViewSet):
