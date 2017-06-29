@@ -34,14 +34,21 @@
                     <button class="btn btn-primary-outline dropdown-toggle" type="button" data-toggle="dropdown">
                     <span class="glyphicon glyphicon-menu-down"></span></button>
                     <ul class="dropdown-menu">
-                        <li class="disabled"><a href="#!"><i>Popular Boards</i></a></li>
+                        <li class="dropdown-header">Popular Boards</li>
                         {% for board in top_boards %}
                         <li><a href="/boards/{{ board }}">{{ board.name }}</a></li>
                         {% endfor %}
-                        <li><hr style="border:solid #ccc 1px;" /></li>
+                        <li role="separator" class="divider"></li>
                         <li><a href="{% url 'boards' %}">Show All</a></li>
                         <li><a href="{% url 'create_board' %}">Create New</a></li>
-                        <li><a href="#">Search</a></li>
+                        {% if board_name %}
+                        <li>
+                            <form action="{% url 'search' %}" method="get">
+                                <input type="search" name="keyword" placeholder="Search here" style="border: 0px; outline:none; margin-left: 19px; margin-right: 40px;"/>
+                                <input type="hidden" name="ref" value="{{ board_name }}" />
+                            </form>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

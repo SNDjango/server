@@ -168,6 +168,11 @@ def search(request):
             keyword = request.GET.get('keyword')
             if ref == 'hashtag':
                 pages = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+            elif ref is not None:
+                # search in referred board
+                pages_hashtag = set(ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=set(Board.objects.filter(name=ref).values_list('pk', flat=True))).values_list('content_id', flat=True)).filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+                pages_title = set(ContentItem.objects.filter(title__icontains=keyword, pk__in=ContentBoard.objects.filter(board_id__in=set(Board.objects.filter(name=ref).values_list('pk', flat=True))).values_list('content_id', flat=True)))
+                pages = pages_hashtag | pages_title
             else:
                 pages_hashtag = set(ContentItem.objects.filter(pk__in=ContentHashTag.objects.filter(hashtag_id__in=set(Hashtag.objects.filter(hashtag_text__icontains=keyword).values_list('pk', flat=True))).values_list('content_id', flat=True)))
                 pages_title = set(ContentItem.objects.filter(title__icontains=keyword))
