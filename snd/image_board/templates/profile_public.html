@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+{% block title%}{{ author }}'s profile{% endblock %}
+
+{% block style %}
+<style>
+    table {
+        width: 50%;
+    }
+
+    td {
+        padding-left: 5px;
+        padding-bottom: 3px;
+        font-size: large;
+        height: 40px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <nav class="navbar navbar-custom navbar-toggleable-md navbar-fixed-top" role="navigation" id="navBack">
+            <a class="navbar-brand" href="{% url 'index' %}"><b>B</b></a>
+            <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <div class="navbar-collapse collapse" id="main-nav">
+                {% if user.is_authenticated %}
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="{% block hot_active %}{% endblock %}"><a href="{% url 'index' %}" class="nav-link">Hot</a></li>
+                    <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
+                    <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
+                    <li class="{% block newpost_active %}{% endblock %}"><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#search" class="glyphicon glyphicon-search nav-link"></a></li>
+                    <li><a href="{% url 'profile' %}" class="nav-link"><img src="../{{ user.profile.user_photo }}" class="img-circle" style="height:25px; width:25px; margin: 0;"></a></li>
+                    <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
+                </ul>
+                {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li style="margin-right:10px;"><a href="{% url 'signup' %}">Sign Up</a></li>
+                    <li style="margin-right:10px;"><a href="{% url 'login_page' %}">Login</a></li>
+                </ul>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    <div class="content-cont">
+    {% if user.is_authenticated %}
+        <div class="row">
+            <div class="col">
+                <h2 style="margin-bottom:40px">{{ author }}'s Profile</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <table>
+                    <tr>
+                        <td>Username:</td>
+                        <td>{{ author.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>First Name:</td>
+                        <td>{{ author.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td>{{ author.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>{{ author.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Personal Info:</td>
+                        <td>{{ author.profile.personal_info }}</td>
+                    </tr>
+                    <tr>
+                        <td>Job Title:</td>
+                        <td>{{ author.profile.job_title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Department:</td>
+                        <td>{{ author.profile.department }}</td>
+                    </tr>
+                    <tr>
+                        <td>Location:</td>
+                        <td>{{ author.profile.location }}</td>
+                    </tr>
+                    <tr>
+                        <td>Expertise:</td>
+                        <td>{{ author.profile.expertise }}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number:</td>
+                        <td>{{ author.profile.phone_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Skype:</td>
+                        <td>{{ author.profile.contact_skype }}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Facebook:</td>
+                        <td>{{ author.profile.contact_facebook }}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Linkedin:</td>
+                        <td>{{ author.profile.contact_linkedin }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <img src="../{{ author.profile.user_photo }}" class="profile-pic img-responsive">
+            </div>
+        </div>
+
+    {% else %}
+        <h2>Please login to see the Profile</h2>
+    {% endif %}
+    </div>
+{% endblock %}

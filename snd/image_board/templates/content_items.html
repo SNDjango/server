@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="title-container">
-                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by {{ post.uploaded_by }}, {{ post.upload_date }}</small></h3>
+                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by <a href="{% url 'profile_user' post.uploaded_by.id %}">{{ post.uploaded_by }}</a> on {{ post.upload_date }}</small></h3>
             </div>
         </div>
 
