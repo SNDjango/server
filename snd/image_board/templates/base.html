@@ -32,13 +32,14 @@
                     {% if user.is_authenticated %}
                     <ul class="nav navbar-nav ml-auto">
                         <li class="{% block hot_active %}{% endblock %}"><a href="{% url 'index' %}" class="nav-link">Hot</a></li>
+                        <li class="{% block boards_active %}{% endblock %}"><a href="{% url 'boards' %}" class="nav-link">Boards</a></li>
                         <li class="{% block favorites_active %}{% endblock %}"><a href="{% url 'view_my_favorites' %}" class="nav-link">My Favorites</a></li>
                         <li class="{% block posts_active %}{% endblock %}"><a href="{% url 'view_my_posts' %}" class="nav-link">My Posts</a></li>
                         <li class="{% block newpost_active %}{% endblock %}"><a href="{% url 'create_post' %}" class="nav-link">New Post</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="#search" class="glyphicon glyphicon-search nav-link"></a></li>
-                        <li><a href="{% url 'profile' %}" class="nav-link"><img src="{{ user.profile.user_photo }}" class="img-circle" style="height:25px; width:25px; margin: 0;"></a></li>
+                        <li><a href="{% url 'profile' %}" class="nav-link"><img src="/{{ user.profile.user_photo }}" class="img-circle" style="height:25px; width:25px; margin: 0;"></a></li>
                         <li><a href="{% url 'logout_page' %}" class="nav-link">Logout</a></li>
                     </ul>
                     {% else %}
@@ -52,7 +53,7 @@
         </div>
         <div id="search">
             <form action="{% url 'search' %}" method="get">
-                <input type="search"  name="keyword" placeholder="Keywords" />
+                <input type="search" name="keyword" placeholder="Keywords" />
                 <button type="submit" class="btn btn-primary-outline" style="color:#fff; border-color:#fff;">Search</button>
             </form>
         </div>

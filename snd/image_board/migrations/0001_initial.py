@@ -83,6 +83,32 @@ class Migration(migrations.Migration):
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
+        migrations.CreateModel(
+            name='Board',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.CharField(max_length=50, unique=True)),
+                ('description', models.CharField(max_length=150)),
+                ('admin', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('top', models.ForeignKey(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to='image_board.ContentItem')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='ContentBoard',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('board_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.Board')),
+                ('content_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.ContentItem')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='SubBoard',
+            fields=[
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('board_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='image_board.Board')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
         migrations.AddField(
             model_name='contenthashtag',
             name='content_id',

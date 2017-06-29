@@ -6,8 +6,6 @@ from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
 
-
-
 class ContentItem(models.Model):
     upload_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default='no title')
@@ -27,7 +25,7 @@ class ContentItem(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name='profile',on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     #email = models.EmailField()
     #first_name = models.CharField(max_length=20, blank=True)
     #last_name = models.CharField(max_length=20, blank=True)
@@ -44,7 +42,7 @@ class Profile(models.Model):
     user_photo = models.ImageField(upload_to='../media/img', default='../media/img/anon.png')
 
     def __str__(self):
-        return self.job_title
+        return self.user
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -62,8 +60,6 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
-   # downvotes = models.PositiveIntegerField(default=0)
-    #upvotes = models.PositiveIntegerField(default=0)
 
     class Meta:
         ordering = ['-publication_date']
@@ -98,6 +94,25 @@ class ContentHashTag(models.Model):
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
     hashtag_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
 
+
+class Board(models.Model):
+    name = models.CharField(unique=True, max_length=50)
+    description = models.CharField(max_length=150)
+    admin = models.ForeignKey(User, on_delete= models.CASCADE)
+    top = models.ForeignKey(ContentItem, on_delete= models.CASCADE, null=True, blank=True, default=None)
+
+    def __str__(self):
+        return self.name
+
+
+class ContentBoard(models.Model):
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
+
+
+class SubBoard(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
 
 
 class Favorite(models.Model):
