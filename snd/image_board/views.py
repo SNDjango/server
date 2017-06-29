@@ -422,7 +422,7 @@ def make_board(request):
             submitted_description = request.POST.get('description', '<<post error>>')
             try:
                 submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user, top=None)
-                submitted_board.save()
+                print(submitted_board.save())
                 return redirect('boards')
             except:
                 messages.error(request, 'Could not write to Database')
