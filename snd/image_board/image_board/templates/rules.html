@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block title %}Hot{% endblock %}
+{% block hot_active %}active{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <div class="content-cont">
+            <div class="row">
+                <div class="col">
+                    <h1>
+                        Rules
+                    </h1>
+                    <hr class="line"/>
+                    The passion of TU Gag is it to get you smiling, without any discrimination or exclusion. So we created some rules to save the sense of our passion. <br>
+
+                    <h3>No pornography</h3>
+                    It is not allowed to uploud any pornography or sexual content.
+                    <h3>No hate and bullying </h3>
+                    We just wanna have fun, so it is not allowed to teasing or offend someone. If you think something is against the rules or against the sense of TU Gag, please send a message to our admins.
+                    <h3>No illegal activities</h3>
+                    Content which is illegal or promote these kind of content is not allowed on TU Gag. Such acts may be reported to law enforcement.
+                    depicting or advocating illegal activity will not be tolerated. Such acts may be reported to law enforcement and users committed these acts may be permanently banned from 9GAG.
+                    <h3>No trademark infringement and copyright</h3>
+                    Take care about the trademark infringement and copyright. Acts against the rights may be reported to law enforcement.
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    TU Gag save the rights to disable or delete user accounts.
+                    <br>
+                    <br>
+                    — The TU Gag Team
+                </div>
+            </div>
+            {% include "content_items.html" %}
+        </div>
+    {% else %}
+        <div class="row">
+        </div>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function(e) {
+            $('.post-likes').click(function() {
+                var id;
+                id = $(this).attr('data-post-id');
+                var proxy = $(this);
+                $.get('/like-post/', {
+                    post_id: id
+                }, function(data) {
+                    proxy.find('div').html(data);
+                });
+                return false;
+            });
+
+            $(document).keypress(function (e) {
+                // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
+                var tag = e.target.tagName.toLowerCase();
+                if(e.which == 13 && !e.shiftKey && tag != 'input') {
+                    // POST comment without reloading site (AJAX)
+                    var el = e.target;
+                    el = $(el);
+                    var id;
+                    id = el.attr('data-com-id');
+                    var form = el.closest("form");
+                    $.post('/comment/' + id, form.serialize(), function(data){
+                        var obj = JSON.parse(JSON.stringify(data));
+                        var newhtml = '<div class="col-md-12">';
+                        newhtml += '<div class="comment-section-' + id + ' collapse in">';
+                        newhtml += '<div class="panel panel-danger" style="border-radius: 10px;">';
+                        newhtml += '<img src="' + obj.pic + '" class="img-circle" alt="user" style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">';
+                        newhtml += '<p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;0 minutes ago by ' + obj.auth + '<p>';
+                        newhtml += '<div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">' + obj.text + '</p></div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        var template = document.createElement('template');
+                        template.innerHTML = newhtml;
+                        el.parent().parent().next().prepend($(newhtml));
+                    });
+                    el.closest("textarea").val('');
+                    return false;
+                }
+            });
+        });
+    </script>
+{% endblock %}

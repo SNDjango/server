@@ -1,0 +1,90 @@
+{% if pages.has_other_pages %}
+    <ul class="pagination pagination-responsive">
+        {% if pages.has_previous %}
+            <li><a href="?page={{ pages.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+
+
+        {% if pages.paginator.num_pages <= max_pages_full %}
+            {% for i in pages.paginator.page_range %}
+                {% if pages.number == i %}
+                    <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                {% else %}
+                    <li><a href="?page={{ i }}">{{ i }}</a></li>
+                {% endif %}
+            {% endfor %}
+
+        {% else %}
+            {% for i in pages.paginator.page_range %}
+                {% if pages.number == 1 %}
+                    {% if i == 1  %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        <li><a href="?page={{ pages.next_page_number }}">{{ pages.next_page_number }}</a></li>
+                        <li><a href="?page=3">3</a></li>
+                        <li><span class="ellipsis">...</span></li>
+                    {% elif i == pages.paginator.num_pages %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+
+                {% elif pages.number == 2 %}
+                    {% if i == 1 %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% elif i == 2 %}
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        <li><a href="?page={{ pages.next_page_number }}">{{ pages.next_page_number }}</a></li>
+                        <li><span class="ellipsis">...</span></li>
+                    {% elif i == pages.paginator.num_pages %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+
+                {% elif pages.number > 2 and pages.number < ntl %}
+                    {% if i == 1 %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% elif i == pages.number %}
+
+                        {% if i > 3 %}
+                            <li><span class="ellipsis">...</span></li>
+                        {% endif %}
+                        <li><a href="?page={{ pages.previous_page_number }}">{{ pages.previous_page_number }}</a></li>
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                        <li><a href="?page={{ pages.next_page_number }}">{{ pages.next_page_number }}</a></li>
+                        {% if i < nntl  %}
+                            <li><span class="ellipsis">...</span></li>
+                        {% endif %}
+                    {% elif i == pages.paginator.num_pages %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+
+                {% elif pages.number == ntl %}
+                    {% if i == 1 %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% elif i == ntl %}
+                        <li><span class="ellipsis">...</span></li>
+                        <li><a href="?page={{ pages.previous_page_number }}">{{ pages.previous_page_number }}</a></li>
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% elif i == pages.paginator.num_pages %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% endif %}
+
+                {% elif pages.number == pages.paginator.num_pages %}
+                    {% if i == 1 %}
+                        <li><a href="?page={{ i }}">{{ i }}</a></li>
+                    {% elif i == pages.paginator.num_pages  %}
+                        <li><span class="ellipsis">...</span></li>
+                        <li><a href="?page={{ nntl  }}">{{ nntl  }}</a></li>
+                        <li><a href="?page={{ ntl }}">{{ ntl }}</a></li>
+                        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+
+        {% if pages.has_next %}
+            <li><a href="?page={{ pages.next_page_number }}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+{% endif %}

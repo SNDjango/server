@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} Your Profile {% endblock %}
+
+{% block body %}
+    <div class="content-cont">
+        <div class="row">
+            <div class="col-sm-12 col-md-12">
+                {% if error_message %}
+                    <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
+                {% if user.is_authenticated %}
+                    <h2 style="margin-bottom:40px"> {{ user.username }}'s Profile</h2>
+                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {% include 'form-template.html' %}
+                        <div class="form-group">
+                            <a class="btn btn-primary bluebutton pull-right" href="{%  url 'profile' %}">Cancel</a>
+                            <button type="submit" class="btn btn-primary bluebutton pull-right">Save</button>
+                        </div>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

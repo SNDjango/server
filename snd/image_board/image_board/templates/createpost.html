@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Make a new Post{% endblock %}
+{% block newpost_active %}active{% endblock %}
+
+{% block script %}
+<script src="{% static 'js/bootstrap-tagsinput.js' %}"></script>
+<script>
+    var loadFile = function(event) {
+        var output = document.getElementById('image-preview');
+        output.src = URL.createObjectURL(event.target.files[0]);
+    };
+</script>
+{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/bootstrap-tagsinput.css' %}">
+<style>
+    .bootstrap-tagsinput {
+      width: 100% !important;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    {% load static %}
+    <div class="content-cont">
+    <form action="{% url 'upload' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col">
+                <h2>Make a new Post</h2>
+                <hr class="line"/>
+            </div>
+        </div>
+        <div class="row upload-spacing-top">
+            <div class="col">
+                <div class="form-group">
+                  <label for="upload-title">Title:</label>
+                  <input type="text" class="form-control" id="upload-title" maxlength="100" name="title">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="upload-container">
+                    <img id="image-preview" class="img-responsive center-block">
+                    <div class="upload-spacing-top">
+                        <label class="btn btn-default" for="image-upload">
+                            <input id="image-upload" type="file" style="display:none;" name="file" onchange="loadFile(event)">
+                            Browse files
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row upload-spacing-top">
+            <div class="col">
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea class="form-control" rows="5" id="description" name="description" maxlength="500"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="tag-input">Tags:</label>
+                    <input type="text" class="form-control" id="tag-input" name="tag-input" data-role="tagsinput">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <a href={%  url 'index' %}><input type="button" class="btn btn-default btn-lg pull-right" style="margin-top: 20px; margin-left: 10px;" value="Cancel"></a>
+            <div class="col">
+                <button type="submit" class="btn btn-default btn-lg pull-right">Upload</button>
+            </div>
+        </div>
+    </form>
+    </div>
+{% endblock %}

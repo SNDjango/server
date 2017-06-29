@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}Hot{% endblock %}
+{% block hot_active %}active{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <div class="content-cont">
+            <div class="row">
+                <div class="col">
+                    <h1>
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        Hot
+                    </h1>
+                    <hr class="line"/>
+                </div>
+            </div>
+            {% include "content_items.html" %}
+        </div>
+    {% else %}
+        <div class="row">
+            <div class="col-md-6">
+                <img id="indexDesign" class="img-responsive" src="../../media/img/index_design.png">
+            </div>
+            <div class="col-md-6" style="margin-top: 50px;">
+                <div id="">
+                    <div class="content-cont">
+                        <div class="row">
+                            <div class="col">
+                                <h1>Sign up and have fun!</h1>
+                            </div>
+                        </div>
+                        <form action="{% url 'signup' %}" method="post">
+                            {% csrf_token %}
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="user">Username</label>
+                                    <a href="#" data-toggle="popover" id="PopUserError" style="text-decoration: none;" data-placement="" {% if error_user %}data-content="{{ error_user }}"{% endif %} tabindex="-1">
+                                        <input type="text" class="form-control" name="user" {% if error_pwd or error_email %}value="{{ name }}"{% endif %} maxlength="32" placeholder="max. 32 characters">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="email">Email Address</label>
+                                    <a href="#" data-toggle="popover" id="PopEmailError" style="text-decoration: none;" data-placement="right" {% if error_email %}data-content="{{ error_email }}"{% endif %} tabindex="-1">
+                                        <input type="text" class="form-control" name="email" {% if error_pwd %}value="{{ email }}"{% endif %} maxlength="64" placeholder="email@example.com">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col">
+                                    <label for="description">Password</label>
+                                    <a href="#" data-toggle="popover" id="PopPwdError" style="text-decoration: none;" data-placement="right" data-content="Password must be longer than 8 characters." tabindex="-1">
+                                        <input type="password" class="form-control" name="pwd" maxlength="64" placeholder="at least 8 characters">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <button type="submit" class="btn btn-primary lower-btn" value="Submit">Sign Up</button>
+                                    <a href="{% url 'index' %}" class="btn btn-default lower-btn">Cancel</a>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="row">
+                            <div class="col">
+                                <hr />
+                                <p  class="info-text">Already have an Account? <a href="{% url 'login_page' %}" style="color: #119df6">Click here</a> to login.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function(e) {
+            $('.post-likes').click(function() {
+                var id;
+                id = $(this).attr('data-post-id');
+                var proxy = $(this);
+                $.get('/like-post/', {
+                    post_id: id
+                }, function(data) {
+                    proxy.find('div').html(data);
+                });
+                return false;
+            });
+
+            $(document).keypress(function (e) {
+                // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
+                var tag = e.target.tagName.toLowerCase();
+                if(e.which == 13 && !e.shiftKey && tag != 'input') {
+                    // POST comment without reloading site (AJAX)
+                    var el = e.target;
+                    el = $(el);
+                    var id;
+                    id = el.attr('data-com-id');
+                    var form = el.closest("form");
+                    $.post('/comment/' + id, form.serialize(), function(data){
+                        var obj = JSON.parse(JSON.stringify(data));
+                        var newhtml = '<div class="col-md-12">';
+                        newhtml += '<div class="comment-section-' + id + ' collapse in">';
+                        newhtml += '<div class="panel panel-danger" style="border-radius: 10px;">';
+                        newhtml += '<img src="' + obj.pic + '" class="img-circle" alt="user" style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">';
+                        newhtml += '<p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;0 minutes ago by ' + obj.auth + '<p>';
+                        newhtml += '<div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">' + obj.text + '</p></div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        var template = document.createElement('template');
+                        template.innerHTML = newhtml;
+                        el.parent().parent().next().prepend($(newhtml));
+                    });
+                    el.closest("textarea").val('');
+                    return false;
+                }
+            });
+        });
+    </script>
+{% endblock %}
