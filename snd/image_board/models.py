@@ -6,8 +6,6 @@ from django.dispatch import receiver
 from django.core.validators import RegexValidator
 
 
-
-
 class ContentItem(models.Model):
     upload_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default='no title')
@@ -27,7 +25,7 @@ class ContentItem(models.Model):
 
 
 class Profile(models.Model):
-    user = models.OneToOneField(User, related_name='profile',on_delete=models.CASCADE)
+    user = models.OneToOneField(User, related_name='profile', on_delete=models.CASCADE)
     #email = models.EmailField()
     #first_name = models.CharField(max_length=20, blank=True)
     #last_name = models.CharField(max_length=20, blank=True)
@@ -62,6 +60,7 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+
     class Meta:
         ordering = ['-publication_date']
     #def __str__(self):
@@ -78,7 +77,6 @@ class Hashtag(models.Model):
 class ContentHashTag(models.Model):
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
     hashtag_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
-
 
 
 class Favorite(models.Model):
