@@ -64,7 +64,26 @@
                                         alt="user"
                                         style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">
                                         <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by {{ comment.author }}<p>
-                               <div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p></div>
+                               <div style="padding-left: 50px;">
+                                     <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p>
+
+                            {% if user.is_authenticated %}
+                               <!-- <p id="downvote_count">{{ comment.downvotes}}</p>-->
+                                <div class="text-right vote-buttons" style="margin-right: 10px">
+                                <button class="downvotes" data-comment-id="{{ comment.id }}" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="left" title="You can downvote this once">
+                                    <span class="glyphicon glyphicon-thumbs-down">{{ comment.downvotes.count}}</span>
+
+                                </button>
+
+                                <button class="upvotes" data-comment-id="{{ comment.id }}" class="btn btn-primary" type="button" data-toggle="tooltip" data-placement="top" title="You can upvote this once">
+                                    <span class="glyphicon glyphicon-thumbs-up">{{ comment.upvotes.count}}</span>
+
+                                </button>
+                                </div>
+
+
+                            {% endif %}
+                                </div>
                         </div>
                     </div>
                 </div>

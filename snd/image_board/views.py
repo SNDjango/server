@@ -17,6 +17,7 @@ from django.db.models import Count
 from PIL import Image
 from django.views import generic
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 from PIL import Image
 import json
 from .models import ContentItem
@@ -24,6 +25,7 @@ from .models import Profile
 from .models import Like
 from .models import Hashtag, ContentHashTag
 from .models import Comment
+from .models import Downvote, Upvote
 from .models import Board, ContentBoard, SubBoard
 from django.db import IntegrityError
 
@@ -372,6 +374,39 @@ def like_post(request):
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
     return HttpResponse(likes)
+
+@login_required
+def downvote_comment(request):
+    comment_id = None
+    if request.method == 'GET':
+        comment_id = request.GET['comment_id']
+    downvotes = 0
+    if comment_id:
+        comment = Comment.objects.get(id=int(comment_id))
+        if comment:
+            downvote, created = Downvote.objects.get_or_create(user_id=request.user, comment_id=comment)
+            downvotes = comment.downvotes.count()
+            data = json.dumps({
+                'downvotes': downvotes })
+        return HttpResponse(data, content_type='application/json')
+    return HttpResponse("lalala")
+
+
+@login_required
+def upvote_comment(request):
+    comment_id = None
+    if request.method == 'GET':
+        comment_id = request.GET['comment_id']
+    upvotes = 0
+    if comment_id:
+        comment = Comment.objects.get(id=int(comment_id))
+        if comment:
+            upvote, created = Upvote.objects.get_or_create(user_id=request.user, comment_id=comment)
+            upvotes = comment.upvotes.count()
+            data = json.dumps({
+                'upvotes': upvotes})
+        return HttpResponse(data, content_type='application/json')
+    return HttpResponse("lalala")
 
 
 def comment_on_item(request, content_id):
