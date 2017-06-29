@@ -174,6 +174,11 @@ def view_my_posts(request):
 def view_my_favorites(request):
     return render(request, 'favorites.html')
 
+def imprint(request):
+    return render(request, 'imprint.html')
+
+def rules(request):
+    return render(request, 'rules.html')
 
 def search(request):
     if not request.user.is_authenticated:
