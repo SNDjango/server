@@ -391,7 +391,7 @@ def boards(request, board_name="def"):
     else:
         top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')[:3]
         if board_name == "subscribed":
-            boards = Board.objects.filter(pk__in=SubBoard.objects.filter(user=request.user).values_list('user', flat=True))
+            boards = Board.objects.filter(pk__in=SubBoard.objects.filter(user=request.user).values_list('board_id', flat=True))
             return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards, 'sub': True})
         elif board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
             boards = Board.objects.all()
@@ -416,6 +416,9 @@ def make_board(request):
     else:
         if request.method == 'POST' and request.user:
             submitted_name = request.POST.get('title', '<<post error>>').lower()
+            if not any(char.isalpha() or char.isdigit() for char in submitted_name):
+                messages.error(request, 'Name must contain at least one character or digit.')
+                return redirect('create_board')
             submitted_description = request.POST.get('description', '<<post error>>')
             try:
                 submitted_board = Board(name=submitted_name, description=submitted_description, admin=request.user, top=None)
@@ -431,7 +434,6 @@ def make_board(request):
 
 def sub_board(request):
     if request.method == 'GET':
-        print("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
         board_name = request.GET['board_name']
         board = Board.objects.get(name=board_name)
         new_sub, created = SubBoard.objects.get_or_create(user=request.user, board_id=board)
@@ -439,7 +441,7 @@ def sub_board(request):
             SubBoard.objects.filter(user=request.user, board_id=board).delete()
     return HttpResponse(created)
 
-  
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
@@ -494,4 +496,3 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
-
