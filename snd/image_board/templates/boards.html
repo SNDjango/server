@@ -39,6 +39,7 @@
                         <li><a href="/boards/{{ board }}">{{ board.name }}</a></li>
                         {% endfor %}
                         <li role="separator" class="divider"></li>
+                        <li><a href="/boards/subscribed">Subscribed Boards</a></li>
                         <li><a href="{% url 'boards' %}">Show All</a></li>
                         <li><a href="{% url 'create_board' %}">Create New</a></li>
                         {% if board_name %}
