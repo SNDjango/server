@@ -16,7 +16,7 @@ class CustomUserManager(UserManager):
 
 class CustomUser(AbstractUser):
     objects = CustomUserManager()
-
+    
 class ContentItem(models.Model):
     upload_date = models.DateTimeField(auto_now=True)
     title = models.CharField(max_length=100, default='no title')
@@ -53,7 +53,7 @@ class Profile(models.Model):
     user_photo = models.ImageField(upload_to='../media/img', default='../media/img/anon.png')
 
     def __str__(self):
-        return self.job_title
+        return self.user
 
     @receiver(post_save, sender=settings.AUTH_USER_MODEL)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -71,6 +71,7 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+
     class Meta:
         ordering = ['-publication_date']
     #def __str__(self):
@@ -88,6 +89,25 @@ class ContentHashTag(models.Model):
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
     hashtag_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
 
+
+class Board(models.Model):
+    name = models.CharField(unique=True, max_length=50)
+    description = models.CharField(max_length=150)
+    admin = models.ForeignKey(User, on_delete= models.CASCADE)
+    top = models.ForeignKey(ContentItem, on_delete= models.CASCADE, null=True, blank=True, default=None)
+
+    def __str__(self):
+        return self.name
+
+
+class ContentBoard(models.Model):
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
+
+
+class SubBoard(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
 
 
 class Favorite(models.Model):
