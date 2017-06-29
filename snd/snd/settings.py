@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 
 ]
 MIDDLEWARE = [
@@ -177,4 +178,11 @@ MESSAGE_TAGS = {
     message.SUCCESS: 'alert-success',
     message.WARNING: 'alert-warning',
     message.ERROR: 'alert-danger',
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE': 10
 }
