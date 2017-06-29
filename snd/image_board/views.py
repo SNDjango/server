@@ -69,6 +69,26 @@ class IndexView(generic.ListView):
         return Profile.objects.all()
 
 
+
+def profileview(request, id):
+    if not request.user.is_authenticated:
+        return redirect('login_page')
+
+    try:
+        user_id = id
+        author = User.objects.get(id=user_id)
+    except User.DoesNotExist:
+        messages.error(request, 'There is no such user!')
+        return redirect('index')
+
+    if author == request.user:
+        return redirect('profile')
+
+    else:
+        return render(request,'profile_public.html',{'author':author,'user_id':user_id})
+
+
+
 class UserUpdate(SuccessMessageMixin, UpdateView):
     model = Profile
     fields = ['personal_info','job_title','department', 'location','expertise', 'user_photo','phone_number','contact_facebook','contact_linkedin','contact_skype']
@@ -110,12 +130,6 @@ def update_profile(request):
         'profile_form': profile_form
     })
 
-
-#def profile(request):
- #   if not request.user.is_authenticated:
-  #      return redirect_to_login('profile', login_url='login_page')
-   # else:
-    #    return render(request, 'profile.html')
 
 
 def view_my_posts(request):
