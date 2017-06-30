@@ -82,13 +82,13 @@ class Comment(models.Model):
 
 class Downvote(models.Model):
     comment_id = models.ForeignKey(Comment, related_name="downvotes", on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     class Meta:
         unique_together = (('user_id', 'comment_id'),)
 
 class Upvote(models.Model):
     comment_id = models.ForeignKey(Comment, related_name="upvotes", on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User)
+    user_id = models.ForeignKey(settings.AUTH_USER_MODEL)
     class Meta:
         unique_together = (('user_id', 'comment_id'),)
 
