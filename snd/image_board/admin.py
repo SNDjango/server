@@ -6,7 +6,7 @@ from .models import ContentHashTag
 from  .models import Favorite
 from .models import Profile
 from .models import Upvote
-from .models import Downvote
+
 
 
 
@@ -18,4 +18,4 @@ admin.site.register(Comment)
 admin.site.register(ContentHashTag)
 admin.site.register(Favorite)
 admin.site.register(Upvote)
-admin.site.register(Downvote)
+
