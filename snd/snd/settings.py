@@ -133,6 +133,10 @@ else:
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
 
+#AUTHENTICATION_BACKENDS = ('image_board.backends.CaseInsensitiveModelBackend',)
+
+AUTH_USER_MODEL = 'image_board.CustomUser'
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',

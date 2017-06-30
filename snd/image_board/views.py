@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, render_to_response, get_object_or
 from django.template import loader, RequestContext
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
 from django.core.validators import validate_email
@@ -33,6 +33,8 @@ from .forms import UserForm, ProfileForm
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
+from django.contrib.auth import get_user_model
+User = get_user_model()
 from rest_framework import viewsets
 from . import serializers
 
@@ -220,7 +222,8 @@ def create_post(request):
 def login_page(request):
     if(request.method == 'POST'):
         name = request.POST['user']
-        if not User.objects.filter(username=name).exists():
+       # if not User.objects.filter(username=name).exists():
+        if not User.objects.filter(username__iexact=name).exists():
             return render(request, 'login.html', {'error_user': 'user does not exist'})
         pwd = request.POST['pwd']
         user = authenticate(username=name, password=pwd)
@@ -238,7 +241,8 @@ def login_page(request):
 def signup(request):
     if(request.method == 'POST'):
         name = request.POST['user']
-        if User.objects.filter(username=name).exists():
+
+        if User.objects.filter(username__iexact= name).exists():
             return render(request, 'signup.html', {'error_user': 'Username already taken.'})
         elif name == '':
             return render(request, 'signup.html', {'error_user': 'Username must not be emtpy.'})
