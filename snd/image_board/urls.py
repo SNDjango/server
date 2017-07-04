@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^subscribe/$', views.sub_board, name='sub_board'),
     url(r'^restapi/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^profile/delete$', views.delete_profile, name='delete_profile'),
 ]
 
 if settings.DEBUG:

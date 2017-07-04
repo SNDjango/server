@@ -89,10 +89,17 @@
         </div>
         <div class="row">
             <div class="col-md-8">
+                <a class="btn btn-primary pull-right bluebutton" href="{%  url 'delete_profile' %}" onclick="clicked(event)">Deactivate Profile</a>
                 <a class="btn btn-primary pull-right bluebutton" href="{%  url 'changepw' %}">Change Password</a>
                 <a class="btn btn-primary pull-right bluebutton" href="{%  url 'profile_edit' %}">Edit Profile</a>
             </div>
         </div>
+     <script>
+        function clicked(e) {
+            if(!confirm('Are you sure you want to deactivate your profile?'))e.preventDefault();
+        }
+     </script>
+
     {% else %}
         <h2>Please login to see your Profile</h2>
     {% endif %}
