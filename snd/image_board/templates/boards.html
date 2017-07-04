@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+{% block title%}{% if board_name %}{{ board_name }}{% else %}All Boards{% endif %}{% endblock %}
+{% block boards_active %}active{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <div class="content-cont">
+        <div class="row">
+            <div class="col-md-10 col-xs-8">
+                {% if board_name %}
+                <h2>{{ board_name }}</h2>
+                {% elif sub %}
+                <h2>Subscribed Boards</h2>
+                {% else %}
+                <h2>All Boards</h2>
+                {% endif %}
+            </div>
+            {% if board_name %}
+            <div class="col-md-1 col-xs-2">
+                <label for="toggle-heart" style="margin-top:20px;" id="sub-btn">
+                <input id="toggle-heart" type="checkbox" />
+                    <div class="btn btn-primary-outline" id="sub-btn">
+                        <span class="glyphicon glyphicon-heart"></span>
+                    </div>
+                </label>
+            </div>
+            {% else %}
+            <div class="col-md-1 col-xs-2">
+                <a href="/boards/subscribed" class="btn btn-primary-outline" type="button" style="margin-top:20px;"><span class="glyphicon glyphicon-heart"></span></a>
+            </div>
+            {% endif %}
+            <div class="col-md-1 col-xs-2">
+                <div class="dropdown pull-right">
+                    <button class="btn btn-primary-outline dropdown-toggle" type="button" data-toggle="dropdown">
+                    <span class="glyphicon glyphicon-menu-down"></span></button>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">Popular Boards</li>
+                        {% for board in top_boards %}
+                        <li><a href="/boards/{{ board }}">{{ board.name }}</a></li>
+                        {% endfor %}
+                        <li role="separator" class="divider"></li>
+                        <li><a href="/boards/subscribed">Subscribed Boards</a></li>
+                        <li><a href="{% url 'boards' %}">Show All</a></li>
+                        <li><a href="{% url 'create_board' %}">Create New</a></li>
+                        {% if board_name %}
+                        <li>
+                            <form action="{% url 'search' %}" method="get">
+                                <input type="search" name="keyword" placeholder="Search here" style="border: 0px; outline:none; margin-left: 19px; margin-right: 40px;"/>
+                                <input type="hidden" name="ref" value="{{ board_name }}" />
+                            </form>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <hr class="line"/>
+            </div>
+        </div>
+        {% if board_name %}
+            {% include "content_items.html" %}
+            {% if not user.contentitem_set.all %}
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Oops, nothing to see here!</h3>
+            </div>
+        </div>
+            {% endif %}
+        {% else %}
+        <div class="row">
+            {% for board in all_boards %}
+            <a href="/boards/{{ board }}" class="concealed-link">
+                <div class="col-md-4 col-xs-6">
+                    <div class="board-tile">
+                        <div class="board-tile-img" {% if board.top != None %}style="background-image: url('{{ board.top.image.url }}');"{% endif %}></div>
+                        <p></p>
+                        <p>&nbsp;</p>
+                        <p style="margin: 10px;">{{ board.name }}</p>
+                    </div>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    {% if board %}x{{ board.top.image.url }}{% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(document).ready(function(e) {
+            {% if subbed and subbed == 1 %}
+            $('#toggle-heart').attr('checked', true);
+            {% endif %}
+
+            $('#sub-btn').click(function(e) {
+                $.get('/subscribe/', {
+                    board_name: "{{ board_name }}"
+                }, function(data) {
+                    $('#toggle-heart').prop("checked", !$('#toggle-heart').prop("checked"));
+                });
+                return false;
+            });
+
+            $('.post-likes').click(function() {
+                var id;
+                id = $(this).attr('data-post-id');
+                var proxy = $(this)
+                $.get('/like-post/', {
+                    post_id: id
+                }, function(data) {
+                    proxy.find('div').html(data);
+                    // $('.XD').html(data);
+                });
+                return false;
+            });
+
+            $(document).keypress(function (e) {
+                // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
+                var tag = e.target.tagName.toLowerCase();
+                if(e.which == 13 && !e.shiftKey && tag != 'input') {
+                    // POST comment without reloading site (AJAX)
+                    var el = e.target;
+                    el = $(el);
+                    var id;
+                    id = el.attr('data-com-id');
+                    var form = el.closest("form");
+                    $.post('/comment/' + id, form.serialize(), function(data){
+                        var obj = JSON.parse(JSON.stringify(data));
+                        var newhtml = '<div class="col-md-12">';
+                        newhtml += '<div class="comment-section-' + id + ' collapse in">';
+                        newhtml += '<div class="panel panel-danger" style="border-radius: 10px;">';
+                        newhtml += '<img src="' + obj.pic + '" class="img-circle" alt="user" style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">';
+                        newhtml += '<p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;0 minutes ago by ' + obj.auth + '<p>';
+                        newhtml += '<div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">' + obj.text + '</p></div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        newhtml += '</div>';
+                        var template = document.createElement('template');
+                        template.innerHTML = newhtml;
+                        el.parent().parent().next().prepend($(newhtml));
+                    });
+                    el.closest("textarea").val('');
+                    return false;
+                }
+            });
+        });
+    </script>
+{% endblock %}
