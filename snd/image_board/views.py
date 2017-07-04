@@ -220,7 +220,7 @@ def create_post(request):
 def login_page(request):
     if(request.method == 'POST'):
         name = request.POST['user']
-        if not User.objects.filter(username=name).exists():
+        if not User.objects.filter(username__iexact=name).exists():
             return render(request, 'login.html', {'error_user': 'user does not exist'})
         pwd = request.POST['pwd']
         user = authenticate(username=name, password=pwd)
@@ -238,7 +238,7 @@ def login_page(request):
 def signup(request):
     if(request.method == 'POST'):
         name = request.POST['user']
-        if User.objects.filter(username=name).exists():
+        if User.objects.filter(username__iexact=name).exists():
             return render(request, 'signup.html', {'error_user': 'Username already taken.'})
         elif name == '':
             return render(request, 'signup.html', {'error_user': 'Username must not be emtpy.'})
