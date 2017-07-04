@@ -61,26 +61,20 @@ class Comment(models.Model):
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
 
+
     class Meta:
         ordering = ['-publication_date']
 
-
-            #def __str__(self):
-       # return self.title
-
-
-class Downvote(models.Model):
-    comment_id = models.ForeignKey(Comment, related_name="downvotes", on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User)
-    class Meta:
-        unique_together = (('user_id', 'comment_id'),)
+    def get_upvotes(self):
+        no = self.upvote_set.all().count()
+        if no is not None:
+            return no
+        else:
+            return 0
 
 class Upvote(models.Model):
-    comment_id = models.ForeignKey(Comment, related_name="upvotes", on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User)
-    class Meta:
-        unique_together = (('user_id', 'comment_id'),)
-
+    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Hashtag(models.Model):
@@ -123,3 +117,4 @@ class Favorite(models.Model):
 class Like(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+
