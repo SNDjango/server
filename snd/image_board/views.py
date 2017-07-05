@@ -176,6 +176,11 @@ def view_my_posts(request):
 def view_my_favorites(request):
     return render(request, 'favorites.html')
 
+
+#FAQ-page to be implemented
+def view_faq_page(request):
+    return render(request, 'faq.html')
+
 def imprint(request):
     return render(request, 'imprint.html')
 
