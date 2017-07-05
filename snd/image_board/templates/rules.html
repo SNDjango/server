@@ -3,7 +3,6 @@
 {% block hot_active %}active{% endblock %}
 
 {% block body %}
-    {% if user.is_authenticated %}
         <div class="content-cont">
             <div class="row">
                 <div class="col">
@@ -34,10 +33,6 @@
             </div>
             {% include "content_items.html" %}
         </div>
-    {% else %}
-        <div class="row">
-        </div>
-    {% endif %}
 {% endblock %}
 {% block script %}
     <script>
