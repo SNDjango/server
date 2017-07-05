@@ -1,8 +1,22 @@
+html{
+    height: 100%;
+    box-sizing: border-box;
+}
+
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
 body {
 	background-color: #e5e4e1;
 	color: #000;
 	padding-top: 90px;
 	margin-top: 0;
+    position: relative;
+    margin: 0;
+    height: 100%;
 }
 
 #main {
@@ -505,3 +519,81 @@ a.concealed-link:hover {
 [id='toggle-heart']:checked + div {
   color: #e2264d;
 }
+
+.footer{
+    right: 0;
+    left: 0;
+    color:#fff;
+    width: 100%;
+    bottom: 0;
+    background-color:#404040;
+    display:table;
+    clear:both;
+    position:relative;
+    bottom:0;
+}
+
+.footerblock{
+    margin-left:auto;
+    margin-right:auto;
+    max-width:1000px;
+}
+
+.footerelement{
+    text-align:center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height:65px;
+}
+
+hr{
+    margin-top:8px;
+    margin-bottom:8px;
+}
+
+.footerPoints{
+    padding-left: 10px;
+    color:#fff;
+    font-size: 12px;
+}
+
+.footerPoints:hover{
+    color:##d6d6d6;
+}
+
+svg {
+  display:inline-block;
+  height:7vw;
+  max-height:30px;
+  width:auto;
+  stroke:#fff;
+  stroke-width:15;
+  fill:none;
+  max-width:45px;
+}
+
+.wrapperContent{
+    min-height:100%;
+    height:auto !important;
+}
+
+#tw {stroke-dasharray:  300 , 0, 3000;}
+#st {stroke-dasharray:    0 , 0, 2300;}
+#fa {stroke-dasharray:    0 , 0, 2900;}
+#co {stroke-dasharray:  300 , 0, 3000;}
+#px {stroke-dasharray: 3200 , 0, 3000;}
+
+svg:hover #tw { animation: tw .7s; }
+svg:hover #st { animation: st .7s; }
+svg:hover #fa { animation: fa .7s; }
+svg:hover #co { animation: co .7s; }
+svg:hover #px { animation: px .7s; }
+
+@keyframes tw { 10% {stroke-dasharray:  300, 500, 3000} 100% { stroke-dasharray:3300, 500, 3000;} }
+@keyframes st { 10% {stroke-dasharray:    0, 500, 2300} 100% { stroke-dasharray:2300, 500, 2300;} }
+@keyframes fa { 10% {stroke-dasharray:    0, 500, 2900} 100% { stroke-dasharray:2900, 500, 2900;} }
+@keyframes co { 10% {stroke-dasharray:  300, 500, 3000} 100% { stroke-dasharray:2300, 500, 3000;} }
+@keyframes px { 10% {stroke-dasharray: 3200, 500, 3000} 100% { stroke-dasharray:6200, 500, 3000;} }
+
+
