@@ -130,19 +130,22 @@
                 }
             });
 
-            
-            $('.upvotes').click(function () {
-                var id;
-                id = $(this).attr('data-comment-id');
-                var proxy = $(this);
-                $.get('/upvote_comment/', {
-                    comment_id: id
-                }, function (data) {
-                    proxy.find('div').html(data);
+            $('.downvotes').click(function (e) {
+                var el = $(e.target);
+                var commentid = $(this).attr("data-comment-id");
+                $.get('/downvote_comment/', {comment_id: commentid}, function (data) {
+                    el.children("span").text(data.downvotes);
+
                 });
-                return false;
             });
 
+            $('.upvotes').click(function (e) {
+                var el = $(e.target);
+                var commentid = $(this).attr("data-comment-id");
+                $.get('/upvote_comment/', {comment_id: commentid}, function (data) {
+                    el.children("span").text(data.upvotes);
+                });
+            });
 
 
         });
