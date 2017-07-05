@@ -35,6 +35,7 @@ urlpatterns = [
     url(r'^changepassword$', views.change_password, name='changepw'),
     url(r'^search$', views.search, name='search'),
     url(r'^like-post/$', views.like_post, name='like_post'),
+    url(r'^faq-page$', views.view_faq_page, name='faq_page'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
     url(r'^upvote_comment/$', views.upvote_comment, name='upvote_comment'),
     url(r'^boards/([0-9a-zA-Z ]+)$', views.boards, name='boards'),
@@ -44,6 +45,7 @@ urlpatterns = [
     url(r'^subscribe/$', views.sub_board, name='sub_board'),
     url(r'^restapi/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+
 ]
 
 if settings.DEBUG:
