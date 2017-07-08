@@ -63,7 +63,7 @@
                                 <img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
                                         alt="user"
                                         style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">
-                                <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by {{ comment.author }}</p>
+                                <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by <a href="{% url 'profile_user' comment.author.id %}">{{ comment.author }}</a></p>
                                 <div style="padding-left: 50px;">
                                      <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p>
 
