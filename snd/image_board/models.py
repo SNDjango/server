@@ -42,7 +42,7 @@ class Profile(models.Model):
     user_photo = models.ImageField(upload_to='../media/img', default='../media/img/anon.png')
 
     def __str__(self):
-        return self.job_title
+        return self.user
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
@@ -61,10 +61,20 @@ class Comment(models.Model):
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
 
+
     class Meta:
         ordering = ['-publication_date']
-    #def __str__(self):
-       # return self.title
+
+    def get_upvotes(self):
+        no = self.upvote_set.all().count()
+        if no is not None:
+            return no
+        else:
+            return 0
+
+class Upvote(models.Model):
+    comment_id = models.ForeignKey(Comment, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
 class Hashtag(models.Model):
@@ -79,6 +89,26 @@ class ContentHashTag(models.Model):
     hashtag_id = models.ForeignKey(Hashtag, on_delete= models.CASCADE)
 
 
+class Board(models.Model):
+    name = models.CharField(unique=True, max_length=50)
+    description = models.CharField(max_length=150)
+    admin = models.ForeignKey(User, on_delete= models.CASCADE)
+    top = models.ForeignKey(ContentItem, on_delete= models.CASCADE, null=True, blank=True, default=None)
+
+    def __str__(self):
+        return self.name
+
+
+class ContentBoard(models.Model):
+    content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
+
+
+class SubBoard(models.Model):
+    user = models.ForeignKey(User, on_delete= models.CASCADE)
+    board_id = models.ForeignKey(Board, on_delete= models.CASCADE)
+
+
 class Favorite(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
@@ -87,3 +117,4 @@ class Favorite(models.Model):
 class Like(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
+

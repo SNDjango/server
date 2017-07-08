@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title%}{{ author }}'s profile{% endblock %}
+
+{% block style %}
+<style>
+    table {
+        width: 50%;
+    }
+
+    td {
+        padding-left: 5px;
+        padding-bottom: 3px;
+        font-size: large;
+        height: 40px;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+    <div class="content-cont">
+    {% if user.is_authenticated %}
+        <div class="row">
+            <div class="col">
+                <h2 style="margin-bottom:40px">{{ author }}'s Profile</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8">
+                <table>
+                    <tr>
+                        <td>Username:</td>
+                        <td>{{ author.username }}</td>
+                    </tr>
+                    <tr>
+                        <td>First Name:</td>
+                        <td>{{ author.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name:</td>
+                        <td>{{ author.last_name }}</td>
+                    </tr>
+                    <tr>
+                        <td>Email:</td>
+                        <td>{{ author.email }}</td>
+                    </tr>
+                    <tr>
+                        <td>Personal Info:</td>
+                        <td>{{ author.profile.personal_info }}</td>
+                    </tr>
+                    <tr>
+                        <td>Job Title:</td>
+                        <td>{{ author.profile.job_title }}</td>
+                    </tr>
+                    <tr>
+                        <td>Department:</td>
+                        <td>{{ author.profile.department }}</td>
+                    </tr>
+                    <tr>
+                        <td>Location:</td>
+                        <td>{{ author.profile.location }}</td>
+                    </tr>
+                    <tr>
+                        <td>Expertise:</td>
+                        <td>{{ author.profile.expertise }}</td>
+                    </tr>
+                    <tr>
+                        <td>Phone Number:</td>
+                        <td>{{ author.profile.phone_number }}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Skype:</td>
+                        <td>{{ author.profile.contact_skype }}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Facebook:</td>
+                        <td>{{ author.profile.contact_facebook }}</td>
+                    </tr>
+                    <tr>
+                        <td>Contact Linkedin:</td>
+                        <td>{{ author.profile.contact_linkedin }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-4">
+                <img src="/{{ author.profile.user_photo }}" class="profile-pic img-responsive">
+            </div>
+        </div>
+
+    {% else %}
+        <h2>Please login to see the Profile</h2>
+    {% endif %}
+    </div>
+{% endblock %}

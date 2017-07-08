@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="title-container">
-                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by {{ post.uploaded_by }}, {{ post.upload_date }}</small></h3>
+                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by <a href="{% url 'profile_user' post.uploaded_by.id %}">{{ post.uploaded_by }}</a> <a href="{% url 'profile_user' post.uploaded_by.id %}"><img src="{{ post.uploaded_by.profile.user_photo.url }}" class="img-circle" width="30" height="30"></a> on {{ post.upload_date }}</small></h3>
             </div>
         </div>
 
@@ -59,12 +59,21 @@
             {% for comment in post.comments.all %}
                 <div class="col-md-12">
                     <div class="comment-section-{{ post.id }} collapse">
-                        <div class="panel panel-danger" style="border-radius: 10px;">
+                        <div class="panel panel-danger clearfix" style="border-radius: 10px;">
                                 <img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
                                         alt="user"
                                         style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">
-                                        <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by {{ comment.author }}<p>
-                               <div style="padding-left: 50px;"> <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p></div>
+                                <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by <a href="{% url 'profile_user' comment.author.id %}">{{ comment.author }}</a></p>
+                                <div style="padding-left: 50px;">
+                                     <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p>
+
+                                    {% if user.is_authenticated %}
+                                        <a href="#" class="btn btn-default pull-right upvotes" data-comment-id="{{ comment.id }}" style="margin-right: 10px">
+                                            <span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;
+                                             <div class="like_comment" style="display:inline;">{{ comment.get_upvotes }}</div>
+                                        </a>
+                                     {% endif %}
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -72,6 +81,7 @@
             </div>
         </div>
     </div>
+</div>
 {% endfor %}
 
 {% include "pagination.html" %}
