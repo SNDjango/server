@@ -47,6 +47,18 @@
             </div>
         </div>
 
+        {% if user == post.uploaded_by %}
+        <div class="row">
+            <div class="col-md-8">
+            </div>
+            <div class="col-md-4">
+                <div class="btn-group btn-group-justified">
+                    <a href="#" class="btn btn-primary-outline redbutton">Delete Post</a>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
         <div class="row" id="">
             <form action="" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
