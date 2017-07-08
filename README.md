@@ -24,4 +24,4 @@ See the [Rest API WIKI User Guide](https://github.com/SNDjango/server/wiki/REST-
 
 ## License
 
-This project is open-source and is licensed under the MIT License - see [License](SNDjango/server/blob/devel/LICENSE) file for details
+This project is open-source and is licensed under the MIT License - see [License](https://github.com/SNDjango/server/blob/devel/LICENSE) file for details
