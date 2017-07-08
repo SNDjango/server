@@ -39,7 +39,7 @@ class Profile(models.Model):
     contact_skype = models.URLField(null=True, blank=True)
     contact_facebook = models.URLField(null=True, blank=True)
     contact_linkedin = models.URLField(null=True, blank=True)
-    user_photo = models.ImageField(upload_to='../media/img', default='../media/img/anon.png')
+    user_photo = models.ImageField(upload_to='../media/img', default='/static/img/anon.png')
 
     def __str__(self):
         return self.user
