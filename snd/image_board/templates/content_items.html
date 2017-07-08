@@ -43,21 +43,14 @@
                     <a href="#!" class="btn btn-primary-outline" data-toggle="collapse" data-target=".comment-section-{{ post.id }}"><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ post.comments.count }}</a>
                     <a href="#" class="btn btn-primary-outline">Share</a>
                     <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
+                    {% if user == post.uploaded_by %}
+                        <a href="{% url 'delete_post' post.title %}" class="btn btn-primary-outline"><span class="glyphicon glyphicon-trash"></span></a>
+                    {% endif %}
                 </div>
             </div>
         </div>
 
-        {% if user == post.uploaded_by %}
-        <div class="row">
-            <div class="col-md-9">
-            </div>
-            <div class="col-md-3">
-                <div class="btn-group btn-group-justified">
-                    <a href="{% url 'delete_post' post.title %}" class="btn btn-primary-outline redbutton"><span class="glyphicon glyphicon-trash"></span> Delete Post</a>
-                </div>
-            </div>
-        </div>
-        {% endif %}
+
 
         <div class="row" id="">
             <form action="" method="post" enctype="multipart/form-data">
