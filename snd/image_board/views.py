@@ -486,6 +486,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = serializers.UserSerializer
+    filter_fields = ('uploaded_by')
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
@@ -494,7 +495,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """
     queryset = Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
-    http_method_names = ['get', 'patch', 'head']
+    http_method_names = ['get', 'patch', 'head', 'options']
 
 
 class ContentItemViewSet(viewsets.ModelViewSet):
