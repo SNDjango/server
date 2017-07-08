@@ -1,6 +1,6 @@
 ## Synopsis
 
-**Server** is a simple but rich django application featuring a social media platform. The main functionality includes creation of posts, subsciption to boards, user profiles and possibility to comment on posts, like posts, like comments, etc. It's perfect for:
+**SNDjango - TU GAG** is a simple but rich django application featuring a social media platform. The main functionality includes creation of posts, subsciption to boards, user profiles and possibility to comment on posts, like posts, like comments, etc. It's perfect for:
 
 * Social Intranets
 * Enterprise Social Networks
@@ -24,4 +24,4 @@ See the [Rest API WIKI User Guide](https://github.com/SNDjango/server/wiki/REST-
 
 ## License
 
-This project is open-source and is licensed under the MIT License - see [License](server/LICENSE) file for details
+This project is open-source and is licensed under the MIT License - see [License](SNDjango/server/LICENSE) file for details
