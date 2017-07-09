@@ -21,7 +21,7 @@
         <div class="container">
             <!-- Navigationsleiste oben -->
             <nav class="navbar navbar-custom navbar-toggleable-md navbar-fixed-top" role="navigation" id="navBack">
-                <a class="navbar-brand" href="{% url 'index' %}"><b>B</b></a>
+                <a class="navbar-brand" href="{% url 'index' %}"><img class="logo" src="{% static 'img/footerLogo.png' %}"></a>
                 <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -99,7 +99,7 @@
             <div class="col-md-2">
             </div>
             <div class="col-md-2 footerelement">
-                <a  href="{% url 'index' %}"><b>logo</b></a>
+                <a  href="{% url 'index' %}"><img class="footerLogo" src="{% static 'img/footerLogo.png' %}"></a>
             </div>
             <div class="col-md-1 footerelement">
                 <a  href="{% url 'rules' %}">Rules</a>
