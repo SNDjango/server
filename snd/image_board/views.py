@@ -23,7 +23,6 @@ import json
 from .models import ContentItem
 from .models import Profile
 from .models import Like
-from .models import Favorite
 from .models import Hashtag, ContentHashTag
 from .models import Comment
 from .models import Upvote
@@ -38,20 +37,11 @@ from rest_framework import viewsets
 from . import serializers
 
 
-def index(request, sort='Hot'):
-    items_on_page = 3
-    max_pages_full = 10
+def index(request):
+    items_on_page = 1
+    max_pages_full = 8
 
-    if (not sort == 'Hot') and (not sort == 'Top') and (not sort == 'New'):
-        sort = 'Hot'
-
-    if sort == 'New':
-        all_posts = ContentItem.objects.all().order_by('-upload_date')
-    elif sort == 'Top':
-        all_posts = ContentItem.objects.all().order_by('-points')
-    elif sort == 'Hot':
-        all_posts = ContentItem.objects.all().order_by('-points_weighted')
-
+    all_posts = ContentItem.objects.all().order_by('-upload_date')
 
     paginator = Paginator(all_posts, items_on_page)
     page = request.GET.get('page')
@@ -75,11 +65,7 @@ def index(request, sort='Hot'):
         filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
         post.tags = filtered_tags
 
-    favs = []
-    if request.user.is_authenticated:
-        favs = ContentItem.objects.filter(pk__in=set(Favorite.objects.filter(user_id=request.user).values_list('content_id', flat=True)))
-
-    return render(request, 'index.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl, 'favs': favs, 'sort': sort})
+    return render(request, 'index.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl})
 
 
 class IndexView(generic.ListView):
@@ -181,9 +167,7 @@ def view_my_posts(request):
             filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
             post.tags = filtered_tags
 
-        favs = ContentItem.objects.filter(pk__in=set(Favorite.objects.filter(user_id=request.user).values_list('content_id', flat=True)))
-
-        return render(request, 'myposts.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl, 'favs': favs})
+        return render(request, 'myposts.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl})
     else:
         return render(request, 'login.html')
 
@@ -214,39 +198,7 @@ def delete_post(request, id):
 
 #favorites to be implemented in the future
 def view_my_favorites(request):
-    if request.user.is_authenticated:
-        items_on_page = 2
-        max_pages_full = 8
-
-        all_posts = ContentItem.objects.filter(pk__in=set(Favorite.objects.filter(user_id=request.user).values_list('content_id', flat=True))).order_by('-upload_date')
-
-        paginator = Paginator(all_posts, items_on_page)
-        page = request.GET.get('page')
-
-        try:
-            pages = paginator.page(page)
-        except PageNotAnInteger:
-            pages = paginator.page(1)
-        except EmptyPage:
-            pages = paginator.page(paginator.num_pages)
-
-        if paginator.num_pages > max_pages_full:
-            ntl = paginator.num_pages - 1
-            nntl = paginator.num_pages - 2
-        else:
-            ntl = 0
-            nntl = 0
-
-        for post in pages:
-            tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
-            filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
-            post.tags = filtered_tags
-
-
-
-        return render(request, 'favorites.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl, 'favs': all_posts})
-    else:
-        return redirect_to_login('favorites.html', 'login.html')
+    return render(request, 'favorites.html')
 
 
 #FAQ-page to be implemented
@@ -282,9 +234,7 @@ def search(request):
                 tag_ids = list(set(ContentHashTag.objects.filter(content_id=post).values_list('hashtag_id', flat=True)))
                 filtered_tags = list(set(Hashtag.objects.filter(pk__in=tag_ids).values_list('hashtag_text', flat=True)))
                 post.tags = filtered_tags
-
-            favs = ContentItem.objects.filter(pk__in=set(Favorite.objects.filter(user_id=request.user).values_list('content_id', flat=True)))
-            return render(request, 'search.html', {'pages': pages, 'favs': favs})
+            return render(request, 'search.html', {'pages': pages})
         return render(request, 'search.html')
 
 
@@ -449,23 +399,10 @@ def like_post(request):
         post_id = int(request.GET['post_id'])
         post = ContentItem.objects.get(id=post_id)
         new_like, created = Like.objects.get_or_create(user_id=request.user, content_id=post)
-        post.points += 100
-        post.save()
         if not created:
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
     return HttpResponse(likes)
-
-
-def fav_post(request):
-    if request.method == 'GET':
-        post_id = int(request.GET['post_id'])
-        post = ContentItem.objects.get(id=post_id)
-        new_fav, created = Favorite.objects.get_or_create(user_id=request.user, content_id=post)
-        if not created:
-            Favorite.objects.filter(user_id=request.user, content_id=post).delete()
-    return HttpResponse(created)
-
 
 @login_required
 def upvote_comment(request):
@@ -490,8 +427,6 @@ def comment_on_item(request, content_id):
             contentItem = ContentItem.objects.get(pk=content_id)
             new_comment = Comment(author=author, comment_text=comment_text, contentItem=contentItem)
             new_comment.save()
-            contentItem.points += 100
-            contentItem.save()
             data = json.dumps({
                 'auth': author.username,
                 'text': comment_text,
@@ -499,6 +434,20 @@ def comment_on_item(request, content_id):
         return HttpResponse(data, content_type='application/json')
         messages.warning(request, "Please write something.")
         # return HttpResponse("404")
+    return HttpResponse("403")
+
+def edit_comment(request):
+    if request.method == 'POST':
+        comment_id = int(request.POST['commentID'])
+        newcommenttext = request.POST['new_comment_text']
+
+        c = Comment.objects.get(id=comment_id)
+        c.comment_text = newcommenttext
+        c.save()
+
+        messages.success(request, 'Comment successfully changed.')
+        return redirect('index')
+
     return HttpResponse("403")
 
 
@@ -515,19 +464,18 @@ def boards(request, board_name="def"):
     if not request.user.is_authenticated:
         return redirect_to_login('boards', login_url='login_page')
     else:
-        favs = ContentItem.objects.filter(pk__in=set(Favorite.objects.filter(user_id=request.user).values_list('content_id', flat=True)))
         top_boards = Board.objects.annotate(count=Count('contentboard')).order_by('-count')[:3]
         if board_name == "subscribed":
             boards = Board.objects.filter(pk__in=SubBoard.objects.filter(user=request.user).values_list('board_id', flat=True))
-            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards, 'sub': True, 'favs': favs})
+            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards, 'sub': True})
         elif board_name == "def" or len(Board.objects.filter(name=board_name)) == 0:
             boards = Board.objects.all()
-            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards, 'favs': favs})
+            return render(request, 'boards.html', {'all_boards': boards, 'top_boards': top_boards})
         else:
             subbed = len(SubBoard.objects.filter(user=request.user).filter(board_id=Board.objects.get(name=board_name)))
             update_board_top_post(board_name)
             board_content = ContentItem.objects.filter(pk__in=ContentBoard.objects.filter(board_id__in=Board.objects.filter(name=board_name.lower()).values_list('pk', flat=True)).values_list('content_id', flat=True))
-            return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards, 'subbed': subbed, 'favs': favs})
+            return render(request, 'boards.html', {'pages': board_content, 'board_name': board_name.lower(), 'top_boards': top_boards, 'subbed': subbed})
 
 
 def create_board(request):
