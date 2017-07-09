@@ -194,14 +194,9 @@ a.btn-primary-outline:hover {
 }
 
 .redbutton {
-    color:#8B0000;
-    border-color:#8B0000;
+    background-color:#d9534f;
     margin-right:20px;
     margin-top:20px;
-}
-
-a.redbutton:hover {
-    color:#000000;
 }
 
 
@@ -602,3 +597,5 @@ svg:hover #px { animation: px .7s; }
 @keyframes fa { 10% {stroke-dasharray:    0, 500, 2900} 100% { stroke-dasharray:2900, 500, 2900;} }
 @keyframes co { 10% {stroke-dasharray:  300, 500, 3000} 100% { stroke-dasharray:2300, 500, 3000;} }
 @keyframes px { 10% {stroke-dasharray: 3200, 500, 3000} 100% { stroke-dasharray:6200, 500, 3000;} }
+
+
