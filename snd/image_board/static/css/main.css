@@ -599,6 +599,18 @@ svg {
     height:auto !important;
 }
 
+.footerLogo{
+    width:45px;
+}
+
+.logo{
+    height:37px;
+}
+
+.navbar-brand{
+    padding: 10px 10px;
+}
+
 #tw {stroke-dasharray:  300 , 0, 3000;}
 #st {stroke-dasharray:    0 , 0, 2300;}
 #fa {stroke-dasharray:    0 , 0, 2900;}

@@ -38,11 +38,20 @@ from rest_framework import viewsets
 from . import serializers
 
 
-def index(request):
+def index(request, sort='Hot'):
     items_on_page = 1
     max_pages_full = 8
 
-    all_posts = ContentItem.objects.all().order_by('-upload_date')
+    if (not sort == 'Hot') and (not sort == 'Top') and (not sort == 'New'):
+        sort = 'Hot'
+
+    if sort == 'New':
+        all_posts = ContentItem.objects.all().order_by('-upload_date')
+    elif sort == 'Top':
+        all_posts = ContentItem.objects.all().order_by('-points')
+    elif sort == 'Hot':
+        all_posts = ContentItem.objects.all().order_by('-points_weighted')
+
 
     paginator = Paginator(all_posts, items_on_page)
     page = request.GET.get('page')
@@ -70,7 +79,7 @@ def index(request):
     if request.user.is_authenticated:
         favs = ContentItem.objects.filter(pk__in=set(Favorite.objects.filter(user_id=request.user).values_list('content_id', flat=True)))
 
-    return render(request, 'index.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl, 'favs': favs})
+    return render(request, 'index.html', {'pages': pages, 'max_pages_full': max_pages_full, 'ntl': ntl, 'nntl': nntl, 'favs': favs, 'sort': sort})
 
 
 class IndexView(generic.ListView):
@@ -440,6 +449,8 @@ def like_post(request):
         post_id = int(request.GET['post_id'])
         post = ContentItem.objects.get(id=post_id)
         new_like, created = Like.objects.get_or_create(user_id=request.user, content_id=post)
+        post.points += 100
+        post.save()
         if not created:
             Like.objects.filter(user_id=request.user, content_id=post).delete()
         likes = post.get_likes()
@@ -479,6 +490,8 @@ def comment_on_item(request, content_id):
             contentItem = ContentItem.objects.get(pk=content_id)
             new_comment = Comment(author=author, comment_text=comment_text, contentItem=contentItem)
             new_comment.save()
+            contentItem.points += 100
+            contentItem.save()
             data = json.dumps({
                 'auth': author.username,
                 'text': comment_text,
