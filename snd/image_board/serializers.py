@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from .models import ContentItem, Profile, Comment, Hashtag, ContentHashTag, Like
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator
+from rest_framework.validators import UniqueValidator, UniqueTogetherValidator
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
