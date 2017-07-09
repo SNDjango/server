@@ -590,7 +590,11 @@ svg {
 }
 
 .logo{
-    width:45px;
+    height:37px;
+}
+
+.navbar-brand{
+    padding: 10px 10px;
 }
 
 #tw {stroke-dasharray:  300 , 0, 3000;}
