@@ -550,6 +550,13 @@ class LikeViewSet(viewsets.ModelViewSet):
     """
     queryset = Like.objects.all()
     serializer_class = serializers.LikeSerializer
+    
+    validators = [
+        UniqueTogetherValidator(
+            queryset=Like.objects.all(),
+            fields=('user_id', 'content_id')
+        )
+    ]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
