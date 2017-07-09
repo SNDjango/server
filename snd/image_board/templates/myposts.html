@@ -33,6 +33,19 @@
                 return false;
             });
 
+            $('.post-fav').click(function () {
+                var id;
+                id = $(this).attr('data-post-id');
+                var proxy = $(this);
+                $.get('/fav-post/', {
+                    post_id: id
+                }, function (data) {
+                    var star = proxy.find('#toggle-star');
+                    star.prop("checked", !star.prop("checked"));
+                });
+                return false;
+            });
+
             $(document).keypress(function (e) {
                 // submit comment form on ENTER (but not on SHIFT+ENTER -> \n)
                 var tag = e.target.tagName.toLowerCase();

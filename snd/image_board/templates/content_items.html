@@ -42,7 +42,12 @@
                     </a>
                     <a href="#!" class="btn btn-primary-outline" data-toggle="collapse" data-target=".comment-section-{{ post.id }}"><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ post.comments.count }}</a>
                     <a href="#" class="btn btn-primary-outline">Share</a>
-                    <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
+                    <a href="#!" class="btn btn-primary-outline post-fav" data-post-id="{{ post.id }}">
+                        <label for="toggle-star" id="sub-btn">
+                            <input id="toggle-star" type="checkbox" {% if post in favs %}checked{% endif %}/>
+                            <span class="glyphicon glyphicon-star" style="padding-top:5px;"></span>
+                        </label>
+                    </a>
                     {% if user == post.uploaded_by %}
                         <a href="{% url 'delete_post' post.pk %}" class="btn btn-primary-outline"><span class="glyphicon glyphicon-trash"></span></a>
                     {% endif %}

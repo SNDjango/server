@@ -36,6 +36,7 @@ urlpatterns = [
     url(r'^changepassword$', views.change_password, name='changepw'),
     url(r'^search$', views.search, name='search'),
     url(r'^like-post/$', views.like_post, name='like_post'),
+    url(r'^fav-post/$', views.fav_post, name='fav_post'),
     url(r'^faq-page$', views.view_faq_page, name='faq_page'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
     url(r'^upvote_comment/$', views.upvote_comment, name='upvote_comment'),
