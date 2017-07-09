@@ -486,7 +486,6 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = serializers.UserSerializer
-    filter_fields = ('uploaded_by')
 
 
 class ProfileViewSet(viewsets.ModelViewSet):
