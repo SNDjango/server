@@ -63,7 +63,7 @@ class Comment(models.Model):
 
 
     class Meta:
-        ordering = ['-upvote']
+        ordering = ['-upvote', '-publication_date']
 
     def get_upvotes(self):
         no = self.upvote_set.all().count()

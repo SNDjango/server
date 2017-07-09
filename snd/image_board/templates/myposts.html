@@ -75,6 +75,18 @@
                     return false;
                 }
             });
+
+            $('.upvotes').click(function () {
+                var id;
+                id = $(this).attr('data-comment-id');
+                var proxy = $(this);
+                $.get('/upvote_comment/', {
+                    comment_id: id
+                }, function (data) {
+                    proxy.find('div').html(data);
+                });
+                return false;
+            });
         });
     </script>
 {% endblock %}

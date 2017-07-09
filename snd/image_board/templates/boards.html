@@ -61,13 +61,6 @@
         </div>
         {% if board_name %}
             {% include "content_items.html" %}
-            {% if not user.contentitem_set.all %}
-        <div class="row">
-            <div class="col-md-12">
-                <h3>Oops, nothing to see here!</h3>
-            </div>
-        </div>
-            {% endif %}
         {% else %}
         <div class="row">
             {% for board in all_boards %}
@@ -159,6 +152,18 @@
                     el.closest("textarea").val('');
                     return false;
                 }
+            });
+
+            $('.upvotes').click(function () {
+                var id;
+                id = $(this).attr('data-comment-id');
+                var proxy = $(this);
+                $.get('/upvote_comment/', {
+                    comment_id: id
+                }, function (data) {
+                    proxy.find('div').html(data);
+                });
+                return false;
             });
         });
     </script>
