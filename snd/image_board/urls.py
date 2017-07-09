@@ -27,6 +27,7 @@ urlpatterns = [
     url(r'^myposts$', views.view_my_posts, name='view_my_posts'),
     url(r'^myfavorites$', views.view_my_favorites, name='view_my_favorites'),
     url(r'^createpost$', views.create_post, name='create_post'),
+    url(r'^myposts/delete/(?P<title>\w+)/$', views.delete_post, name='delete_post'),
     url(r'^imprint$', views.imprint, name='imprint'),
     url(r'^rules', views.rules, name='rules'),
     url(r'^signup$', views.signup, name='signup'),
@@ -45,7 +46,7 @@ urlpatterns = [
     url(r'^subscribe/$', views.sub_board, name='sub_board'),
     url(r'^restapi/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
+    url(r'^profile/delete$', views.delete_profile, name='delete_profile'),
 ]
 
 if settings.DEBUG:

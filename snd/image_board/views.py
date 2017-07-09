@@ -10,7 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.views import redirect_to_login
 from django.conf import settings
 from django.core.validators import validate_email
-from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError, MultipleObjectsReturned
 from django.contrib import messages
 from django.template import RequestContext
 from django.db.models import Count
@@ -172,6 +172,30 @@ def view_my_posts(request):
         return render(request, 'login.html')
 
 
+def delete_post(request, title):
+    if not request.user.is_authenticated:
+        return redirect('login_page')
+
+    try:
+        del_post = ContentItem.objects.get(title=title)
+        if del_post.uploaded_by == request.user:
+            del_post.delete()
+            messages.success(request, ('Your post was deleted successfully'))
+        else:
+            messages.error(request, "You've no permission to delete this post!")
+    except ContentItem.DoesNotExist:
+        messages.error(request, 'There is no such post!')
+        return redirect('view_my_posts')
+    except MultipleObjectsReturned:
+        content_list = ContentItem.objects.filter(title=title).order_by('uploaded_by')
+        for i in range(len(content_list)):
+            if content_list[i].uploaded_by == request.user:
+                content_list[i].delete()
+                messages.success(request, ('Your post was deleted successfully'))
+
+    return redirect('view_my_posts')
+
+
 #favorites to be implemented in the future
 def view_my_favorites(request):
     return render(request, 'favorites.html')
@@ -225,7 +249,7 @@ def create_post(request):
 def login_page(request):
     if(request.method == 'POST'):
         name = request.POST['user']
-        if not User.objects.filter(username=name).exists():
+        if not User.objects.filter(username__iexact=name).exists():
             return render(request, 'login.html', {'error_user': 'user does not exist'})
         pwd = request.POST['pwd']
         user = authenticate(username=name, password=pwd)
@@ -243,7 +267,7 @@ def login_page(request):
 def signup(request):
     if(request.method == 'POST'):
         name = request.POST['user']
-        if User.objects.filter(username=name).exists():
+        if User.objects.filter(username__iexact=name).exists():
             return render(request, 'signup.html', {'error_user': 'Username already taken.'})
         elif name == '':
             return render(request, 'signup.html', {'error_user': 'Username must not be emtpy.'})
@@ -535,3 +559,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
+
+def delete_profile(request):
+    user = request.user
+    user.is_active = False
+    user.save()
+    messages.success(request, 'Profile successfully deactivated.')
+    return redirect('index')

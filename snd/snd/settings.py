@@ -27,9 +27,7 @@ SECRET_KEY = os.getenv('TUGAG_SECRET_KEY', 'd5-6!1=8baj88-iic*e_r-4u774)5nz=!$$$
 DEBUG = True
 
 ALLOWED_HOSTS = [
-        "localhost",
-        "172.17.0.2",
-        "127.0.0.1"
+        "*"
         ]
 
 
@@ -46,6 +44,9 @@ INSTALLED_APPS = [
     'rest_framework',
 
 ]
+
+AUTHENTICATION_BACKENDS = ('server.snd.image_board.backends.CaseInsensitiveModelBackend', )
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
