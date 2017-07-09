@@ -181,12 +181,12 @@ def view_my_posts(request):
         return render(request, 'login.html')
 
 
-def delete_post(request, title):
+def delete_post(request, id):
     if not request.user.is_authenticated:
         return redirect('login_page')
 
     try:
-        del_post = ContentItem.objects.get(title=title)
+        del_post = ContentItem.objects.get(pk=id)
         if del_post.uploaded_by == request.user:
             del_post.delete()
             messages.success(request, ('Your post was deleted successfully'))
@@ -442,7 +442,6 @@ def comment_on_item(request, content_id):
             contentItem.save()
             data = json.dumps({
                 'auth': author.username,
-                'pic': author.profile.user_photo.url,
                 'text': comment_text,
             })
         return HttpResponse(data, content_type='application/json')
