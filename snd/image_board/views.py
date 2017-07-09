@@ -558,3 +558,10 @@ class CommentViewSet(viewsets.ModelViewSet):
     """
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
+
+def delete_profile(request):
+    user = request.user
+    user.is_active = False
+    user.save()
+    messages.success(request, 'Profile successfully deactivated.')
+    return redirect('index')
