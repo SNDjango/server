@@ -427,6 +427,8 @@ def comment_on_item(request, content_id):
             contentItem = ContentItem.objects.get(pk=content_id)
             new_comment = Comment(author=author, comment_text=comment_text, contentItem=contentItem)
             new_comment.save()
+            print(author.profile.user_photo.url)
+            print(author.profile.user_photo)
             data = json.dumps({
                 'auth': author.username,
                 'pic': author.profile.user_photo.url,

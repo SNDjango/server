@@ -65,7 +65,7 @@
                 <div class="col-md-12">
                     <div class="comment-section-{{ post.id }} collapse">
                         <div class="panel panel-danger clearfix" style="border-radius: 10px;">
-                                <img src="{{ comment.author.profile.user_photo.url }}" class="img-circle"
+                                <img src="{{ comment.author.profile.user_photo }}" class="img-circle"
                                         alt="user"
                                         style="width:45px; height:45px; margin-top: 5px; margin-left: 5px;">
                                 <p class="info-text pull-right" style="display: inline; padding:8px;"><span class="glyphicon glyphicon-time"></span> &nbsp;{{ comment.publication_date|timesince }} ago by <a href="{% url 'profile_user' comment.author.id %}">{{ comment.author }}</a></p>

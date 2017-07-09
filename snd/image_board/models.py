@@ -63,7 +63,7 @@ class Comment(models.Model):
 
 
     class Meta:
-        ordering = ['-publication_date']
+        ordering = ['-upvote']
 
     def get_upvotes(self):
         no = self.upvote_set.all().count()
@@ -117,4 +117,3 @@ class Favorite(models.Model):
 class Like(models.Model):
     user_id = models.ForeignKey(User, on_delete=models.CASCADE)
     content_id = models.ForeignKey(ContentItem, on_delete= models.CASCADE)
-
