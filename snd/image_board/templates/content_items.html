@@ -42,7 +42,12 @@
                     </a>
                     <a href="#!" class="btn btn-primary-outline" data-toggle="collapse" data-target=".comment-section-{{ post.id }}"><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ post.comments.count }}</a>
                     <a href="#" class="btn btn-primary-outline">Share</a>
-                    <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
+                    <a href="#!" class="btn btn-primary-outline post-fav" data-post-id="{{ post.id }}">
+                        <label for="toggle-star" id="sub-btn">
+                            <input id="toggle-star" type="checkbox" {% if post in favs %}checked{% endif %}/>
+                            <span class="glyphicon glyphicon-star" style="padding-top:5px;"></span>
+                        </label>
+                    </a>
                     {% if user == post.uploaded_by %}
                         <a href="{% url 'delete_post' post.pk %}" class="btn btn-primary-outline"><span class="glyphicon glyphicon-trash"></span></a>
                     {% endif %}
@@ -61,7 +66,7 @@
                 </div>
             </form>
             <div id="comments" class="comments">
-            {% for comment in post.comments.all %}
+            {% for comment in post.get_comments %}
                 <div class="col-md-12">
                     <div class="comment-section-{{ post.id }} collapse">
                         <div class="panel panel-danger clearfix" style="border-radius: 10px;">
@@ -73,11 +78,11 @@
                                      <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p>
 
                                     {% if user.is_authenticated %}
-                                        <a href="#" class="btn btn-default pull-right upvotes" data-comment-id="{{ comment.id }}" style="margin-right: 10px">
+                                        <a href="#" class="btn btn-primary-outline pull-right upvotes" data-comment-id="{{ comment.id }}" style="border: 0px; margin-right: 10px">
                                             <span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;
-                                             <div class="like_comment" style="display:inline;">{{ comment.get_upvotes }}</div>
+                                            <div class="like_comment" style="display:inline;">{{ comment.get_upvotes }}</div>
                                         </a>
-                                     {% endif %}
+                                    {% endif %}
                                 </div>
                         </div>
                     </div>
