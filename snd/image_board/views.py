@@ -550,13 +550,6 @@ class LikeViewSet(viewsets.ModelViewSet):
     """
     queryset = Like.objects.all()
     serializer_class = serializers.LikeSerializer
-    
-    validators = [
-        UniqueTogetherValidator(
-            queryset=Like.objects.all(),
-            fields=('user_id', 'content_id')
-        )
-    ]
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -566,6 +559,7 @@ class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all()
     serializer_class = serializers.CommentSerializer
 
+    
 def delete_profile(request):
     user = request.user
     user.is_active = False
