@@ -565,6 +565,10 @@ hr{
     font-size: 12px;
 }
 
+.footerelement > a{
+    color: #fff;
+}
+
 .footerPoints:hover{
     color:##d6d6d6;
 }
@@ -583,6 +587,18 @@ svg {
 .wrapperContent{
     min-height:100%;
     height:auto !important;
+}
+
+.footerLogo{
+    width:45px;
+}
+
+.logo{
+    width:45px;
+}
+
+.navbar-brand{
+    padding: 5px 5px;
 }
 
 #tw {stroke-dasharray:  300 , 0, 3000;}
