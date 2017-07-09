@@ -6,9 +6,12 @@ echo "sndjangocore" > /etc/hostname
 
 cd /opt/server/
 
+rm snd/db.sqlite3
+rm -r venv_prod
+
 echo "Setting up python environment"
-pyvenv venv
-source venv/bin/activate
+pyvenv venv_prod
+source venv_prod/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
 
