@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
+from django.db.models import Count
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import RegexValidator
@@ -24,6 +25,10 @@ class ContentItem(models.Model):
             return no
         else:
             return 0
+
+    def get_comments(self):
+        com = Comment.objects.filter(contentItem=self).annotate(num_up=Count('upvote')).order_by('-num_up', '-publication_date')
+        return com
 
 
 class Profile(models.Model):
@@ -62,10 +67,6 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
-
-
-    class Meta:
-        ordering = ['-upvote', '-publication_date']
 
     def get_upvotes(self):
         no = self.upvote_set.all().count()
