@@ -71,7 +71,7 @@ class Comment(models.Model):
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
 
     def can_edit(self):
-        fifteen_mins_ago = timezone.now() - timezone.timedelta(seconds= 15 * 2)
+        fifteen_mins_ago = timezone.now() - timezone.timedelta(seconds= 15 * 60)
         return self.publication_date >= fifteen_mins_ago
 
     def get_upvotes(self):
