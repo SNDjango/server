@@ -44,9 +44,6 @@ INSTALLED_APPS = [
     'rest_framework',
 
 ]
-
-AUTHENTICATION_BACKENDS = ('server.snd.image_board.backends.CaseInsensitiveModelBackend', )
-
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
