@@ -39,8 +39,8 @@ from . import serializers
 
 
 def index(request, sort='Hot'):
-    items_on_page = 1
-    max_pages_full = 8
+    items_on_page = 3
+    max_pages_full = 10
 
     if (not sort == 'Hot') and (not sort == 'Top') and (not sort == 'New'):
         sort = 'Hot'
