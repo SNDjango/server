@@ -49,6 +49,13 @@ class LikeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Like
         fields = ('id', 'url', 'user_id', 'content_id')
+     
+    validators = [
+        UniqueTogetherValidator(
+            queryset=Like.objects.all(),
+            fields=('user_id', 'content_id')
+        )
+    ]
 
 
 class CommentSerializer(serializers.HyperlinkedModelSerializer):
