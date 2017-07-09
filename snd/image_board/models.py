@@ -1,10 +1,12 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
-from django.db.models import Count
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import RegexValidator
+from datetime import datetime
+from datetime import timedelta
+from django.utils import timezone
 
 
 class ContentItem(models.Model):
@@ -13,8 +15,6 @@ class ContentItem(models.Model):
     description = models.CharField(max_length=400, default='no description')
     image = models.ImageField(upload_to='image_board/posts/', default='null')
     uploaded_by = models.ForeignKey(User, default='0')
-    points = models.IntegerField(default=1000)
-    points_weighted = models.IntegerField(default=1000)
 
     def __str__(self):
         return self.title
@@ -25,10 +25,6 @@ class ContentItem(models.Model):
             return no
         else:
             return 0
-
-    def get_comments(self):
-        com = Comment.objects.filter(contentItem=self).annotate(num_up=Count('upvote')).order_by('-num_up', '-publication_date')
-        return com
 
 
 class Profile(models.Model):
@@ -67,6 +63,13 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+
+    def can_edit(self):
+        fifteen_mins_ago = timezone.now() - timezone.timedelta(seconds= 15 * 2)
+        return self.publication_date >= fifteen_mins_ago
+
+    class Meta:
+        ordering = ['-upvote']
 
     def get_upvotes(self):
         no = self.upvote_set.all().count()

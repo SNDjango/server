@@ -33,6 +33,14 @@ button {
 	margin-top:20px;
 }
 
+.buttonEdit {
+	margin-top:0px;
+}
+
+#commentUpdate{
+    display:none;
+}
+
 a {
 	color: #119df6;
 }
@@ -525,20 +533,6 @@ a.concealed-link:hover {
 
 [id='toggle-heart']:checked + div {
   color: #e2264d;
-}
-
-[id='toggle-star'] {
-  position: absolute;
-  left: -100vw;
-}
-
-[id='toggle-star'] + span {
-  color: #8c8c8c;
-
-}
-
-[id='toggle-star']:checked + span {
-  color: #0062b3;
 }
 
 .footer{

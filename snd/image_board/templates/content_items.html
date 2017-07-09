@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="title-container">
-                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by <a href="{% url 'profile_user' post.uploaded_by.id %}">{{ post.uploaded_by }}</a> <a href="{% url 'profile_user' post.uploaded_by.id %}"><img src="{{ post.uploaded_by.profile.user_photo }}" class="img-circle" width="30" height="30"></a> on {{ post.upload_date }}</small></h3>
+                <h3>{{ post.title }} <small class="pull-right content-title-subscript">uploaded by <a href="{% url 'profile_user' post.uploaded_by.id %}">{{ post.uploaded_by }}</a> <a href="{% url 'profile_user' post.uploaded_by.id %}"><img src="{{ post.uploaded_by.profile.user_photo.url }}" class="img-circle" width="30" height="30"></a> on {{ post.upload_date }}</small></h3>
             </div>
         </div>
 
@@ -42,12 +42,7 @@
                     </a>
                     <a href="#!" class="btn btn-primary-outline" data-toggle="collapse" data-target=".comment-section-{{ post.id }}"><span class="glyphicon glyphicon-envelope"></span>&nbsp; {{ post.comments.count }}</a>
                     <a href="#" class="btn btn-primary-outline">Share</a>
-                    <a href="#!" class="btn btn-primary-outline post-fav" data-post-id="{{ post.id }}">
-                        <label for="toggle-star" id="sub-btn">
-                            <input id="toggle-star" type="checkbox" {% if post in favs %}checked{% endif %}/>
-                            <span class="glyphicon glyphicon-star" style="padding-top:5px;"></span>
-                        </label>
-                    </a>
+                    <a href="#" class="btn btn-primary-outline"><span class="glyphicon glyphicon-star"></span></a>
                     {% if user == post.uploaded_by %}
                         <a href="{% url 'delete_post' post.pk %}" class="btn btn-primary-outline"><span class="glyphicon glyphicon-trash"></span></a>
                     {% endif %}
@@ -66,7 +61,7 @@
                 </div>
             </form>
             <div id="comments" class="comments">
-            {% for comment in post.get_comments %}
+            {% for comment in post.comments.all %}
                 <div class="col-md-12">
                     <div class="comment-section-{{ post.id }} collapse">
                         <div class="panel panel-danger clearfix" style="border-radius: 10px;">
@@ -78,11 +73,37 @@
                                      <p style="overflow-wrap: break-word; text-align:left">{{ comment.comment_text }}</p>
 
                                     {% if user.is_authenticated %}
-                                        <a href="#" class="btn btn-primary-outline pull-right upvotes" data-comment-id="{{ comment.id }}" style="border: 0px; margin-right: 10px">
+                                        <a href="#" class="btn btn-default pull-right upvotes" data-comment-id="{{ comment.id }}" style="margin-right: 10px">
                                             <span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;
-                                            <div class="like_comment" style="display:inline;">{{ comment.get_upvotes }}</div>
+                                             <div class="like_comment" style="display:inline;">{{ comment.get_upvotes }}</div>
                                         </a>
-                                    {% endif %}
+                                        {% if user == comment.author %}
+                                        {% if comment.can_edit %}
+                                           <button href="#" class="btn btn-default pull-right buttonEdit" style="margin-right: 10px" onclick="block{{ comment.id }}()">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </button>
+
+                                            <div style="display:none" id="{{ comment.id }}">
+                                                <form action="/edit_comment/" method="post" >
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="commentID" value="{{ comment.id }}">
+                                                    <label for="comment_text">Edit comment:</label>
+                                                    <textarea type="text" class="form-control" name="new_comment_text" placeholder="max. 400 characters" style="height: 80px;">{{ comment.comment_text }}</textarea>
+                                                    <button type="submit" class="btn btn-primary bluebutton pull-right">Save changes</button>
+                                                </form>
+                                            </div>
+                                            <script>
+                                                function block{{ comment.id }}() {
+                                                    var my_disply = document.getElementById('{{ comment.id }}').style.display;
+                                                    if(my_disply == "block")
+                                                          document.getElementById('{{ comment.id }}').style.display = "none";
+                                                    else
+                                                          document.getElementById('{{ comment.id }}').style.display = "block";
+                                                 }
+                                            </script>
+                                        {% endif %}
+                                        {% endif %}
+                                     {% endif %}
                                 </div>
                         </div>
                     </div>

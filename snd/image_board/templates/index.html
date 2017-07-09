@@ -17,28 +17,12 @@
     {% if user.is_authenticated %}
         <div class="content-cont">
             <div class="row">
-                <div class="col-md-6">
-                    <h2>
-                        {{ sort }}
-                    </h2>
-                </div>
-                <div class="col-md-6">
-                    <div class="dropdown pull-right">
-                        <button class="btn btn-default dropdown-toggle" type="button" id="SortBy" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                            Sort By
-                            <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu" aria-labelledby="SortBy">
-                            <li><a href="{% url 'index' 'Hot' %}">Hot</a></li>
-                            <li><a href="{% url 'index' 'Top' %}">Top</a></li>
-                            <li><a href="{% url 'index' 'New' %}">New</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <hr class="line"/>
-                    </div>
+                <div class="col">
+                    <h1>
+                        <span class="glyphicon glyphicon-fire" aria-hidden="true"></span>
+                        Hot
+                    </h1>
+                    <hr class="line"/>
                 </div>
             </div>
             {% include "content_items.html" %}
@@ -112,19 +96,6 @@
                     post_id: id
                 }, function (data) {
                     proxy.find('div').html(data);
-                });
-                return false;
-            });
-
-            $('.post-fav').click(function () {
-                var id;
-                id = $(this).attr('data-post-id');
-                var proxy = $(this);
-                $.get('/fav-post/', {
-                    post_id: id
-                }, function (data) {
-                    var star = proxy.find('#toggle-star');
-                    star.prop("checked", !star.prop("checked"));
                 });
                 return false;
             });

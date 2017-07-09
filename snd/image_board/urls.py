@@ -36,9 +36,9 @@ urlpatterns = [
     url(r'^changepassword$', views.change_password, name='changepw'),
     url(r'^search$', views.search, name='search'),
     url(r'^like-post/$', views.like_post, name='like_post'),
-    url(r'^fav-post/$', views.fav_post, name='fav_post'),
     url(r'^faq-page$', views.view_faq_page, name='faq_page'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
+    url(r'^edit_comment/$', views.edit_comment, name='edit_comment'),
     url(r'^upvote_comment/$', views.upvote_comment, name='upvote_comment'),
     url(r'^boards/([0-9a-zA-Z ]+)$', views.boards, name='boards'),
     url(r'^boards$', views.boards, name='boards'),
@@ -48,7 +48,6 @@ urlpatterns = [
     url(r'^restapi/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^profile/delete$', views.delete_profile, name='delete_profile'),
-    url(r'^(?P<sort>\w+)/$', views.index, name='index'),
 ]
 
 if settings.DEBUG:
