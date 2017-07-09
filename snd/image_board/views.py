@@ -501,6 +501,20 @@ def comment_on_item(request, content_id):
         # return HttpResponse("404")
     return HttpResponse("403")
 
+def edit_comment(request):
+    if request.method == 'POST':
+        comment_id = int(request.POST['commentID'])
+        newcommenttext = request.POST['new_comment_text']
+
+        c = Comment.objects.get(id=comment_id)
+        c.comment_text = newcommenttext
+        c.save()
+
+        messages.success(request, 'Comment successfully changed.')
+        return redirect('index')
+
+    return HttpResponse("403")
+
 
 def update_board_top_post(name):
     this = Board.objects.get(name=name)

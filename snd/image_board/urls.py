@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^fav-post/$', views.fav_post, name='fav_post'),
     url(r'^faq-page$', views.view_faq_page, name='faq_page'),
     url(r'^comment/([0-9]+)$', views.comment_on_item, name='comment_on_item'),
+    url(r'^edit_comment/$', views.edit_comment, name='edit_comment'),
     url(r'^upvote_comment/$', views.upvote_comment, name='upvote_comment'),
     url(r'^boards/([0-9a-zA-Z ]+)$', views.boards, name='boards'),
     url(r'^boards$', views.boards, name='boards'),
