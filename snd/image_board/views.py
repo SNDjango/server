@@ -518,6 +518,7 @@ class ProfileViewSet(viewsets.ModelViewSet):
     """
     queryset = Profile.objects.all()
     serializer_class = serializers.ProfileSerializer
+    http_method_names = ['get', 'patch', 'head', 'options']
 
 
 class ContentItemViewSet(viewsets.ModelViewSet):
