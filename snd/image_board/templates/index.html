@@ -13,6 +13,7 @@
 {% block hot_active %}active{% endblock %}
 
 {% block body %}
+{% load static %}
     {% if user.is_authenticated %}
         <div class="content-cont">
             <div class="row">
@@ -29,7 +30,7 @@
     {% else %}
         <div class="row">
             <div class="col-md-6">
-                <img id="indexDesign" class="img-responsive" src="../../media/img/index_design.png">
+                <img id="indexDesign" class="img-responsive" src="{% static 'img/index_design.png' %}">
             </div>
             <div class="col-md-6" style="margin-top: 50px;">
                 <div id="">
