@@ -12,6 +12,8 @@ class ContentItem(models.Model):
     description = models.CharField(max_length=400, default='no description')
     image = models.ImageField(upload_to='image_board/posts/', default='null')
     uploaded_by = models.ForeignKey(User, default='0')
+    points = models.IntegerField(default=1000)
+    points_weighted = models.IntegerField(default=1000)
 
     def __str__(self):
         return self.title

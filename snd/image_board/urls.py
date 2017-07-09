@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^restapi/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^profile/delete$', views.delete_profile, name='delete_profile'),
+    url(r'^(?P<sort>\w+)/$', views.index, name='index'),
 ]
 
 if settings.DEBUG:
