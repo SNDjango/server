@@ -49,7 +49,7 @@ class Profile(models.Model):
     user_photo = models.ImageField(upload_to='../media/img', default='/static/img/anon.png')
 
     def __str__(self):
-        return self.user
+        return self.user.__str__()
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
