@@ -33,6 +33,10 @@ button {
 	margin-top:20px;
 }
 
+.buttonEdit {
+	margin-top:0px;
+}
+
 a {
 	color: #119df6;
 }

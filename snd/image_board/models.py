@@ -5,6 +5,8 @@ from django.db.models import Count
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.core.validators import RegexValidator
+from django.utils import timezone
+
 
 
 class ContentItem(models.Model):
@@ -67,6 +69,10 @@ class Comment(models.Model):
     publication_date = models.DateTimeField(auto_now=True)
     author = models.ForeignKey(User)
     contentItem = models.ForeignKey(ContentItem, on_delete= models.CASCADE, related_name="comments")
+
+    def can_edit(self):
+        fifteen_mins_ago = timezone.now() - timezone.timedelta(seconds= 15 * 60)
+        return self.publication_date >= fifteen_mins_ago
 
     def get_upvotes(self):
         no = self.upvote_set.all().count()

@@ -82,6 +82,33 @@
                                             <span class="glyphicon glyphicon-thumbs-up"></span> &nbsp;
                                             <div class="like_comment" style="display:inline;">{{ comment.get_upvotes }}</div>
                                         </a>
+
+                                        {% if user == comment.author %}
+                                        {% if comment.can_edit %}
+                                           <button href="#" class="btn btn-default pull-right buttonEdit" style="margin-right: 10px" onclick="block{{ comment.id }}()">
+                                                <span class="glyphicon glyphicon-pencil"></span>
+                                            </button>
+
+                                            <div style="display:none" id="{{ comment.id }}">
+                                                <form action="/edit_comment/" method="post" >
+                                                    {% csrf_token %}
+                                                    <input type="hidden" name="commentID" value="{{ comment.id }}">
+                                                    <label for="comment_text">Edit comment:</label>
+                                                    <textarea type="text" class="form-control" name="new_comment_text" placeholder="max. 400 characters" style="height: 80px;">{{ comment.comment_text }}</textarea>
+                                                    <button type="submit" class="btn btn-primary bluebutton pull-right">Save changes</button>
+                                                </form>
+                                            </div>
+                                            <script>
+                                                function block{{ comment.id }}() {
+                                                    var my_disply = document.getElementById('{{ comment.id }}').style.display;
+                                                    if(my_disply == "block")
+                                                          document.getElementById('{{ comment.id }}').style.display = "none";
+                                                    else
+                                                          document.getElementById('{{ comment.id }}').style.display = "block";
+                                                 }
+                                            </script>
+                                        {% endif %}
+                                        {% endif %}
                                     {% endif %}
                                 </div>
                         </div>
